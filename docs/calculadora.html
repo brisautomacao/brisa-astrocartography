@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Calculadora Astrocártográfica | Brisa Astral</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+<script src="https://cdn.jsdelivr.net/npm/astronomy-engine@3/astronomy.min.js"></script>
+<style>
+@keyframes twinkle { 0%,100%{opacity:.3} 50%{opacity:1} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;
+  background:#0a0a1a;font-family:Georgia,'Times New Roman',serif}
+
+.stars-bg{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 3s infinite}
+
+/* ===== INPUT PANEL ===== */
+#input-panel{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+  overflow-y:auto;background:linear-gradient(135deg,#0a0a1a 0%,#12122e 50%,#0a0a1a 100%)}
+
+#input-card{max-width:480px;width:100%;padding:32px 28px;
+  background:rgba(15,15,40,.92);backdrop-filter:blur(20px);
+  border:1px solid rgba(147,112,219,.25);border-radius:20px;
+  box-shadow:0 8px 40px rgba(0,0,0,.6);animation:fadeUp .6s ease}
+
+#input-card h1{color:#B19CD9;font-size:24px;text-align:center;margin:0 0 4px;
+  letter-spacing:1px}
+#input-card .subtitle{color:#888;font-size:13px;text-align:center;margin:0 0 24px}
+
+.form-group{margin-bottom:20px}
+.form-group label{display:block;color:#B19CD9;font-size:13px;font-weight:bold;
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.form-group input{width:100%;box-sizing:border-box;padding:12px 14px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(147,112,219,.2);
+  border-radius:10px;color:#fff;font-size:15px;font-family:inherit;transition:all .2s}
+.form-group input:focus{outline:none;border-color:#9370DB;
+  background:rgba(255,255,255,.1);box-shadow:0 0 0 3px rgba(147,112,219,.15)}
+.form-group input::placeholder{color:#666}
+.form-group input[type=date],.form-group input[type=time]{
+  color-scheme:dark}
+
+.form-row{display:flex;gap:12px}
+.form-row .form-group{flex:1}
+
+#location-results{max-height:200px;overflow-y:auto;margin-top:4px}
+.loc-item{padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;
+  margin-bottom:4px;cursor:pointer;font-size:13px;color:#ccc;transition:all .15s}
+.loc-item:hover{background:rgba(147,112,219,.15);color:#fff}
+
+#generate-btn{width:100%;padding:14px;margin-top:8px;
+  background:linear-gradient(135deg,#9370DB,#6A5ACD);
+  border:none;border-radius:12px;color:#fff;font-size:16px;font-weight:bold;
+  font-family:inherit;cursor:pointer;letter-spacing:.5px;transition:all .2s;
+  box-shadow:0 4px 20px rgba(147,112,219,.3)}
+#generate-btn:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(147,112,219,.4)}
+#generate-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+#error-msg{color:#ff6b6b;font-size:13px;text-align:center;margin-top:8px;display:none}
+
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:8px}
+
+.br-tag{text-align:center;margin-top:16px;font-size:11px;color:#555}
+.br-tag a{color:#9370DB;text-decoration:none}
+
+/* ===== MAP ===== */
+#map-container{position:fixed;top:0;left:0;width:100%;height:100%;display:none}
+#map{position:absolute;top:0;bottom:0;right:0;left:0;z-index:1}
+.leaflet-container{background:#0a0a1a!important;font-size:1rem}
+
+/* ===== LEGEND ===== */
+#legend-container{position:fixed;top:10px;right:10px;z-index:9999;
+  max-width:380px;max-height:85vh;overflow-y:auto;
+  background:rgba(10,10,30,.92);backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.15);border-radius:16px;
+  font-family:Georgia,serif;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+
+.legend-header{cursor:pointer;padding:14px 18px;display:flex;
+  justify-content:space-between;align-items:center;
+  border-bottom:1px solid rgba(255,255,255,.1)}
+.legend-header span:first-child{color:#fff;font-size:15px;font-weight:bold;letter-spacing:1px}
+#legend-arrow{color:#9370DB;font-size:18px;transition:transform .3s}
+
+#legend-body{padding:12px 16px;overflow:hidden;transition:max-height .3s ease}
+
+.legend-section{margin-bottom:16px}
+.legend-section h4{color:#B19CD9;font-size:13px;text-transform:uppercase;
+  letter-spacing:1px;margin:0 0 10px 0}
+
+.planet-card{margin-bottom:10px;padding:10px 12px;
+  background:rgba(255,255,255,.06);border-radius:10px}
+
+/* ===== REGENERATE BUTTON ===== */
+#regen-btn{position:fixed;top:10px;left:50px;z-index:9999;
+  padding:8px 16px;background:rgba(147,112,219,.3);backdrop-filter:blur(10px);
+  border:1px solid rgba(147,112,219,.3);border-radius:10px;color:#fff;
+  font-size:13px;cursor:pointer;font-family:inherit;display:none;transition:all .2s}
+#regen-btn:hover{background:rgba(147,112,219,.5)}
+
+/* ===== LOADING OVERLAY ===== */
+#loading{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;
+  display:none;align-items:center;justify-content:center;
+  background:rgba(10,10,26,.9);backdrop-filter:blur(8px)}
+#loading .text{color:#B19CD9;font-size:18px;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="stars-bg" id="stars"></div>
+
+<!-- INPUT PANEL -->
+<div id="input-panel">
+  <div id="input-card">
+    <h1>🔮 Mapa Astrocártográfico</h1>
+    <p class="subtitle">Descubra as energias planetárias dos lugares do mundo</p>
+
+    <div class="form-group">
+      <label>Data de Nascimento</label>
+      <input type="date" id="birth-date" min="1900-01-01" max="2099-12-31">
+    </div>
+
+    <div class="form-group">
+      <label>Hora de Nascimento</label>
+      <input type="time" id="birth-time" value="12:00">
+    </div>
+
+    <div class="form-group">
+      <label>Local de Nascimento</label>
+      <input type="text" id="birth-location" placeholder="Ex: Porto Alegre, RS" autocomplete="off">
+      <div id="location-results"></div>
+    </div>
+
+    <button id="generate-btn" onclick="generateMap()">✨ Gerar Meu Mapa</button>
+    <div id="error-msg"></div>
+
+    <div class="br-tag">✨ <a href="https://brisaastral.ai" target="_blank">Brisa Astral</a></div>
+  </div>
+</div>
+
+<!-- REGENERATE BUTTON -->
+<button id="regen-btn" onclick="resetForm()">↩ Novo Mapa</button>
+
+<!-- MAP -->
+<div id="map-container">
+  <div id="map"></div>
+</div>
+
+<!-- LEGEND -->
+<div id="legend-container" style="display:none">
+  <div class="legend-header" onclick="toggleLegend()">
+    <span>🔮 Legenda &amp; Significados</span>
+    <span id="legend-arrow">▲</span>
+  </div>
+  <div id="legend-body"></div>
+</div>
+
+<!-- LOADING -->
+<div id="loading"><div class="text"><span class="spinner"></span>Calculando posições planetárias...</div></div>
+
+<script>
+// ============================================================
+// PLANET DATA
+// ============================================================
+const PLANETS = {
+  "Sol":{symbol:"☉",color:"#FFD700",keyword:"EU · Essência · Vitalidade · Reconhecimento",
+    mc:"VOCE E VISTA - brilho, lideranca, autoridade, carreira em destaque. As pessoas notam voce.",
+    ic:"EU EM CASA - identidade no lar, orgulho da familia, ser o centro do ambiente domestico.",
+    asc:"EU NO MUNDO - personalidade magnetica, autoexpressao, voce brilha ao se apresentar.",
+    dsc:"EU COM O OUTRO - parceiros que te valorizam, relacionamentos que elevam sua autoestima."},
+  "Lua":{symbol:"☽",color:"#C0C0C0",keyword:"EMOCAO · Intuicao · Lar · Maternidade",
+    mc:"EMOCAO NO TRABALHO - intuicao na carreira, trabalho com cuidado, nutrir, acolher.",
+    ic:"EMOCAO NO LAR - lar acolhedor, conexao emocional profunda com a familia, maternidade.",
+    asc:"EMOCAO NO MUNDO - sensibilidade a flor da pele, empatia, as pessoas se abrem com voce.",
+    dsc:"EMOCAO NO AMOR - relacionamentos emocionais, parceiro que nutre, conexao maternal."},
+  "Mercurio":{symbol:"☿",color:"#D2691E",keyword:"MENTE · Comunicacao · Ideias · Comercio",
+    mc:"MENTE NO TRABALHO - escrita, fala, negociacao, vendas, tecnologia, networking.",
+    ic:"MENTE EM CASA - conversas em familia, lar intelectual, estudar em casa.",
+    asc:"MENTE NO MUNDO - articulacao, esperteza, facilidade de expressao, persuasao.",
+    dsc:"MENTE NO AMOR - parceiro inteligente, conversa como conexao, amor mental."},
+  "Venus":{symbol:"♀",color:"#FF1493",keyword:"AMOR · Beleza · Prazer · Dinheiro",
+    mc:"AMOR NO TRABALHO - carreira artistica, estetica, moda, beleza, diplomacia.",
+    ic:"AMOR EM CASA - lar bonito, harmonia familiar, ambiente estetico e agradavel.",
+    asc:"AMOR NO MUNDO - voce fica irresistivel, magnetica, atraente, charme natural.",
+    dsc:"AMOR NO AMOR - romance puro, parceiros apaixonados, relacionamentos harmonicos."},
+  "Marte":{symbol:"♂",color:"#FF0000",keyword:"ACAO · Energia · Coragem · Conquista",
+    mc:"ACAO NO TRABALHO - empreendedorismo, lideranca agressiva, competitividade, esforco.",
+    ic:"ACAO EM CASA - energia no lar, reformas, trabalhos manuais, disputas familiares.",
+    asc:"ACAO NO MUNDO - presenca forte, coragem, iniciativa, voce toma o espaco.",
+    dsc:"ACAO NO AMOR - paixao intensa, parceiro energetico, atracao fisica poderosa."},
+  "Jupiter":{symbol:"♃",color:"#4169E1",keyword:"SORTE · Expansao · Abundancia · Crescimento",
+    mc:"SORTE NO TRABALHO - oportunidades, promocoes, abundancia financeira, sucesso.",
+    ic:"SORTE EM CASA - familia abencoada, lar espacoso, crescimento domestico.",
+    asc:"SORTE NO MUNDO - otimismo, confianca, voce atrai boas oportunidades.",
+    dsc:"SORTE NO AMOR - parceiro generoso, relacionamento prospero, amor que expande."},
+  "Saturno":{symbol:"♄",color:"#5F9EA0",keyword:"ESTRUTURA · Disciplina · Responsabilidade · Tempo",
+    mc:"ESTRUTURA NO TRABALHO - carreira solida, construcao a longo prazo, respeito.",
+    ic:"ESTRUTURA EM CASA - lar organizado, familia tradicional, responsabilidade domestica.",
+    asc:"ESTRUTURA NO MUNDO - seriedade, maturidade, confiabilidade, presenca respeitavel.",
+    dsc:"ESTRUTURA NO AMOR - parceiro estavel, compromisso serio, amor duradouro."},
+  "Urano":{symbol:"♅",color:"#00CED1",keyword:"MUDANCA · Inovacao · Liberdade · RebelDia",
+    mc:"MUDANCA NO TRABALHO - tecnologia, inovacao, startups, mudancas subitas de carreira.",
+    ic:"MUDANCA EM CASA - mudancas de residencia, lar nao convencional, familia diferente.",
+    asc:"MUDANCA NO MUNDO - originalidade, voce e unica, eccentrica, livre.",
+    dsc:"MUDANCA NO AMOR - parceiro diferente, amor nao convencional, relacionamento livre."},
+  "Netuno":{symbol:"♆",color:"#8A2BE2",keyword:"ESPIRITUALIDADE · Sonhos · Intuicao · Artes",
+    mc:"ESPIRITUALIDADE NO TRABALHO - arte, misticismo, cura, musica, inspiracao.",
+    ic:"ESPIRITUALIDADE EM CASA - lar mistico, intuicao familiar, lar como refugio espiritual.",
+    asc:"ESPIRITUALIDADE NO MUNDO - aura mistica, sensibilidade artistica, empatia profunda.",
+    dsc:"ESPIRITUALIDADE NO AMOR - amor idealizado, parceiro artistico, conexao de alma."},
+  "Plutao":{symbol:"♇",color:"#CD5C5C",keyword:"PODER · Transformacao · Renascimento · Intensidade",
+    mc:"PODER NO TRABALHO - influencia, controle, grande fortuna, transformacao profissional.",
+    ic:"PODER EM CASA - transformacao familiar, raizes profundas, heranca poderosa.",
+    asc:"PODER NO MUNDO - intensidade magnetica, presenca transformadora, voce muda ambientes.",
+    dsc:"PODER NO AMOR - paixao obsessiva, parceiro intenso, relacionamento transformador."},
+  "Nodo Norte":{symbol:"☊",color:"#9370DB",keyword:"DESTINO · Proposito · Evolucao · Karma",
+    mc:"DESTINO NO TRABALHO - missao profissional, carreira como proposito de vida.",
+    ic:"DESTINO EM CASA - proposito ligado a familia, lar como missao de vida.",
+    asc:"DESTINO NO MUNDO - evolucao pessoal, ser quem voce nasceu para ser.",
+    dsc:"DESTINO NO AMOR - parcerias karmicas, encontros que mudam seu caminho de vida."}
+};
+const PLANET_ORDER = ["Sol","Lua","Mercurio","Venus","Marte","Jupiter","Saturno","Urano","Netuno","Plutao","Nodo Norte"];
+
+const BODY_MAP = {
+  "Sol":Astronomy.Body.SUN, "Lua":Astronomy.Body.MOON,
+  "Mercurio":Astronomy.Body.MERCURY, "Venus":Astronomy.Body.VENUS,
+  "Marte":Astronomy.Body.MARS, "Jupiter":Astronomy.Body.JUPITER,
+  "Saturno":Astronomy.Body.SATURN, "Urano":Astronomy.Body.URANUS,
+  "Netuno":Astronomy.Body.NEPTUNE, "Plutao":Astronomy.Body.PLUTO
+};
+
+const ANGLE_INFO = {
+  MC:{symbol:"MC", desc:"VOCACAO · CARREIRA · STATUS PUBLICO · O QUE VOCE CONSTROI NO MUNDO"},
+  IC:{symbol:"IC", desc:"LAR · FAMILIA · RAIZES · VIDA PRIVADA · DE ONDE VOCE VEIO"},
+  ASC:{symbol:"ASC",desc:"PERSONALIDADE · COMO VOCE SE APRESENTA · PRIMEIRA IMPRESSAO"},
+  DSC:{symbol:"DSC",desc:"RELACIONAMENTOS · PARCERIAS · AMOR · O QUE VOCE ATRAI"}
+};
+
+// ============================================================
+// STARS BACKGROUND
+// ============================================================
+(function(){const c=document.getElementById('stars');
+for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';
+s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+s.style.animationDelay=Math.random()*3+'s';
+const sz=[1,1,2,2,3][Math.floor(Math.random()*5)];s.style.width=sz+'px';s.style.height=sz+'px';
+c.appendChild(s)}})();
+
+// ============================================================
+// LOCATION SEARCH (Nominatim)
+// ============================================================
+let selectedLat=null, selectedLon=null, selectedName='';
+let searchTimer;
+const locInput=document.getElementById('birth-location');
+const locResults=document.getElementById('location-results');
+
+locInput.addEventListener('input',function(){
+  selectedLat=null;selectedLon=null;
+  clearTimeout(searchTimer);
+  if(this.value.trim().length<3){locResults.innerHTML='';return}
+  searchTimer=setTimeout(()=>searchLocation(this.value.trim()),400);
+});
+
+function searchLocation(q){
+  fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=5&accept-language=pt-BR`)
+    .then(r=>r.json()).then(data=>{
+      locResults.innerHTML=data.map(d=>{
+        const lat=parseFloat(d.lat).toFixed(4),lon=parseFloat(d.lon).toFixed(4);
+        return `<div class="loc-item" onclick="selectLocation(${d.lat},${d.lon},'${d.display_name.substring(0,60).replace(/'/g,"")}')">📍 ${d.display_name.substring(0,60)}</div>`
+      }).join('');
+    }).catch(()=>{locResults.innerHTML='<div class="loc-item">Erro na busca</div>'});
+}
+
+function selectLocation(lat,lon,name){
+  selectedLat=lat;selectedLon=lon;selectedName=name;
+  locInput.value=name;
+  locResults.innerHTML='';
+}
+
+// ============================================================
+// ASTROLOGY CALCULATIONS
+// ============================================================
+function normalizeLon(lon){while(lon>180)lon-=360;while(lon<-180)lon+=360;return lon}
+
+function getPlanetRaDec(name, date){
+  if(name==="Nodo Norte"){
+    // Mean lunar node
+    const jd=(date.getTime()/86400000)+2440587.5;
+    const T=(jd-2451545.0)/36525;
+    let nodeLon=125.0445479-1934.1362891*T+0.0020754*T*T+T*T*T/467441;
+    nodeLon=((nodeLon%360)+360)%360;
+    // Convert ecliptic to equatorial
+    const eps=23.4393*Math.PI/180;
+    const lr=nodeLon*Math.PI/180;
+    let ra=Math.atan2(Math.sin(lr)*Math.cos(eps),Math.cos(lr));
+    let dec=Math.asin(Math.sin(eps)*Math.sin(lr));
+    let raDeg=ra*180/Math.PI;while(raDeg<0)raDeg+=360;
+    return{ra:raDeg,dec:dec*180/Math.PI};
+  }
+  const body=BODY_MAP[name];
+  const observer=new Astronomy.Observer(0,0,0);
+  const equ=Astronomy.Equator(body,date,observer,true,true);
+  return{ra:equ.ra*15,dec:equ.dec}; // ra: hours→degrees
+}
+
+function computeLines(ra,dec,gstDeg){
+  const result={mc:[],ic:[],asc:[],dsc:[]};
+
+  // MC/IC are vertical lines (straight on map)
+  const mcLon=normalizeLon(ra-gstDeg);
+  const icLon=normalizeLon(mcLon+180);
+  for(let lat=-85;lat<=85;lat+=1){
+    result.mc.push([lat,mcLon]);
+    result.ic.push([lat,icLon]);
+  }
+
+  // ASC/DSC are curved (depend on latitude)
+  let curAsc=[],curDsc=[];
+  for(let lat=-85;lat<=85;lat+=1){
+    const latR=lat*Math.PI/180;
+    const decR=dec*Math.PI/180;
+    const arg=-Math.tan(latR)*Math.tan(decR);
+    if(Math.abs(arg)>1){
+      if(curAsc.length>1)result.asc.push(curAsc);
+      if(curDsc.length>1)result.dsc.push(curDsc);
+      curAsc=[];curDsc=[];continue;
+    }
+    const h0=Math.acos(arg)*180/Math.PI;
+    let ascLon=normalizeLon(ra-gstDeg-h0);
+    let dscLon=normalizeLon(ra-gstDeg+h0);
+
+    // Handle longitude wraps
+    if(curAsc.length>0&&Math.abs(ascLon-curAsc[curAsc.length-1][1])>180){
+      if(curAsc.length>1)result.asc.push(curAsc);curAsc=[];
+    }
+    if(curDsc.length>0&&Math.abs(dscLon-curDsc[curDsc.length-1][1])>180){
+      if(curDsc.length>1)result.dsc.push(curDsc);curDsc=[];
+    }
+    curAsc.push([lat,ascLon]);
+    curDsc.push([lat,dscLon]);
+  }
+  if(curAsc.length>1)result.asc.push(curAsc);
+  if(curDsc.length>1)result.dsc.push(curDsc);
+
+  return result;
+}
+
+// ============================================================
+// MAP GENERATION
+// ============================================================
+let leafletMap=null;
+
+function generateMap(){
+  const dateVal=document.getElementById('birth-date').value;
+  const timeVal=document.getElementById('birth-time').value;
+  const errEl=document.getElementById('error-msg');
+  errEl.style.display='none';
+
+  if(!dateVal){errEl.textContent='Por favor, informe a data de nascimento';errEl.style.display='block';return}
+  if(!selectedLat||!selectedLon){errEl.textContent='Por favor, selecione um local da lista';errEl.style.display='block';return}
+
+  const btn=document.getElementById('generate-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Calculando...';
+  document.getElementById('loading').style.display='flex';
+
+  setTimeout(()=>{
+    try{
+      // Parse date/time and convert to UTC
+      const [yr,mo,dy]=dateVal.split('-').map(Number);
+      const [hr,mi]=(timeVal||'12:00').split(':').map(Number);
+      const tzOffset=Math.round(selectedLon/15); // approximate timezone
+      const utcHr=hr-tzOffset;
+      const date=new Date(Date.UTC(yr,mo-1,dy,utcHr,mi,0));
+
+      // Calculate GST
+      const gstHours=Astronomy.SiderealTime(date);
+      const gstDeg=gstHours*15;
+
+      // Create map
+      if(leafletMap){leafletMap.remove();leafletMap=null}
+      document.getElementById('input-panel').style.display='none';
+      document.getElementById('map-container').style.display='block';
+      document.getElementById('regen-btn').style.display='block';
+
+      leafletMap=L.map('map',{center:[20,0],zoom:2,zoomControl:true,preferCanvas:true});
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+        {attribution:'© OpenStreetMap, © CARTO',subdomains:'abc',maxZoom:18}
+      ).addTo(leafletMap);
+      L.control.fullscreen({position:'topleft'}).addTo(leafletMap);
+
+      // Birth location marker
+      L.marker([selectedLat,selectedLon],{
+        icon:L.AwesomeMarkers?L.AwesomeMarkers.icon({markerColor:'purple',iconColor:'white',icon:'star',prefix:'fa'}):undefined
+      }).bindPopup(
+        `<div style="font-family:Georgia,serif;color:#333;min-width:200px">
+        <b style="color:#9370DB">⭐ Local de Nascimento</b><br>
+        ${selectedName}<br>${yr}-${String(mo).padStart(2,'0')}-${String(dy).padStart(2,'0')} ${String(hr).padStart(2,'0')}:${String(mi).padStart(2,'0')}<br>
+        ${selectedLat.toFixed(4)}°, ${selectedLon.toFixed(4)}°</div>`
+      ).addTo(leafletMap);
+
+      // Draw planet lines
+      for(const pname of PLANET_ORDER){
+        const info=PLANETS[pname];
+        const pos=getPlanetRaDec(pname,date);
+        const lines=computeLines(pos.ra,pos.dec,gstDeg);
+
+        const angles=[
+          {key:'mc',style:{weight:4,opacity:.85,dashArray:null}},
+          {key:'ic',style:{weight:2,opacity:.6,dashArray:'12,8'}},
+          {key:'asc',style:{weight:4,opacity:.85,dashArray:null}},
+          {key:'dsc',style:{weight:2,opacity:.5,dashArray:'2,6'}}
+        ];
+
+        for(const ang of angles){
+          const segs=lines[ang.key];
+          if(!segs)continue;
+          for(const seg of segs){
+            if(seg.length<2)continue;
+            const meaning=info[ang.key];
+            const aData=ANGLE_INFO[ang.key.toUpperCase()];
+            const popupHtml=`<div style="font-family:Georgia,serif;color:#333;min-width:260px;max-width:320px">
+              <h3 style="color:${info.color};margin:0 0 4px">${info.symbol} ${pname} ${aData.symbol}</h3>
+              <p style="font-size:11px;color:#666;margin:0 0 8px">${info.keyword}</p>
+              <p style="font-size:11px;color:#888;margin:0 0 8px">${aData.desc}</p>
+              <div style="background:${info.color}22;border-left:3px solid ${info.color};padding:8px;border-radius:4px;font-size:12px;color:#333">${meaning}</div></div>`;
+
+            // Glow effect for strong lines
+            if(ang.style.weight>=3){
+              L.polyline(seg,{color:info.color,weight:ang.style.weight+6,opacity:.15,smoothFactor:1}).addTo(leafletMap);
+            }
+            L.polyline(seg,{color:info.color,weight:ang.style.weight,opacity:ang.style.opacity,
+              dashArray:ang.style.dashArray,popup:L.popup({maxWidth:350}).setContent(popupHtml),
+              tooltip:`${info.symbol} ${pname} ${aData.symbol}`,smoothFactor:1}).addTo(leafletMap);
+          }
+        }
+      }
+
+      // Show legend
+      buildLegend();
+      document.getElementById('legend-container').style.display='block';
+
+      document.getElementById('loading').style.display='none';
+    }catch(e){
+      document.getElementById('loading').style.display='none';
+      errEl.textContent='Erro: '+e.message;errEl.style.display='block';
+      btn.disabled=false;btn.innerHTML='✨ Gerar Meu Mapa';
+    }
+  },100);
+}
+
+function resetForm(){
+  document.getElementById('map-container').style.display='none';
+  document.getElementById('input-panel').style.display='flex';
+  document.getElementById('legend-container').style.display='none';
+  document.getElementById('regen-btn').style.display='none';
+  document.getElementById('generate-btn').disabled=false;
+  document.getElementById('generate-btn').innerHTML='✨ Gerar Meu Mapa';
+  if(leafletMap){leafletMap.remove();leafletMap=null}
+}
+
+// ============================================================
+// LEGEND
+// ============================================================
+function buildLegend(){
+  let html=`
+    <div class="legend-section">
+      <h4>📐 Tipos de Linha</h4>
+      <div style="font-size:13px;color:#ddd;line-height:1.8">
+        <div style="margin-bottom:6px"><span style="display:inline-block;width:36px;height:4px;background:#fff;border-radius:2px;vertical-align:middle;margin-right:8px"></span><b style="color:#fff">Linha grossa</b> = MC ou ASC (FORTE)</div>
+        <div style="margin-bottom:6px"><span style="display:inline-block;width:36px;height:3px;border-top:3px dashed #999;vertical-align:middle;margin-right:8px"></span><b style="color:#ccc">Tracejada</b> = IC (lar, raizes)</div>
+        <div style="margin-bottom:6px"><span style="display:inline-block;width:36px;height:2px;border-top:2px dotted #aaa;vertical-align:middle;margin-right:8px"></span><b style="color:#ccc">Pontilhada</b> = DSC (amor, parcerias)</div>
+        <div style="margin-top:10px;padding:8px 10px;background:rgba(147,112,219,.08);border-radius:8px;font-size:12px;color:#aaa">
+          Linhas <b style="color:#fff">retas (verticais)</b> = MC / IC<br>Linhas <b style="color:#fff">curvas (diagonais)</b> = ASC / DSC</div>
+      </div>
+    </div>
+    <div class="legend-section">
+      <h4>🧭 Os 4 Eixos</h4>
+      <div style="font-size:13px;color:#ccc;line-height:1.6">`;
+
+  for(const[k,d]of Object.entries(ANGLE_INFO)){
+    html+=`<div style="margin-bottom:8px;padding:8px 10px;background:rgba(255,215,0,.06);border-radius:8px;border-left:3px solid #FFD700">
+      <b style="color:#FFD700;font-size:14px">${d.symbol}</b><br><span style="color:#aaa;font-size:11px">${d.desc}</span></div>`;
+  }
+  html+=`</div></div><div class="legend-section"><h4>🪐 Planetas &amp; Significados Completos</h4>`;
+
+  for(const pname of PLANET_ORDER){
+    const info=PLANETS[pname];
+    html+=`<div class="planet-card" style="border-left:4px solid ${info.color}">
+      <div style="margin-bottom:6px"><span style="font-size:20px;color:${info.color}">${info.symbol}</span>
+      <b style="color:#fff;font-size:14px">${pname}</b>
+      <span style="font-size:12px;color:#aaa">${info.keyword}</span></div>
+      <div style="font-size:12px;color:#bbb;line-height:1.6">
+        <div style="margin-bottom:3px"><b style="color:${info.color}">MC:</b> ${info.mc}</div>
+        <div style="margin-bottom:3px"><b style="color:${info.color}">ASC:</b> ${info.asc}</div>
+        <div style="margin-bottom:3px"><b style="color:${info.color}">DSC:</b> ${info.dsc}</div>
+        <div><b style="color:${info.color}">IC:</b> ${info.ic}</div>
+      </div></div>`;
+  }
+
+  html+=`<div style="margin-top:12px;padding:10px 12px;background:rgba(147,112,219,.12);border-radius:10px">
+    <div style="font-size:12px;color:#B19CD9;line-height:1.6">📱 <b>Como usar:</b> Toque em qualquer linha colorida para ver o significado. Use dois dedos para mover e zoom.</div></div>`;
+
+  document.getElementById('legend-body').innerHTML=html;
+}
+
+function toggleLegend(){
+  const body=document.getElementById('legend-body');
+  const arrow=document.getElementById('legend-arrow');
+  const container=document.getElementById('legend-container');
+  if(body.style.maxHeight&&body.style.maxHeight!=='0px'){
+    body.style.maxHeight='0px';body.style.padding='0px';
+    arrow.style.transform='rotate(180deg)';arrow.innerHTML='▼';
+    container.style.maxHeight='60px';container.style.overflow='visible';
+  }else{
+    body.style.maxHeight='80vh';body.style.padding='12px 16px';
+    arrow.style.transform='rotate(0deg)';arrow.innerHTML='▲';
+    container.style.maxHeight='85vh';container.style.overflow='auto';
+  }
+}
+
+// Set default date
+document.getElementById('birth-date').value='1990-01-01';
+</script>
+</body>
+</html>
