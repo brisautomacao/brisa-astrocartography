@@ -403,6 +403,7 @@ function generateMap(){
 
       // Draw planet lines
       for(const pname of PLANET_ORDER){
+        try{
         const info=PLANETS[pname];
         const pos=getPlanetRaDec(pname,date);
         const lines=computeLines(pos.ra,pos.dec,gstDeg);
@@ -436,6 +437,7 @@ function generateMap(){
               tooltip:`${info.symbol} ${pname} ${aData.symbol}`,smoothFactor:1}).addTo(leafletMap);
           }
         }
+        }catch(pe){console.error('Planet error:',pname,pe.message)}
       }
 
       // Show legend
