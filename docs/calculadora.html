@@ -390,7 +390,7 @@ function generateMap(){
       document.getElementById('map-container').style.display='block';
       document.getElementById('regen-btn').style.display='block';
 
-      leafletMap=L.map('map',{center:[20,0],zoom:2,zoomControl:true,preferCanvas:true});
+      leafletMap=L.map('map',{center:[20,0],zoom:2,zoomControl:true});
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
         {attribution:'© OpenStreetMap, © CARTO',subdomains:'abc',maxZoom:18}
       ).addTo(leafletMap);
@@ -410,7 +410,6 @@ function generateMap(){
         const info=PLANETS[pname];
         const pos=getPlanetRaDec(pname,date);
         const lines=computeLines(pos.ra,pos.dec,gstDeg);
-        if(pname==='Sol')console.log('Sol lines mc sample:',JSON.stringify(lines.mc[0]?lines.mc[0].slice(0,3):'empty'),'asc len:',lines.asc.length);
 
         const angles=[
           {key:'mc',style:{weight:4,opacity:.85,dashArray:null}},
@@ -427,28 +426,14 @@ function generateMap(){
             if(!seg||seg.length<2)continue;
             const meaning=info[ang.key];
             const aData=ANGLE_INFO[ang.key.toUpperCase()];
-            // Simple test: draw one MC line
-        if(pname==='Sol'){
-          console.log('TEST: about to draw Sol MC polyline');
-          const testSeg = lines.mc[0];
-          console.log('TEST: testSeg length=' + testSeg.length + ' type=' + typeof testSeg);
-          try {
-            L.polyline(testSeg, {color:'#FFD700', weight:4}).addTo(leafletMap);
-            console.log('TEST: Sol MC drawn OK!');
-          } catch(e) {
-            console.error('TEST ERROR: ' + (e.message || e));
-          }
-        }
             const popupHtml='<div style="font-family:Georgia,serif;color:#333;min-width:260px;max-width:320px"><h3 style="color:'+info.color+';margin:0 0 4px">'+info.symbol+' '+pname+' '+aData.symbol+'</h3><p style="font-size:11px;color:#666;margin:0 0 8px">'+info.keyword+'</p><p style="font-size:11px;color:#888;margin:0 0 8px">'+aData.desc+'</p><div style="background:'+info.color+'22;border-left:3px solid '+info.color+';padding:8px;border-radius:4px;font-size:12px;color:#333">'+meaning+'</div></div>';
 
-            try{
             // Glow effect for strong lines
             if(ang.style.weight>=3){
               L.polyline(seg,{color:info.color,weight:ang.style.weight+6,opacity:.15,smoothFactor:1}).addTo(leafletMap);
             }
             L.polyline(seg,{color:info.color,weight:ang.style.weight,opacity:ang.style.opacity,
-              dashArray:ang.style.dashArray,smoothFactor:1}).addTo(leafletMap).bindPopup(popupHtml).bindTooltip(info.symbol+' '+pname+' '+aData.symbol);
-            }catch(de){console.error('Draw error:',pname,ang.key,de.message||de)}
+              dashArray:ang.style.dashArray,smoothFactor:1}).addTo(leafletMap).bindPopup(popupHtml,{maxWidth:350}).bindTooltip(info.symbol+' '+pname+' '+aData.symbol);
           }
         }
         }catch(pe){console.error('Planet error:',pname,pe.message)}
@@ -461,11 +446,9 @@ function generateMap(){
       document.getElementById('loading').style.display='none';
     }catch(e){
       document.getElementById('loading').style.display='none';
-      const errMsg=e&&e.message?e.message:(typeof e==='string'?e:JSON.stringify(e));
-      const errStack=e&&e.stack?e.stack.substring(0,300):'';
+      const errMsg=e&&e.message?e.message:'Erro desconhecido';
       console.error('MapGen error:',e);
-      errEl.innerHTML='Erro: '+errMsg+(errStack?'<br><small>'+errStack+'</small>':'');
-      errEl.style.display='block';
+      errEl.textContent='Erro: '+errMsg;errEl.style.display='block';
       btn.disabled=false;btn.innerHTML='✨ Gerar Meu Mapa';
     }
   },100);
