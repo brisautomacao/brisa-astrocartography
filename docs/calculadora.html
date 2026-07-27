@@ -291,6 +291,10 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;cur
           <div class="slider-label"><span class="sname"><span class="slider-emoji">🏠</span>Família</span><span class="sval" id="val-family">50</span></div>
           <input type="range" id="slider-family" min="0" max="100" value="50" oninput="onSliderChange()">
         </div>
+        <div class="slider-row">
+          <div class="slider-label"><span class="sname"><span class="slider-emoji">🔥</span>Desafio</span><span class="sval" id="val-challenge">50</span></div>
+          <input type="range" id="slider-challenge" min="0" max="100" value="50" oninput="onSliderChange()">
+        </div>
         <button class="slider-reset" onclick="resetSliders()">↺ Resetar Filtros</button>
       </div>
       <div id="best-list"></div>
@@ -695,21 +699,46 @@ document.getElementById('birth-date').value='1990-01-01';
 // ============================================================
 let lastBirthData=null; // {date, gstDeg}
 
-// Planet polarity: positive / negative / neutral
+// Planet polarity: for overall verdict (totalPos vs totalNeg)
 const PLANET_POLARITY={
   "Sol":"pos","Lua":"pos","Mercurio":"pos","Venus":"pos","Jupiter":"pos",
-  "Saturno":"neg","Marte":"neg","Plutao":"neg",
-  "Urano":"neu","Netuno":"neu","Nodo Norte":"neu"
+  "Marte":"neg","Saturno":"neg","Plutao":"neg",
+  "Urano":"pos","Netuno":"pos","Nodo Norte":"pos"
 };
 
-// Life area weights: {planet: weight}
+// Life area weights: planet: weight
+// POSITIVE weight = planet HELPS this area
+// NEGATIVE weight = planet CHALLENGES this area
+// Every planet appears in every area where it has influence
 const LIFE_AREAS={
-  "❤️ Amor":{Venus:3,Lua:2,Sol:1,Jupiter:1},
-  "💼 Carreira":{Sol:3,Jupiter:2,Saturno:1,Mercurio:1},
-  "💰 Dinheiro":{Jupiter:3,Venus:2,Sol:1,Plutao:1},
-  "🏥 Saúde":{Sol:2,Marte:2,Lua:1},
-  "🙏 Espiritualidade":{Netuno:3,"Nodo Norte":2,Plutao:1},
-  "🏠 Família":{Lua:3,Venus:1,"Nodo Norte":1}
+  "❤️ Amor":{
+    Venus:3,Lua:2,Sol:1,Jupiter:1,Netuno:1,"Nodo Norte":2,
+    Marte:-1,Saturno:-1,Plutao:-2
+  },
+  "💼 Carreira":{
+    Sol:3,Jupiter:2,Mercurio:2,Saturno:2,Marte:1,Plutao:1,
+    Urano:1,"Nodo Norte":1
+  },
+  "💰 Dinheiro":{
+    Jupiter:3,Venus:2,Sol:2,Mercurio:1,Plutao:1,Saturno:1,
+    "Nodo Norte":1
+  },
+  "🏥 Saúde":{
+    Sol:2,Lua:2,Marte:1,Jupiter:1,"Nodo Norte":1,
+    Saturno:-1,Netuno:-1
+  },
+  "🙏 Espiritualidade":{
+    Netuno:3,"Nodo Norte":3,Plutao:2,Urano:1,Sol:1,
+    Saturno:1
+  },
+  "🏠 Família":{
+    Lua:3,Venus:2,"Nodo Norte":1,Jupiter:1,Sol:1,
+    Saturno:1
+  },
+  "🔥 Desafio":{
+    Saturno:3,Plutao:3,Marte:2,Urano:2,Netuno:1,
+    Sol:-1,Jupiter:-1,Venus:-1
+  }
 };
 
 // Line type weights
@@ -877,10 +906,10 @@ function scoreCity(lat,lon){
       if(pol==='pos')totalPos+=score;
       else if(pol==='neg')totalNeg+=score;
 
-      // Life area scoring
+      // Life area scoring - weights already contain sign (positive or negative)
       for(const[area,weights]of Object.entries(LIFE_AREAS)){
         if(weights[pname]){
-          const areaScore=score*weights[pname]*polarity;
+          const areaScore=score*Math.abs(weights[pname])*(weights[pname]>0?1:-1);
           areas[area]=(areas[area]||0)+areaScore;
         }
       }
@@ -974,6 +1003,8 @@ function getCityScores(){
       career:s.areas['💼 Carreira']||0,
       family:s.areas['🏠 Família']||0,
       health:s.areas['🏥 Saúde']||0,
+      spirituality:s.areas['🙏 Espiritualidade']||0,
+      challenge:s.areas['🔥 Desafio']||0,
       totalPos:s.totalPos,totalNeg:s.totalNeg,
       influences:s.influences
     };
@@ -986,20 +1017,18 @@ function getSliderWeights(){
     love:parseFloat(document.getElementById('slider-love').value),
     money:parseFloat(document.getElementById('slider-money').value),
     career:parseFloat(document.getElementById('slider-career').value),
-    family:parseFloat(document.getElementById('slider-family').value)
+    family:parseFloat(document.getElementById('slider-family').value),
+    challenge:parseFloat(document.getElementById('slider-challenge').value)
   };
 }
 
 function weightedScore(city,w){
-  // Normalize weights (if all 0, treat as 50)
-  const sum=w.love+w.money+w.career+w.family;
-  const norm=sum===0?0.25:1; // avoid division
   // Slider 0-100, convert to 0-2 multiplier (50 = neutral = 1x)
-  const loveMult=w.love/50;
-  const moneyMult=w.money/50;
-  const careerMult=w.career/50;
-  const familyMult=w.family/50;
-  return city.love*loveMult+city.money*moneyMult+city.career*careerMult+city.family*familyMult;
+  return city.love*(w.love/50)
+    +city.money*(w.money/50)
+    +city.career*(w.career/50)
+    +city.family*(w.family/50)
+    +city.challenge*(w.challenge/50);
 }
 
 function renderRanking(tab){
@@ -1019,7 +1048,7 @@ function renderRanking(tab){
     const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
     // Show which areas shine for this city
     let areaBadges='';
-    const areas=[['❤️',c.love],['💰',c.money],['💼',c.career],['🏠',c.family]];
+    const areas=[['❤️',c.love],['💰',c.money],['💼',c.career],['🏠',c.family],['🔥',c.challenge]];
     for(const[emoji,val]of areas){
       if(val>5)areaBadges+='<span style="display:inline-block;background:rgba(76,175,80,.15);color:#4CAF50;font-size:10px;padding:2px 6px;border-radius:6px;margin-right:3px">'+emoji+' '+Math.round(val)+'</span>';
       else if(val<-3)areaBadges+='<span style="display:inline-block;background:rgba(244,67,54,.12);color:#f44336;font-size:10px;padding:2px 6px;border-radius:6px;margin-right:3px">'+emoji+' '+Math.round(val)+'</span>';
@@ -1036,6 +1065,7 @@ function onSliderChange(){
   document.getElementById('val-money').textContent=document.getElementById('slider-money').value;
   document.getElementById('val-career').textContent=document.getElementById('slider-career').value;
   document.getElementById('val-family').textContent=document.getElementById('slider-family').value;
+  document.getElementById('val-challenge').textContent=document.getElementById('slider-challenge').value;
 
   // Re-render whichever ranking tab is active
   const bestVisible=document.getElementById('tab-content-best').style.display!=='none';
@@ -1049,6 +1079,7 @@ function resetSliders(){
   document.getElementById('slider-money').value=50;
   document.getElementById('slider-career').value=50;
   document.getElementById('slider-family').value=50;
+  document.getElementById('slider-challenge').value=50;
   onSliderChange();
 }
 
