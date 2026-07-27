@@ -390,7 +390,7 @@ function generateMap(){
       document.getElementById('map-container').style.display='block';
       document.getElementById('regen-btn').style.display='block';
 
-      leafletMap=L.map('map',{center:[20,0],zoom:2,zoomControl:true});
+      leafletMap=L.map('map',{center:[20,0],zoom:2,zoomControl:true,renderer:L.svg()});
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
         {attribution:'© OpenStreetMap, © CARTO',subdomains:'abc',maxZoom:18}
       ).addTo(leafletMap);
