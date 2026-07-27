@@ -297,6 +297,7 @@ let leafletMap=null;
 let heatLayerGroup=null;
 let lineLayerGroup=null;
 let gridScores=null; // cached grid {lat,lon,score,areas}
+let mapClickHandler=null;
 
 function generateMap(){
   const dateVal=document.getElementById('birth-date').value;
@@ -364,7 +365,7 @@ function generateMap(){
 function computeHeatGrid(){
   heatLayerGroup.clearLayers();
   const w=getSliderWeights();
-  const step=3; // degrees
+  const step=5; // degrees - larger cells for mobile performance
   const canvasRenderer=L.canvas({padding:0.5});
 
   for(let lat=-66;lat<=66;lat+=step){
@@ -382,11 +383,21 @@ function computeHeatGrid(){
         fillOpacity:op,
         weight:0,
         renderer:canvasRenderer,
-        interactive:true
-      }).bindPopup(function(){
-        return formatPointPopup(lat+step/2,lon+step/2,s,wscore);
+        interactive:false
       }).addTo(heatLayerGroup);
     }
+  }
+  // Add single click handler on map for details
+  if(!mapClickHandler){
+    mapClickHandler=function(e){
+      const s=scorePointFast(e.latlng.lat,e.latlng.lng,cachedPositions,cachedGstDeg);
+      const wscore=weightedScoreFromAreas(s.areas,getSliderWeights());
+      L.popup({maxWidth:300})
+        .setLatLng(e.latlng)
+        .setContent(formatPointPopup(e.latlng.lat,e.latlng.lng,s,wscore))
+        .openOn(leafletMap);
+    };
+    leafletMap.on('click',mapClickHandler);
   }
 }
 
@@ -509,6 +520,7 @@ function resetAll(){
   document.getElementById('slider-panel').style.display='none';
   linesVisible=false;
   cachedPositions=null;
+  mapClickHandler=null;
 }
 </script>
 </body>
