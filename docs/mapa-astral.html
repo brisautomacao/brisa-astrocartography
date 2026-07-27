@@ -336,7 +336,24 @@ function getAscendant(date,lat,lon){
   );
   let ascDeg=ascRad*180/Math.PI;
   if(ascDeg<0)ascDeg+=360;
+  // Quadrant correction: ASC should be 90+ from MC going CCW
+  // If formula gives DSC instead, flip 180°
+  const mcDeg=getMCfromLST(lstDeg);
+  let diff=((ascDeg-mcDeg)%360+360)%360;
+  if(diff>180)ascDeg=(ascDeg+180)%360;
   return ascDeg;
+}
+
+function getMCfromLST(lstDeg){
+  const lstRad=lstDeg*Math.PI/180;
+  const eps=23.4397*Math.PI/180;
+  let mcRad=Math.atan2(
+    Math.sin(lstRad),
+    Math.cos(lstRad)*Math.cos(eps)
+  );
+  let mcDeg=mcRad*180/Math.PI;
+  if(mcDeg<0)mcDeg+=360;
+  return mcDeg;
 }
 
 // Compute MC (Midheaven)
@@ -407,7 +424,13 @@ function generateChart(){
 
   setTimeout(()=>{
     try{
-      const date=new Date(dateStr+'T'+timeStr+':00');
+      // Convert local birth time to UTC using longitude-based timezone
+      const tzOffset=Math.round(selectedLon/15);
+      const localDate=new Date(dateStr+'T'+timeStr+':00');
+      const date=new Date(Date.UTC(
+        localDate.getFullYear(),localDate.getMonth(),localDate.getDate(),
+        localDate.getHours()-tzOffset,localDate.getMinutes()
+      ));
       const ascLon=getAscendant(date,selectedLat,selectedLon);
       const mcLon=getMC(date,selectedLon);
       const cusps=getHouseCusps(ascLon);
