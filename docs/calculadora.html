@@ -75,7 +75,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;
 .leaflet-container{background:#0a0a1a!important;font-size:1rem}
 
 /* ===== LEGEND ===== */
-#legend-container{position:fixed;top:10px;right:10px;z-index:9999;
+#legend-container{position:fixed;top:50px;right:10px;z-index:9997;
   max-width:380px;max-height:85vh;overflow-y:auto;
   background:rgba(10,10,30,.92);backdrop-filter:blur(20px);
   border:1px solid rgba(255,255,255,.15);border-radius:16px;
@@ -98,6 +98,83 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;
 
 /* ===== REGENERATE BUTTON ===== */
 #regen-btn{position:fixed;top:10px;left:50px;z-index:9999;
+  background:rgba(15,15,40,.92);border:1px solid rgba(147,112,219,.3);
+  color:#B19CD9;padding:8px 14px;border-radius:10px;cursor:pointer;
+  font-size:13px;font-family:inherit;backdrop-filter:blur(10px)}
+
+/* ===== ANALYZE BUTTON ===== */
+#analyze-btn{position:fixed;top:10px;right:10px;z-index:9998;
+  background:linear-gradient(135deg,#9370DB,#6A5ACD);
+  border:none;color:#fff;padding:8px 16px;border-radius:10px;cursor:pointer;
+  font-size:13px;font-weight:bold;font-family:inherit;
+  box-shadow:0 4px 15px rgba(147,112,219,.3);backdrop-filter:blur(10px)}
+
+/* ===== ANALYZE PANEL ===== */
+#analyze-panel{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;
+  display:none;align-items:flex-start;justify-content:center;padding:16px;
+  overflow-y:auto;background:rgba(5,5,15,.85);backdrop-filter:blur(8px)}
+
+#analyze-card{max-width:600px;width:100%;margin-top:30px;
+  background:rgba(15,15,40,.95);border:1px solid rgba(147,112,219,.25);
+  border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,.6);padding:24px;
+  animation:fadeUp .4s ease}
+
+#analyze-card h2{color:#B19CD9;font-size:20px;margin:0 0 4px;text-align:center}
+#analyze-card .sub{color:#888;font-size:12px;text-align:center;margin:0 0 20px}
+
+#city-search-wrap{position:relative;margin-bottom:16px}
+#city-search-input{width:100%;box-sizing:border-box;padding:12px 14px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(147,112,219,.2);
+  border-radius:10px;color:#fff;font-size:15px;font-family:inherit}
+#city-search-input:focus{outline:none;border-color:#9370DB;
+  background:rgba(255,255,255,.1);box-shadow:0 0 0 3px rgba(147,112,219,.15)}
+#city-results{max-height:180px;overflow-y:auto;margin-top:4px;
+  border-radius:8px;background:rgba(20,20,50,.95);
+  border:1px solid rgba(147,112,219,.15);display:none;position:relative;z-index:10}
+#city-results .loc-item{padding:10px 14px;cursor:pointer;font-size:13px;color:#ccc;
+  border-bottom:1px solid rgba(255,255,255,.05)}
+#city-results .loc-item:hover{background:rgba(147,112,219,.15);color:#fff}
+
+#analyze-close{position:relative;float:right;margin-top:-50px;margin-right:-10px;
+  background:rgba(255,100,100,.15);border:1px solid rgba(255,100,100,.3);
+  color:#ff6b6b;width:32px;height:32px;border-radius:50%;cursor:pointer;
+  font-size:16px;display:flex;align-items:center;justify-content:center}
+
+.score-bar{height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:4px}
+.score-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.score-row{margin-bottom:14px}
+.score-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.score-label .name{font-size:14px;color:#ddd}
+.score-label .val{font-size:14px;font-weight:bold}
+
+.planet-influence{display:flex;align-items:center;gap:8px;padding:8px 10px;
+  margin-bottom:6px;border-radius:8px;font-size:12px}
+.planet-influence.pos{background:rgba(50,200,50,.08);border-left:3px solid #4CAF50}
+.planet-influence.neg{background:rgba(255,80,80,.08);border-left:3px solid #f44336}
+.planet-influence.neu{background:rgba(255,193,7,.08);border-left:3px solid #FFC107}
+.planet-influence .sym{font-size:18px}
+.planet-influence .desc{color:#bbb;flex:1}
+.planet-influence .strength{font-weight:bold;font-size:11px;white-space:nowrap}
+
+.city-verdict{padding:14px;border-radius:12px;margin:12px 0;font-size:14px;line-height:1.6}
+.city-verdict.great{background:rgba(76,175,80,.12);border:1px solid rgba(76,175,80,.3)}
+.city-verdict.good{background:rgba(33,150,243,.12);border:1px solid rgba(33,150,243,.3)}
+.city-verdict.mixed{background:rgba(255,193,7,.12);border:1px solid rgba(255,193,7,.3)}
+.city-verdict.bad{background:rgba(244,67,54,.12);border:1px solid rgba(244,67,54,.3)}
+.city-verdict.terrible{background:rgba(120,0,0,.15);border:1px solid rgba(180,0,0,.4)}
+
+.rank-row{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:6px;
+  border-radius:10px;cursor:pointer;transition:all .15s}
+.rank-row:hover{background:rgba(147,112,219,.1)}
+.rank-num{font-size:18px;font-weight:bold;width:28px;text-align:center}
+.rank-info{flex:1}
+.rank-info .rname{font-size:14px;color:#ddd}
+.rank-info .rscore{font-size:11px;color:#888}
+
+.tab-btns{display:flex;gap:8px;margin-bottom:16px}
+.tab-btn{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(147,112,219,.2);
+  background:transparent;color:#aaa;font-size:13px;cursor:pointer;font-family:inherit}
+.tab-btn.active{background:rgba(147,112,219,.15);color:#fff;border-color:#9370DB}
   padding:8px 16px;background:rgba(147,112,219,.3);backdrop-filter:blur(10px);
   border:1px solid rgba(147,112,219,.3);border-radius:10px;color:#fff;
   font-size:13px;cursor:pointer;font-family:inherit;display:none;transition:all .2s}
@@ -145,6 +222,35 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;
 
 <!-- REGENERATE BUTTON -->
 <button id="regen-btn" onclick="resetForm()">↩ Novo Mapa</button>
+
+<!-- ANALYZE BUTTON -->
+<button id="analyze-btn" onclick="openAnalyze()" style="display:none">🔍 Analisar Cidade</button>
+
+<!-- ANALYZE PANEL -->
+<div id="analyze-panel">
+  <div id="analyze-card">
+    <button id="analyze-close" onclick="closeAnalyze()">✕</button>
+    <h2>🔍 Análise de Cidade</h2>
+    <p class="sub">Descubra como seria sua vida em qualquer lugar do mundo</p>
+
+    <div class="tab-btns">
+      <button class="tab-btn active" onclick="switchTab('search')" id="tab-search">🔎 Buscar Cidade</button>
+      <button class="tab-btn" onclick="switchTab('best')" id="tab-best">🏆 Melhores Lugares</button>
+      <button class="tab-btn" onclick="switchTab('worst')" id="tab-worst">⚠️ Piores Lugares</button>
+    </div>
+
+    <div id="tab-content-search">
+      <div id="city-search-wrap">
+        <input type="text" id="city-search-input" placeholder="Digite o nome de uma cidade..." autocomplete="off">
+        <div id="city-results"></div>
+      </div>
+      <div id="city-report"></div>
+    </div>
+
+    <div id="tab-content-best" style="display:none"></div>
+    <div id="tab-content-worst" style="display:none"></div>
+  </div>
+</div>
 
 <!-- MAP -->
 <div id="map-container">
@@ -383,6 +489,7 @@ function generateMap(){
       // Calculate GST
       const gstHours=Astronomy.SiderealTime(date);
       const gstDeg=gstHours*15;
+      lastBirthData={date:date,gstDeg:gstDeg};
 
       // Create map
       if(leafletMap){leafletMap.remove();leafletMap=null}
@@ -442,6 +549,7 @@ function generateMap(){
       // Show legend
       buildLegend();
       document.getElementById('legend-container').style.display='block';
+      document.getElementById('analyze-btn').style.display='block';
 
       document.getElementById('loading').style.display='none';
     }catch(e){
@@ -459,6 +567,7 @@ function resetForm(){
   document.getElementById('input-panel').style.display='flex';
   document.getElementById('legend-container').style.display='none';
   document.getElementById('regen-btn').style.display='none';
+  document.getElementById('analyze-btn').style.display='none';
   document.getElementById('generate-btn').disabled=false;
   document.getElementById('generate-btn').innerHTML='✨ Gerar Meu Mapa';
   if(leafletMap){leafletMap.remove();leafletMap=null}
@@ -526,6 +635,241 @@ function toggleLegend(){
 
 // Set default date
 document.getElementById('birth-date').value='1990-01-01';
+
+// ============================================================
+// CITY ANALYSIS ENGINE
+// ============================================================
+let lastBirthData=null; // {date, gstDeg}
+
+// Planet polarity: positive / negative / neutral
+const PLANET_POLARITY={
+  "Sol":"pos","Lua":"pos","Mercurio":"pos","Venus":"pos","Jupiter":"pos",
+  "Saturno":"neg","Marte":"neg","Plutao":"neg",
+  "Urano":"neu","Netuno":"neu","Nodo Norte":"neu"
+};
+
+// Life area weights: {planet: weight}
+const LIFE_AREAS={
+  "❤️ Amor":{Venus:3,Lua:2,Sol:1,Jupiter:1},
+  "💼 Carreira":{Sol:3,Jupiter:2,Saturno:1,Mercurio:1},
+  "💰 Dinheiro":{Jupiter:3,Venus:2,Sol:1,Plutao:1},
+  "🏥 Saúde":{Sol:2,Marte:2,Lua:1},
+  "🙏 Espiritualidade":{Netuno:3,"Nodo Norte":2,Plutao:1},
+  "🏠 Família":{Lua:3,Venus:1,"Nodo Norte":1}
+};
+
+// Line type weights
+const LINE_WEIGHT={mc:3,asc:2,dsc:2,ic:1};
+
+// 60 major world cities for ranking
+const WORLD_CITIES=[
+  ["Nova York",40.71,-74.01],["Los Angeles",34.05,-118.24],["Miami",25.76,-80.19],
+  ["Toronto",43.65,-79.38],["Cidade do México",19.43,-99.13],
+  ["Londres",51.51,-0.13],["Paris",48.85,2.35],["Berlim",52.52,13.40],
+  ["Madri",40.42,-3.70],["Roma",41.90,12.50],["Barcelona",41.39,2.17],
+  ["Amsterdã",52.37,4.90],["Viena",48.21,16.37],["Praga",50.08,14.44],
+  ["Lisboa",38.72,-9.14],["Dublin",53.35,-6.26],["Estocolmo",59.33,18.07],
+  ["Copenhague",55.68,12.57],["Oslo",59.91,10.75],["Helsinki",60.17,24.94],
+  ["Zurique",47.37,8.55],["Genebra",46.20,6.14],["Munique",48.14,11.58],
+  ["Frankfurt",50.11,8.68],["Hamburgo",53.55,9.99],["Bruxelas",50.85,4.35],
+  ["Atenas",37.98,23.73],["Istambul",41.01,28.98],["Moscou",55.76,37.62],
+  ["Tóquio",35.68,139.69],["Seul",37.57,126.98],["Pequim",39.90,116.40],
+  ["Xangai",31.23,121.47],["Bangkok",13.76,100.50],["Cingapura",1.35,103.82],
+  ["Hong Kong",22.32,114.17],["Sydney",-33.87,151.21],["Melbourne",-37.81,144.96],
+  ["Auckland",-36.85,174.76],["Dubai",25.20,55.27],["Tel Aviv",32.08,34.78],
+  ["Mumbai",19.08,72.88],["Nova Délhi",28.61,77.21],["Bali",-8.34,115.09],
+  ["Buenos Aires",-34.61,-58.38],["Rio de Janeiro",-22.91,-43.17],
+  ["São Paulo",-23.55,-46.63],["Lima",-12.05,-77.04],["Bogotá",4.71,-74.07],
+  ["Santiago",-33.45,-70.67],["Caracas",10.49,-66.88],["Havana",23.13,-82.38],
+  ["Cairo",30.04,31.24],["Lagos",6.52,3.38],["Nairóbi",-1.29,36.82],
+  ["Cidade do Cabo",-33.92,18.42],["Marrakech",31.63,-8.00],
+  ["Montreal",45.50,-73.57],["Vancouver",49.28,-123.12],
+  ["Florença",43.77,11.25],["Sevilha",37.39,-5.98],["Porto",41.15,-8.61],
+  ["Palma de Mallorca",39.57,2.65],["Málaga",36.72,-4.42]
+];
+
+// Calculate distance (in degrees longitude) from city to a planet line
+function distToLine(cityLon,cityLat,ra,dec,gstDeg,angle){
+  const mcLon=normalizeLon(ra-gstDeg);
+  if(angle==='mc'){return Math.min(Math.abs(cityLon-mcLon),360-Math.abs(cityLon-mcLon))}
+  if(angle==='ic'){const icLon=normalizeLon(mcLon+180);return Math.min(Math.abs(cityLon-icLon),360-Math.abs(cityLon-icLon))}
+  // ASC/DSC depend on latitude
+  const latR=cityLat*Math.PI/180,decR=dec*Math.PI/180;
+  const arg=-Math.tan(latR)*Math.tan(decR);
+  if(Math.abs(arg)>1)return 999; // line doesn't exist at this latitude
+  const h0=Math.acos(arg)*180/Math.PI;
+  if(angle==='asc'){const lon=normalizeLon(ra-gstDeg-h0);return Math.min(Math.abs(cityLon-lon),360-Math.abs(cityLon-lon))}
+  if(angle==='dsc'){const lon=normalizeLon(ra-gstDeg+h0);return Math.min(Math.abs(cityLon-lon),360-Math.abs(cityLon-lon))}
+  return 999;
+}
+
+// Score a city: returns {total, areas:{}, influences:[], verdict}
+function scoreCity(lat,lon){
+  const areas={};
+  const influences=[];
+  let totalPos=0,totalNeg=0;
+
+  for(const pname of PLANET_ORDER){
+    const pos=getPlanetRaDec(pname,lastBirthData.date);
+    const pol=PLANET_POLARITY[pname];
+    const info=PLANETS[pname];
+
+    for(const angle of ['mc','ic','asc','dsc']){
+      const d=distToLine(lon,lat,pos.ra,pos.dec,lastBirthData.gstDeg,angle);
+      if(d>5)continue;
+
+      let strength;
+      if(d<0.5)strength=3;
+      else if(d<1)strength=2;
+      else if(d<2)strength=1;
+      else strength=0.5;
+
+      const lineW=LINE_WEIGHT[angle];
+      const score=strength*lineW;
+      const polarity=pol==='pos'?1:(pol==='neg'?-1:0);
+
+      if(pol==='pos')totalPos+=score;
+      else if(pol==='neg')totalNeg+=score;
+
+      // Life area scoring
+      for(const[area,weights]of Object.entries(LIFE_AREAS)){
+        if(weights[pname]){
+          const areaScore=score*weights[pname]*polarity;
+          areas[area]=(areas[area]||0)+areaScore;
+        }
+      }
+
+      const strengthLabel=strength>=3?'EXTREMO':strength>=2?'MUITO FORTE':strength>=1?'FORTE':'MODERADO';
+      const distKm=Math.round(d*111);
+      influences.push({planet:pname,symbol:info.symbol,angle:angle.toUpperCase(),
+        polarity:pol,distDeg:d,distKm:distKm,strength:strengthLabel,score:score,
+        meaning:info[angle],color:info.color,keyword:info.keyword});
+    }
+  }
+
+  // Sort influences by strength (closest first)
+  influences.sort((a,b)=>a.distDeg-b.distDeg);
+
+  const net=totalPos-totalNeg;
+  let verdict,verdictClass,verdictText;
+
+  if(net>=25){verdict='great';verdictText='🌟 LUGAR FANTÁSTICO! As energias planetárias aqui favorecem muito sua vida. Otimo para prosperidade e crescimento.'}
+  else if(net>=10){verdict='good';verdictText='✨ BOM LUGAR! Energias positivas superam os desafios. Uma boa escolha para morar ou visitar.'}
+  else if(net>=-5){verdict='mixed';verdictText='⚖️ LUGAR MISTO. Ha energias boas e desafiadoras. Depende do que voce busca.'}
+  else if(net>=-20){verdict='bad';verdictText='⚠️ LUGAR DIFÍCIL. Mais desafios do que facilidades. Pode ser bom para crescimento pessoal, mas exigira esforco.'}
+  else{verdict='terrible';verdictText='🚫 LUGAR MUITO DESAFIADOR. As energias planetarias aqui trazem muitos obstaculos. Considere outro lugar se possivel.'}
+
+  return{total:net,areas,influences,verdict,verdictClass:verdict,verdictText,totalPos,totalNeg};
+}
+
+function formatReport(lat,lon,name){
+  const s=scoreCity(lat,lon);
+  let html='';
+
+  // Verdict
+  html+='<div class="city-verdict '+s.verdictClass+'"><b>'+s.verdictText+'</b></div>';
+
+  // Scores by life area
+  html+='<h4 style="color:#B19CD9;font-size:14px;margin:16px 0 10px">📊 Pontos Fortes e Fracos</h4>';
+  const maxScore=40;
+  for(const[area,score]of Object.entries(s.areas)){
+    const pct=Math.max(0,Math.min(100,(score/maxScore)*50+50));
+    const color=score>10?'#4CAF50':score>-5?'#FFC107':score>-15?'#FF6B35':'#f44336';
+    const label=score>15?'MUITO BOM':score>5?'Bom':score>-5?'Neutro':score>-15?'Ruim':'MUITO RUIM';
+    html+='<div class="score-row"><div class="score-label"><span class="name">'+area+'</span><span class="val" style="color:'+color+'">'+label+'</span></div><div class="score-bar"><div class="score-fill" style="width:'+pct+'%;background:'+color+'"></div></div></div>';
+  }
+
+  // Planetary influences detail
+  if(s.influences.length>0){
+    html+='<h4 style="color:#B19CD9;font-size:14px;margin:16px 0 10px">🪐 Influências Planetárias ( '+name+' )</h4>';
+    for(const inf of s.influences.slice(0,12)){
+      const cls=inf.polarity==='pos'?'pos':inf.polarity==='neg'?'neg':'neu';
+      const sign=inf.polarity==='pos'?'+':inf.polarity==='neg'?'-':'±';
+      html+='<div class="planet-influence '+cls+'"><span class="sym" style="color:'+inf.color+'">'+inf.symbol+'</span><div class="desc"><b>'+inf.planet+' '+inf.angle+'</b> ('+inf.distKm+'km)<br>'+inf.meaning+'</div><span class="strength">'+inf.strength+'</span></div>';
+    }
+  }else{
+    html+='<div style="text-align:center;padding:20px;color:#888">Nenhuma linha planetária forte passa por esta cidade. Energias neutras.</div>';
+  }
+
+  return html;
+}
+
+function openAnalyze(){
+  document.getElementById('analyze-panel').style.display='flex';
+}
+function closeAnalyze(){
+  document.getElementById('analyze-panel').style.display='none';
+}
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.getElementById('tab-content-search').style.display=tab==='search'?'block':'none';
+  document.getElementById('tab-content-best').style.display=tab==='best'?'block':'none';
+  document.getElementById('tab-content-worst').style.display=tab==='worst'?'block':'none';
+
+  if(tab==='best'||tab==='worst'){
+    const ranked=WORLD_CITIES.map(c=>({name:c[0],lat:c[1],lon:c[2],score:scoreCity(c[1],c[2])}));
+    ranked.sort((a,b)=>tab==='best'?b.score.total-a.score.total:a.score.total-b.score.total);
+    const top=tab==='best'?ranked.slice(0,15):ranked.slice(0,15);
+    const container=document.getElementById('tab-content-'+tab);
+    container.innerHTML='<p style="color:#888;font-size:12px;margin-bottom:12px">Toque em uma cidade para ver a análise completa no mapa</p>'+
+      top.map((c,i)=>{
+        const s=c.score;
+        const color=s.total>=10?'#4CAF50':s.total>=-5?'#FFC107':s.total>=-20?'#FF6B35':'#f44336';
+        const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+        return '<div class="rank-row" onclick="flyToCity('+c.lat+','+c.lon+',\''+c.name.replace(/'/g,'')+'\')"><span class="rank-num" style="color:'+color+'">'+(medal||'#'+(i+1))+'</span><div class="rank-info"><div class="rname">'+c.name+'</div><div class="rscore">Pontos: '+s.total+' | Positivo: +'+s.totalPos+' | Negativo: -'+s.totalNeg+'</div></div></div>';
+      }).join('');
+  }
+}
+
+function flyToCity(lat,lon,name){
+  closeAnalyze();
+  leafletMap.flyTo([lat,lon],5,{duration:1.5});
+  setTimeout(()=>{
+    // Show popup at city
+    const report=formatReport(lat,lon,name);
+    L.popup({maxWidth:400}).setLatLng([lat,lon]).setContent(
+      '<div style="font-family:Georgia,serif;max-width:380px"><h3 style="color:#9370DB;margin:0 0 8px">📍 '+name+'</h3>'+report+'</div>'
+    ).openOn(leafletMap);
+  },1600);
+}
+
+// City search
+let citySearchTimer;
+document.addEventListener('DOMContentLoaded',function(){
+  const cityInput=document.getElementById('city-search-input');
+  if(!cityInput)return;
+  cityInput.addEventListener('input',function(){
+    clearTimeout(citySearchTimer);
+    if(this.value.trim().length<3){
+      document.getElementById('city-results').style.display='none';
+      return;
+    }
+    const q=this.value.trim();
+    citySearchTimer=setTimeout(()=>{
+      fetch('https://nominatim.openstreetmap.org/search?format=json&q='+encodeURIComponent(q)+'&limit=5&accept-language=pt-BR')
+        .then(r=>r.json()).then(data=>{
+          const el=document.getElementById('city-results');
+          if(data.length===0){el.innerHTML='<div class="loc-item">Nenhuma cidade encontrada</div>';el.style.display='block';return}
+          el.innerHTML=data.map(d=>{
+            const name=d.display_name.split(',').slice(0,3).join(',');
+            return '<div class="loc-item" onclick="analyzeCityResult('+d.lat+','+d.lon+',\''+name.replace(/'/g,'')+'\')">📍 '+name+'</div>';
+          }).join('');
+          el.style.display='block';
+        }).catch(()=>{});
+    },400);
+  });
+});
+
+function analyzeCityResult(lat,lon,name){
+  document.getElementById('city-results').style.display='none';
+  document.getElementById('city-search-input').value=name;
+  document.getElementById('city-report').innerHTML='<div style="text-align:center;padding:20px;color:#888"><span class="spinner"></span>Analisando...</div>';
+  setTimeout(()=>{
+    document.getElementById('city-report').innerHTML=formatReport(parseFloat(lat),parseFloat(lon),name);
+  },100);
+}
 </script>
 </body>
 </html>
