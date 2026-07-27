@@ -175,6 +175,31 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;
 .tab-btn{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(147,112,219,.2);
   background:transparent;color:#aaa;font-size:13px;cursor:pointer;font-family:inherit}
 .tab-btn.active{background:rgba(147,112,219,.15);color:#fff;border-color:#9370DB}
+
+/* ===== FILTER SLIDERS ===== */
+#slider-panel{background:rgba(20,20,50,.6);border-radius:14px;padding:14px 16px;margin-bottom:14px;
+  border:1px solid rgba(147,112,219,.15)}
+#slider-panel h4{color:#B19CD9;font-size:13px;margin:0 0 10px;text-align:center}
+.slider-row{margin-bottom:12px}
+.slider-row:last-child{margin-bottom:0}
+.slider-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.slider-label .sname{font-size:14px;color:#ddd}
+.slider-label .sval{font-size:13px;font-weight:bold;color:#9370DB;min-width:32px;text-align:right}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;
+  border-radius:3px;background:rgba(255,255,255,.1);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+  width:22px;height:22px;border-radius:50%;cursor:pointer;
+  background:linear-gradient(135deg,#9370DB,#6A5ACD);border:2px solid rgba(255,255,255,.3);
+  box-shadow:0 2px 8px rgba(147,112,219,.4)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;cursor:pointer;
+  background:linear-gradient(135deg,#9370DB,#6A5ACD);border:2px solid rgba(255,255,255,.3);
+  box-shadow:0 2px 8px rgba(147,112,219,.4)}
+.slider-emoji{font-size:16px;margin-right:6px}
+.slider-reset{margin-top:10px;width:100%;padding:8px;border-radius:10px;cursor:pointer;
+  background:rgba(255,255,255,.05);border:1px solid rgba(147,112,219,.15);
+  color:#aaa;font-size:12px;font-family:inherit}
+.slider-reset:hover{background:rgba(147,112,219,.1);color:#fff}
+.city-count{text-align:center;font-size:11px;color:#666;margin:4px 0 10px}
   padding:8px 16px;background:rgba(147,112,219,.3);backdrop-filter:blur(10px);
   border:1px solid rgba(147,112,219,.3);border-radius:10px;color:#fff;
   font-size:13px;cursor:pointer;font-family:inherit;display:none;transition:all .2s}
@@ -247,8 +272,36 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;
       <div id="city-report"></div>
     </div>
 
-    <div id="tab-content-best" style="display:none"></div>
-    <div id="tab-content-worst" style="display:none"></div>
+    <div id="tab-content-best" style="display:none">
+      <div id="slider-panel">
+        <h4>🎛️ Filtros: o que importa pra voce?</h4>
+        <div class="slider-row">
+          <div class="slider-label"><span class="sname"><span class="slider-emoji">❤️</span>Amor</span><span class="sval" id="val-love">50</span></div>
+          <input type="range" id="slider-love" min="0" max="100" value="50" oninput="onSliderChange()">
+        </div>
+        <div class="slider-row">
+          <div class="slider-label"><span class="sname"><span class="slider-emoji">💰</span>Dinheiro</span><span class="sval" id="val-money">50</span></div>
+          <input type="range" id="slider-money" min="0" max="100" value="50" oninput="onSliderChange()">
+        </div>
+        <div class="slider-row">
+          <div class="slider-label"><span class="sname"><span class="slider-emoji">💼</span>Carreira</span><span class="sval" id="val-career">50</span></div>
+          <input type="range" id="slider-career" min="0" max="100" value="50" oninput="onSliderChange()">
+        </div>
+        <div class="slider-row">
+          <div class="slider-label"><span class="sname"><span class="slider-emoji">🏠</span>Família</span><span class="sval" id="val-family">50</span></div>
+          <input type="range" id="slider-family" min="0" max="100" value="50" oninput="onSliderChange()">
+        </div>
+        <button class="slider-reset" onclick="resetSliders()">↺ Resetar Filtros</button>
+      </div>
+      <div id="best-list"></div>
+    </div>
+    <div id="tab-content-worst" style="display:none">
+      <div id="slider-panel-worst" style="background:rgba(20,20,50,.6);border-radius:14px;padding:14px 16px;margin-bottom:14px;border:1px solid rgba(244,67,54,.15)">
+        <h4 style="color:#ff8a80;font-size:13px;margin:0 0 10px;text-align:center">🎛️ Os mesmos filtros se aplicam aqui</h4>
+        <p style="font-size:11px;color:#888;text-align:center;margin:0">Arraste os filtros na aba "Melhores" para personalizar. O ranking abaixo usa os mesmos pesos.</p>
+      </div>
+      <div id="worst-list"></div>
+    </div>
   </div>
 </div>
 
@@ -490,6 +543,7 @@ function generateMap(){
       const gstHours=Astronomy.SiderealTime(date);
       const gstDeg=gstHours*15;
       lastBirthData={date:date,gstDeg:gstDeg};
+      cityScoreCache=null; // clear city score cache for new birth data
 
       // Create map
       if(leafletMap){leafletMap.remove();leafletMap=null}
@@ -661,31 +715,123 @@ const LIFE_AREAS={
 // Line type weights
 const LINE_WEIGHT={mc:3,asc:2,dsc:2,ic:1};
 
-// 60 major world cities for ranking
+// Top 3 cities per country (~60 countries = ~180 cities)
 const WORLD_CITIES=[
-  ["Nova York",40.71,-74.01],["Los Angeles",34.05,-118.24],["Miami",25.76,-80.19],
-  ["Toronto",43.65,-79.38],["Cidade do México",19.43,-99.13],
-  ["Londres",51.51,-0.13],["Paris",48.85,2.35],["Berlim",52.52,13.40],
-  ["Madri",40.42,-3.70],["Roma",41.90,12.50],["Barcelona",41.39,2.17],
-  ["Amsterdã",52.37,4.90],["Viena",48.21,16.37],["Praga",50.08,14.44],
-  ["Lisboa",38.72,-9.14],["Dublin",53.35,-6.26],["Estocolmo",59.33,18.07],
-  ["Copenhague",55.68,12.57],["Oslo",59.91,10.75],["Helsinki",60.17,24.94],
-  ["Zurique",47.37,8.55],["Genebra",46.20,6.14],["Munique",48.14,11.58],
-  ["Frankfurt",50.11,8.68],["Hamburgo",53.55,9.99],["Bruxelas",50.85,4.35],
-  ["Atenas",37.98,23.73],["Istambul",41.01,28.98],["Moscou",55.76,37.62],
-  ["Tóquio",35.68,139.69],["Seul",37.57,126.98],["Pequim",39.90,116.40],
-  ["Xangai",31.23,121.47],["Bangkok",13.76,100.50],["Cingapura",1.35,103.82],
-  ["Hong Kong",22.32,114.17],["Sydney",-33.87,151.21],["Melbourne",-37.81,144.96],
-  ["Auckland",-36.85,174.76],["Dubai",25.20,55.27],["Tel Aviv",32.08,34.78],
-  ["Mumbai",19.08,72.88],["Nova Délhi",28.61,77.21],["Bali",-8.34,115.09],
-  ["Buenos Aires",-34.61,-58.38],["Rio de Janeiro",-22.91,-43.17],
-  ["São Paulo",-23.55,-46.63],["Lima",-12.05,-77.04],["Bogotá",4.71,-74.07],
-  ["Santiago",-33.45,-70.67],["Caracas",10.49,-66.88],["Havana",23.13,-82.38],
-  ["Cairo",30.04,31.24],["Lagos",6.52,3.38],["Nairóbi",-1.29,36.82],
-  ["Cidade do Cabo",-33.92,18.42],["Marrakech",31.63,-8.00],
-  ["Montreal",45.50,-73.57],["Vancouver",49.28,-123.12],
-  ["Florença",43.77,11.25],["Sevilha",37.39,-5.98],["Porto",41.15,-8.61],
-  ["Palma de Mallorca",39.57,2.65],["Málaga",36.72,-4.42]
+  // Brasil
+  ["São Paulo, Brasil",-23.55,-46.63],["Rio de Janeiro, Brasil",-22.91,-43.17],["Brasília, Brasil",-15.79,-47.88],
+  // Argentina
+  ["Buenos Aires, Argentina",-34.61,-58.38],["Córdoba, Argentina",-31.42,-64.18],["Rosário, Argentina",-32.95,-60.64],
+  // Uruguai
+  ["Montevidéu, Uruguai",-34.90,-56.16],["Salto, Uruguai",-31.38,-57.97],["Punta del Este, Uruguai",-34.97,-54.95],
+  // Chile
+  ["Santiago, Chile",-33.45,-70.67],["Valparaíso, Chile",-33.04,-71.62],["Concepción, Chile",-36.82,-73.05],
+  // Peru
+  ["Lima, Peru",-12.05,-77.04],["Arequipa, Peru",-16.40,-71.54],["Trujillo, Peru",-8.11,-79.03],
+  // Colômbia
+  ["Bogotá, Colômbia",4.71,-74.07],["Medellín, Colômbia",6.25,-75.57],["Cali, Colômbia",3.45,-76.53],
+  // Venezuela
+  ["Caracas, Venezuela",10.49,-66.88],["Maracaibo, Venezuela",10.64,-71.61],["Valencia, Venezuela",10.16,-67.99],
+  // Equador
+  ["Quito, Equador",-0.18,-78.47],["Guayaquil, Equador",-2.17,-79.92],["Cuenca, Equador",-2.90,-79.00],
+  // Bolívia
+  ["La Paz, Bolívia",-16.50,-68.15],["Santa Cruz, Bolívia",-17.78,-63.18],["Cochabamba, Bolívia",-17.39,-66.15],
+  // Paraguai
+  ["Assunção, Paraguai",-25.26,-57.58],["Ciudad del Este, Paraguai",-25.51,-54.61],["Encarnación, Paraguai",-27.33,-55.87],
+  // México
+  ["Cidade do México, México",19.43,-99.13],["Guadalajara, México",20.66,-103.34],["Monterrey, México",25.69,-100.32],
+  // EUA
+  ["Nova York, EUA",40.71,-74.01],["Los Angeles, EUA",34.05,-118.24],["Chicago, EUA",41.88,-87.63],
+  ["Miami, EUA",25.76,-80.19],
+  // Canadá
+  ["Toronto, Canadá",43.65,-79.38],["Montreal, Canadá",45.50,-73.57],["Vancouver, Canadá",49.28,-123.12],
+  // Cuba
+  ["Havana, Cuba",23.13,-82.38],["Santiago de Cuba, Cuba",20.02,-75.82],["Camagüey, Cuba",21.38,-77.92],
+  // Reino Unido
+  ["Londres, Reino Unido",51.51,-0.13],["Manchester, Reino Unido",53.48,-2.24],["Birmingham, Reino Unido",52.48,-1.90],
+  // Irlanda
+  ["Dublin, Irlanda",53.35,-6.26],["Cork, Irlanda",51.90,-8.47],["Galway, Irlanda",53.27,-9.05],
+  // França
+  ["Paris, França",48.85,2.35],["Marselha, França",43.30,5.37],["Lyon, França",45.76,4.84],
+  // Espanha
+  ["Madri, Espanha",40.42,-3.70],["Barcelona, Espanha",41.39,2.17],["Valência, Espanha",39.47,-0.38],
+  ["Sevilha, Espanha",37.39,-5.98],["Málaga, Espanha",36.72,-4.42],
+  // Portugal
+  ["Lisboa, Portugal",38.72,-9.14],["Porto, Portugal",41.15,-8.61],["Braga, Portugal",41.55,-8.42],
+  // Itália
+  ["Roma, Itália",41.90,12.50],["Milão, Itália",45.46,9.19],["Nápoles, Itália",40.85,14.27],
+  ["Florença, Itália",43.77,11.25],
+  // Alemanha
+  ["Berlim, Alemanha",52.52,13.40],["Munique, Alemanha",48.14,11.58],["Hamburgo, Alemanha",53.55,9.99],
+  ["Frankfurt, Alemanha",50.11,8.68],
+  // Holanda
+  ["Amsterdã, Holanda",52.37,4.90],["Roterdã, Holanda",51.92,4.48],["Haia, Holanda",52.07,4.30],
+  // Bélgica
+  ["Bruxelas, Bélgica",50.85,4.35],["Antuérpia, Bélgica",51.22,4.40],["Gante, Bélgica",51.05,3.72],
+  // Suíça
+  ["Zurique, Suíça",47.37,8.55],["Genebra, Suíça",46.20,6.14],["Basileia, Suíça",47.56,7.59],
+  // Áustria
+  ["Viena, Áustria",48.21,16.37],["Graz, Áustria",47.07,15.43],["Salzburgo, Áustria",47.81,13.04],
+  // Suécia
+  ["Estocolmo, Suécia",59.33,18.07],["Gotemburgo, Suécia",57.71,11.97],["Malmö, Suécia",55.59,13.00],
+  // Noruega
+  ["Oslo, Noruega",59.91,10.75],["Bergen, Noruega",60.39,5.32],["Trondheim, Noruega",63.43,10.39],
+  // Dinamarca
+  ["Copenhague, Dinamarca",55.68,12.57],["Aarhus, Dinamarca",56.16,10.20],["Odense, Dinamarca",55.40,10.39],
+  // Finlândia
+  ["Helsínque, Finlândia",60.17,24.94],["Tampere, Finlândia",61.50,23.76],["Turku, Finlândia",60.45,22.27],
+  // Polônia
+  ["Varsóvia, Polônia",52.23,21.01],["Cracóvia, Polônia",50.06,19.94],["Gdansk, Polônia",54.35,18.65],
+  // República Tcheca
+  ["Praga, Tchéquia",50.08,14.44],["Brno, Tchéquia",49.20,16.61],["Ostrava, Tchéquia",49.83,18.28],
+  // Hungria
+  ["Budapeste, Hungria",47.50,19.04],["Debrecen, Hungria",47.53,21.64],["Szeged, Hungria",46.25,20.14],
+  // Grécia
+  ["Atenas, Grécia",37.98,23.73],["Tessalônica, Grécia",40.64,22.93],["Pátras, Grécia",38.25,21.73],
+  // Turquia
+  ["Istambul, Turquia",41.01,28.98],["Ancara, Turquia",39.93,32.85],["Esmirna, Turquia",38.42,27.14],
+  // Rússia
+  ["Moscou, Rússia",55.76,37.62],["São Petersburgo, Rússia",59.93,30.34],["Novosibirsk, Rússia",55.01,82.93],
+  // Japão
+  ["Tóquio, Japão",35.68,139.69],["Osaka, Japão",34.69,135.50],["Quioto, Japão",35.01,135.77],
+  // Coreia do Sul
+  ["Seul, Coreia do Sul",37.57,126.98],["Busan, Coreia do Sul",35.10,129.04],["Incheon, Coreia do Sul",37.46,126.70],
+  // China
+  ["Pequim, China",39.90,116.40],["Xangai, China",31.23,121.47],["Guangzhou, China",23.13,113.26],
+  // Índia
+  ["Mumbai, Índia",19.08,72.88],["Nova Délhi, Índia",28.61,77.21],["Bangalore, Índia",12.97,77.59],
+  // Tailândia
+  ["Bangkok, Tailândia",13.76,100.50],["Chiang Mai, Tailândia",18.79,98.99],["Phuket, Tailândia",7.88,98.39],
+  // Indonésia
+  ["Jacarta, Indonésia",-6.21,106.85],["Bali, Indonésia",-8.34,115.09],["Surabaya, Indonésia",-7.25,112.75],
+  // Vietnã
+  ["Hanói, Vietnã",21.03,105.85],["Ho Chi Minh, Vietnã",10.82,106.63],["Da Nang, Vietnã",16.05,108.20],
+  // Filipinas
+  ["Manila, Filipinas",14.60,120.98],["Cebu, Filipinas",10.32,123.90],["Davao, Filipinas",7.19,125.45],
+  // Cingapura
+  ["Cingapura",1.35,103.82],
+  // Austrália
+  ["Sydney, Austrália",-33.87,151.21],["Melbourne, Austrália",-37.81,144.96],["Brisbane, Austrália",-27.47,153.03],
+  // Nova Zelândia
+  ["Auckland, Nova Zelândia",-36.85,174.76],["Wellington, Nova Zelândia",-41.29,174.78],["Christchurch, Nova Zelândia",-43.53,172.64],
+  // Emirados Árabes
+  ["Dubai, EAU",25.20,55.27],["Abu Dhabi, EAU",24.45,54.38],["Sharjah, EAU",25.35,55.40],
+  // Israel
+  ["Tel Aviv, Israel",32.08,34.78],["Jerusalém, Israel",31.78,35.22],["Haifa, Israel",32.79,34.99],
+  // Arábia Saudita
+  ["Riade, Arábia Saudita",24.71,46.68],["Jidá, Arábia Saudita",21.49,39.19],["Meca, Arábia Saudita",21.39,39.86],
+  // Egito
+  ["Cairo, Egito",30.04,31.24],["Alexandria, Egito",31.20,29.92],["Giza, Egito",29.98,31.13],
+  // África do Sul
+  ["Cidade do Cabo, África do Sul",-33.92,18.42],["Joanesburgo, África do Sul",-26.20,28.04],["Durban, África do Sul",-29.86,31.03],
+  // Marrocos
+  ["Marrakech, Marrocos",31.63,-8.00],["Casablanca, Marrocos",33.57,-7.59],["Rabat, Marrocos",34.02,-6.83],
+  // Nigéria
+  ["Lagos, Nigéria",6.52,3.38],["Abuja, Nigéria",9.08,7.40],["Kano, Nigéria",12.00,8.52],
+  // Quênia
+  ["Nairóbi, Quênia",-1.29,36.82],["Mombasa, Quênia",-4.04,39.67],["Kisumu, Quênia",-0.09,34.77],
+  // Ilhas
+  ["Palma de Mallorca, Espanha",39.57,2.65],["Tenerife, Espanha",28.29,-16.64],
+  ["Honolulu, EUA",21.31,-157.86],["Reykjavik, Islândia",64.15,-21.94]
 ];
 
 // Calculate distance (in degrees longitude) from city to a planet line
@@ -809,18 +955,101 @@ function switchTab(tab){
   document.getElementById('tab-content-worst').style.display=tab==='worst'?'block':'none';
 
   if(tab==='best'||tab==='worst'){
-    const ranked=WORLD_CITIES.map(c=>({name:c[0],lat:c[1],lon:c[2],score:scoreCity(c[1],c[2])}));
-    ranked.sort((a,b)=>tab==='best'?b.score.total-a.score.total:a.score.total-b.score.total);
-    const top=tab==='best'?ranked.slice(0,15):ranked.slice(0,15);
-    const container=document.getElementById('tab-content-'+tab);
-    container.innerHTML='<p style="color:#888;font-size:12px;margin-bottom:12px">Toque em uma cidade para ver a análise completa no mapa</p>'+
-      top.map((c,i)=>{
-        const s=c.score;
-        const color=s.total>=10?'#4CAF50':s.total>=-5?'#FFC107':s.total>=-20?'#FF6B35':'#f44336';
-        const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
-        return '<div class="rank-row" onclick="flyToCity('+c.lat+','+c.lon+',\''+c.name.replace(/'/g,'')+'\')"><span class="rank-num" style="color:'+color+'">'+(medal||'#'+(i+1))+'</span><div class="rank-info"><div class="rname">'+c.name+'</div><div class="rscore">Pontos: '+s.total+' | Positivo: +'+s.totalPos+' | Negativo: -'+s.totalNeg+'</div></div></div>';
-      }).join('');
+    renderRanking(tab);
   }
+}
+
+// ============================================================
+// SLIDER-BASED RANKING ENGINE
+// ============================================================
+let cityScoreCache=null; // cached raw scores per city
+
+function getCityScores(){
+  if(cityScoreCache)return cityScoreCache;
+  cityScoreCache=WORLD_CITIES.map(c=>{
+    const s=scoreCity(c[1],c[2]);
+    return{name:c[0],lat:c[1],lon:c[2],
+      love:s.areas['❤️ Amor']||0,
+      money:s.areas['💰 Dinheiro']||0,
+      career:s.areas['💼 Carreira']||0,
+      family:s.areas['🏠 Família']||0,
+      health:s.areas['🏥 Saúde']||0,
+      totalPos:s.totalPos,totalNeg:s.totalNeg,
+      influences:s.influences
+    };
+  });
+  return cityScoreCache;
+}
+
+function getSliderWeights(){
+  return{
+    love:parseFloat(document.getElementById('slider-love').value),
+    money:parseFloat(document.getElementById('slider-money').value),
+    career:parseFloat(document.getElementById('slider-career').value),
+    family:parseFloat(document.getElementById('slider-family').value)
+  };
+}
+
+function weightedScore(city,w){
+  // Normalize weights (if all 0, treat as 50)
+  const sum=w.love+w.money+w.career+w.family;
+  const norm=sum===0?0.25:1; // avoid division
+  // Slider 0-100, convert to 0-2 multiplier (50 = neutral = 1x)
+  const loveMult=w.love/50;
+  const moneyMult=w.money/50;
+  const careerMult=w.career/50;
+  const familyMult=w.family/50;
+  return city.love*loveMult+city.money*moneyMult+city.career*careerMult+city.family*familyMult;
+}
+
+function renderRanking(tab){
+  const cities=getCityScores();
+  const w=getSliderWeights();
+  const ranked=cities.map(c=>({...c,wscore:weightedScore(c,w)}));
+  ranked.sort((a,b)=>tab==='best'?b.wscore-a.wscore:a.wscore-b.wscore);
+  const top=ranked.slice(0,20);
+
+  const listId=tab==='best'?'best-list':'worst-list';
+  const list=document.getElementById(listId);
+
+  let html='<div class="city-count">'+WORLD_CITIES.length+' cidades analisadas | Mostrando top 20</div>';
+  html+=top.map((c,i)=>{
+    const wscore=c.wscore;
+    const color=wscore>=10?'#4CAF50':wscore>=-5?'#FFC107':wscore>=-20?'#FF6B35':'#f44336';
+    const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'';
+    // Show which areas shine for this city
+    let areaBadges='';
+    const areas=[['❤️',c.love],['💰',c.money],['💼',c.career],['🏠',c.family]];
+    for(const[emoji,val]of areas){
+      if(val>5)areaBadges+='<span style="display:inline-block;background:rgba(76,175,80,.15);color:#4CAF50;font-size:10px;padding:2px 6px;border-radius:6px;margin-right:3px">'+emoji+' '+Math.round(val)+'</span>';
+      else if(val<-3)areaBadges+='<span style="display:inline-block;background:rgba(244,67,54,.12);color:#f44336;font-size:10px;padding:2px 6px;border-radius:6px;margin-right:3px">'+emoji+' '+Math.round(val)+'</span>';
+    }
+    return '<div class="rank-row" onclick="flyToCity('+c.lat+','+c.lon+',\''+c.name.replace(/'/g,'')+'\')"><span class="rank-num" style="color:'+color+'">'+(medal||'#'+(i+1))+'</span><div class="rank-info"><div class="rname">'+c.name+'</div><div style="margin:2px 0">'+areaBadges+'</div><div class="rscore">Pontos: '+wscore.toFixed(1)+'</div></div></div>';
+  }).join('');
+
+  list.innerHTML=html;
+}
+
+function onSliderChange(){
+  // Update labels
+  document.getElementById('val-love').textContent=document.getElementById('slider-love').value;
+  document.getElementById('val-money').textContent=document.getElementById('slider-money').value;
+  document.getElementById('val-career').textContent=document.getElementById('slider-career').value;
+  document.getElementById('val-family').textContent=document.getElementById('slider-family').value;
+
+  // Re-render whichever ranking tab is active
+  const bestVisible=document.getElementById('tab-content-best').style.display!=='none';
+  const worstVisible=document.getElementById('tab-content-worst').style.display!=='none';
+  if(bestVisible)renderRanking('best');
+  if(worstVisible)renderRanking('worst');
+}
+
+function resetSliders(){
+  document.getElementById('slider-love').value=50;
+  document.getElementById('slider-money').value=50;
+  document.getElementById('slider-career').value=50;
+  document.getElementById('slider-family').value=50;
+  onSliderChange();
 }
 
 function flyToCity(lat,lon,name){
