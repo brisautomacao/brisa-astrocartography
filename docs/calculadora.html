@@ -445,7 +445,11 @@ function generateMap(){
       document.getElementById('loading').style.display='none';
     }catch(e){
       document.getElementById('loading').style.display='none';
-      errEl.textContent='Erro: '+e.message;errEl.style.display='block';
+      const errMsg=e&&e.message?e.message:(typeof e==='string'?e:JSON.stringify(e));
+      const errStack=e&&e.stack?e.stack.substring(0,300):'';
+      console.error('MapGen error:',e);
+      errEl.innerHTML='Erro: '+errMsg+(errStack?'<br><small>'+errStack+'</small>':'');
+      errEl.style.display='block';
       btn.disabled=false;btn.innerHTML='✨ Gerar Meu Mapa';
     }
   },100);
