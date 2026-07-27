@@ -64,6 +64,12 @@ body{font-family:'Georgia',serif;background:#0a0a1a;color:#e0e0f0;overflow-x:hid
 .house-card .htheme{font-size:13px;color:#888;margin-bottom:6px}
 .house-card .hmeaning{font-size:13px;color:#ccc;line-height:1.6}
 .house-card .hplanets{margin-top:8px;font-size:12px;color:#aaa}
+.h-sign-interp{margin-top:10px;padding:10px;border-radius:10px;background:rgba(20,20,50,.5)}
+.h-sign-interp .hsi-title{font-size:12px;color:#B19CD9;margin-bottom:6px;font-weight:bold}
+.h-sign-interp .hsi-pos{font-size:12px;color:#7FD99C;line-height:1.5;margin-bottom:4px}
+.h-sign-interp .hsi-neg{font-size:12px;color:#F08C8C;line-height:1.5}
+.h-sign-interp .hsi-pos::before{content:"✅ "}
+.h-sign-interp .hsi-neg::before{content:"⚠️ "}
 /* Aspect cards */
 .aspect-card{background:rgba(15,15,40,.7);border-radius:10px;padding:12px 14px;margin-bottom:6px;
   display:flex;align-items:center;gap:8px}
@@ -232,6 +238,169 @@ const HOUSES_DATA=[
     desc:"A Casa 11 governa amizades, grupos sociais, redes, sonhos, esperancas e causas coletivas. Mostra como voce se conecta com a comunidade e o que espera para o futuro."},
   {n:12,theme:"Inconsciente, Espiritualidade, Isolamento, Karma, Hospitais",
     desc:"A Casa 12 e o reino do inconsciente: espiritualidade, retiro, isolamento, inimigos ocultos, hospitais, mosteiros e karma passado. E onde voce se dissolve para se reconectar com o divino. O fim de um ciclo."}
+];
+
+// ============================================================
+// DATA: SIGN IN HOUSE (12 signs x 12 houses = 144 interpretations)
+// Index: SIGN_IN_HOUSE[signIdx][houseNum-1] = {pos, neg}
+// ============================================================
+const SIGN_IN_HOUSE=[
+// 0: Aries
+[{pos:"Personalidade pioneira e corajosa, lideranca natural e energia dinamica que inspira outros.",neg:"Impaciencia, agressividade e tendencia a agir sem pensar."},
+{pos:"Iniciativa para ganhar dinheiro, coragem em investimentos e independencia financeira.",neg:"Impulsividade nos gastos, instabilidade financeira e materialismo agressivo."},
+{pos:"Comunicacao direta e franca, mente agil e capacidade de liderar conversas e debates.",neg:"Pode ser brusco ou agressivo ao falar, interromper os outros e ter pouca paciencia para escutar."},
+{pos:"Lar ativo e energetico, iniciativa para cuidar da familia e criar um ambiente dinamico.",neg:"Conflitos domesticos, impaciencia com a familia e dificuldade em relaxar em casa."},
+{pos:"Criatividade explosiva, paixao intensa nos romances e enorme energia para diversao e aventura.",neg:"Ciumes, impulsividade nos romances e dificuldade em se comprometer com hobbies ou projetos."},
+{pos:"Grande energia para o trabalho diario, iniciativa em saude e capacidade de liderar equipes.",neg:"Estresse por excesso de atividade, impaciencia com colegas e tendencia a trabalhar alem do limite."},
+{pos:"Atrai parceiros dinamicos e corajosos, relacionamentos apaixonados e excitantes.",neg:"Conflitos e disputas de poder com o parceiro, impaciencia e argumentos frequentes."},
+{pos:"Coragem para enfrentar transformacoes profundas, iniciativa em investimentos compartilhados.",neg:"Intensidade excessiva em crises, disputas por heranca ou dinheiro compartilhado, controlador."},
+{pos:"Entusiasmo por viagens e estudos, mente aventureira e coragem para defender suas ideias.",neg:"Dogmatismo agressivo, fanatismo filosofico e impaciencia com opinioes diferentes."},
+{pos:"Ambicao intensa, lideranca na carreira e capacidade de pioneirismo profissional.",neg:"Competitividade excessiva, conflitos com autoridades e tendencia a passar por cima dos outros."},
+{pos:"Lideranca em grupos, amizades ativas e energeticas, iniciativa em causas sociais.",neg:"Impaciencia com grupos, disputas de lideranca com amigos e dificuldade em trabalhar em equipe."},
+{pos:"Energia espiritual intensa, coragem para enfrentar medos internos e batalhas inconscientes.",neg:"Inimigos ocultos, repressao da raiva que explode em crises, isolamento agressivo."}],
+// 1: Touro
+[{pos:"Aparencia calma e confiavel, presenca estabilizadora e sensualidade natural.",neg:"Teimosia extrema, resistencia a mudancas e lentidao para agir."},
+{pos:"Excelente administracao financeira, capacidade de acumular riqueza e estabilidade material.",neg:"Possessividade com dinheiro, materialismo excessivo e recusa em compartilhar recursos."},
+{pos:"Comunicacao pratica e paciente, voz melodiosa e capacidade de ensino didatico.",neg:"Comunicacao lenta, resistencia a novas ideias e teimosia intelectual."},
+{pos:"Lar acolhedor e confortavel, forte vinculo com a familia e apego as tradicoes.",neg:"Possessividade familiar, resistencia a mudancas de casa e apego excessivo ao passado."},
+{pos:"Criatividade artistica, prazeres sensoriais e romances estaveis e leais.",neg:"Ciumes possessivo, apego excessivo a diversoes e resistencia a experimentar coisas novas."},
+{pos:"Trabalho dedicado e persistente, rotina estavel e cuidado pratico com a saude.",neg:"Preguica, resistencia a mudancas na rotina e teimosia no ambiente de trabalho."},
+{pos:"Relacionamentos estaveis e leais, parceiros confiaveis e compromisso duradouro.",neg:"Possessividade no relacionamento, ciumes e recusa em mudar ou comprometer."},
+{pos:"Capacidade de administrar dinheiro compartilhado, estabilidade em transformacoes.",neg:"Resistencia a mudancas profundas, apego possessivo a bens do parceiro e lentidao em crises."},
+{pos:"Filosofia pratica, amor por viagens confortaveis e buscador paciente da verdade.",neg:"Dogmatismo inflexivel, resistencia a novas visoes de mundo e viagens limitadas por comodidade."},
+{pos:"Carreira solida e duradoura, reputacao de confiabilidade e persistencia profissional.",neg:"Lentidao na carreira, resistencia a mudancas profissionais e acomodacao no status quo."},
+{pos:"Amizades leais e duradouras, estabilidade em grupos e sonhos realistas.",neg:"Possessividade com amigos, resistencia a novos grupos e teimosia em causas coletivas."},
+{pos:"Espiritualidade contemplativa, paz interior profunda e conexao com a natureza.",neg:"Auto-isolamento, letargia espiritual e dificuldade em lidar com o inconsciente."}],
+// 2: Gemeos
+[{pos:"Personalidade curiosa e versatil, comunicadora nativa e mente agil.",neg:"Inconstancia, dispersao e dificuldade em se concentrar ou se comprometer."},
+{pos:"Versatilidade para ganhar dinheiro, talento comercial e multiplos talentos.",neg:"Instabilidade financeira, gastos impulsivos em variedades e dificuldade em economizar."},
+{pos:"Comunicacao brilhante, escrita talentosa e facilidade natural com irmaos e vizinhos.",neg:"Fofoca, dispersao mental e dificuldade em aprofundar estudos."},
+{pos:"Lar intelectualmente estimulante, familia comunicativa e ambiente domestico movimentado.",neg:"Inquietacao em casa, mudancas frequentes de residencia e falta de raizes profundas."},
+{pos:"Criatividade literaria e intelectual, romances divertidos e mentais, hobbies variados.",neg:"Superficialidade nos romances, inconstancia criativa e dificuldade em se dedicar a um projeto."},
+{pos:"Versatilidade no trabalho, adaptabilidade e talento para multitarefas.",neg:"Dispersao e falta de foco no trabalho, nervosismo e dificuldade em manter rotinas."},
+{pos:"Atrai parceiros inteligentes e comunicativos, relacionamentos baseados em dialogo.",neg:"Inconstancia nos relacionamentos, superficialidade e dificuldade de compromisso."},
+{pos:"Curiosidade sobre misterios, capacidade de pesquisar e investigar temas profundos.",neg:"Dispersao em crises, ansiedade sobre dinheiro compartilhado e superficialidade em temas profundos."},
+{pos:"Amor por aprender, viagens e trocas culturais, mente filosofica aberta.",neg:"Superficialidade filosofica, salta de ideia em ideia sem aprofundar e dispersao nos estudos."},
+{pos:"Versatilidade profissional, carreira em comunicacao, ensino ou midia.",neg:"Inconstancia profissional, muitas mudancas de carreira e falta de foco em um objetivo."},
+{pos:"Amizades variadas e interessantes, networking excelente e sonhos diversos.",neg:"Superficialidade nas amizades, muitos conhecidos poucos intimos e dispersao em grupos."},
+{pos:"Intuicao mental, espiritualidade intelectual e capacidade de sonhar acordado.",neg:"Ansiedade, insonia por excesso de pensamentos e medos irracionais baseados em ideias."}],
+// 3: Cancer
+[{pos:"Personalidade sensivel e acolhedora, intuicao forte e instinto protetor.",neg:"Hipersensibilidade, mudancas de humor e necessidade excessiva de aprovacao."},
+{pos:"Instinto para negocios, protecao dos recursos e capacidade de acumular por seguranca.",neg:"Inseguranca financeira, apego emocional ao dinheiro e gastos por conforto emocional."},
+{pos:"Comunicacao emocional e intuitiva, memoria excelente e vinculo forte com irmaos.",neg:"Comunicacao muito emocional, susceptibilidade e dificuldade em ser objetivo."},
+{pos:"Lar profundamente amado, vinculo familiar fortissimo e instinto de protecao domestica.",neg:"Apego excessivo a familia, dificuldade em sair de casa e nostalgia paralisante."},
+{pos:"Criatividade emocional e imaginativa, romance afetuoso e forte vinculo com filhos.",neg:"Dependencia emocional nos romances, superprotecao dos filhos e ciumes."},
+{pos:"Dedicacao cuidadosa no trabalho, preocupacao com bem-estar e instinto de servir.",neg:"Estresse emocional no trabalho, hipocondria e dificuldade em separar emoção de trabalho."},
+{pos:"Relacionamentos afetuosos e protetores, parceiro nutridor e vinculo emocional profundo.",neg:"Dependencia emocional do parceiro, inseguranca no relacionamento e mudancas de humor."},
+{pos:"Intuicao poderosa em crises, capacidade de transformacao emocional profunda.",neg:"Medo de transformacoes, apego ao passado emocional e dificuldade em deixar ir."},
+{pos:"Espiritualidade emocional, amor por tradicoes e viagens que tocam o coracao.",neg:"Visao de mundo muito emocional, dogmatismo baseado em sentimentos e saudosismo."},
+{pos:"Carreira nutridora, reputacao de pessoa que cuida e protege, sucesso em areas domesticas.",neg:"Inseguranca profissional, oscilacoes de humor no trabalho e dificuldade em se impor."},
+{pos:"Amizades intimas e protetoras, grupos onde se sente em familia e sonhos emocionais.",neg:"Dependencia emocional de amigos, retraimento quando magoado e isolamento por inseguranca."},
+{pos:"Espiritualidade profunda, conexao com o inconsciente e compaixao universal.",neg:"Medos inconscientes, depressao e nostalgia do passado que paralisa."}],
+// 4: Leao
+[{pos:"Personalidade carismatica e radiante, presenca marcante e autoexpressao confiante.",neg:"Egoismo, necessidade excessiva de atencao e vaidade."},
+{pos:"Generosidade financeira, capacidade de atrair riqueza e valorizacao pessoal forte.",neg:"Gastos com luxo e ostentacao, vaidade material e orgulho financeiro."},
+{pos:"Comunicacao expressiva e dramatica, voz de lideranca e talento para ensinar.",neg:"Comunicacao orgulhosa, tendencia a monopolizar conversas e dramatismo."},
+{pos:"Lar caloroso e acolhedor, orgulho familiar e ambiente domestico generoso.",neg:"Ditadura em casa, necessidade de ser o centro da familia e brigas de ego domesticas."},
+{pos:"Criatividade artistica radiante, romances apaixonados e dramaticos, talento com filhos.",neg:"Drama nos romances, ciumes, possessividade criativa e necessidade de admiracao."},
+{pos:"Lideranca no trabalho, orgulho profissional e vitalidade forte.",neg:"Arrogancia com colegas, recusa em fazer trabalho humilde e exaustao por excesso."},
+{pos:"Atrai parceiros brilhantes e generosos, relacionamentos apaixonados e leais.",neg:"Brigas de ego com o parceiro, ciumes e necessidade de admiracao constante."},
+{pos:"Coragem em transformacoes, generosidade em dinheiro compartilhado e intensidade dramatica.",neg:"Drama em crises, orgulho que impede pedir ajuda e disputas de heranca por ego."},
+{pos:"Filosofia generosa e otimista, amor por viagens grandiosas e ensino inspirador.",neg:"Dogmatismo orgulhoso, arrogancia intelectual e viagens por ostentacao."},
+{pos:"Carreira brilhante e reconhecida, lideranca natural e desejo de destaque publico.",neg:"Ambicao desmedida por fama, autoritarismo profissional e orgulho que atrapalha."},
+{pos:"Amizades leais e generosas, lideranca em grupos e sonhos grandiosos.",neg:"Necessidade de ser o centro do grupo, amizades por interesse e orgulho social."},
+{pos:"Espiritualidade radiante, fe inabalavel e capacidade de brilhar mesmo no isolamento.",neg:"Ego ferido no inconsciente, medo do anonimato e depressao por falta de reconhecimento."}],
+// 5: Virgem
+[{pos:"Personalidade analitica e pratica, atencao aos detalhes e desejo de servir.",neg:"Perfeccionismo critico, ansiedade e critica excessiva de si e dos outros."},
+{pos:"Administracao financeira meticulosa, ganhos atraves do trabalho e organizacao.",neg:"Pao-duro, ansiedade financeira e materialismo por inseguranca."},
+{pos:"Comunicacao precisa e detalhada, escrita clara e mente analitica excelente.",neg:"Critica excessiva, comunicacao fria e obsessao por detalhes irrelevantes."},
+{pos:"Lar organizado e funcional, cuidado pratico com a familia e ambiente limpo.",neg:"Criticismo familiar, obsessao por ordem domestica e dificuldade em relaxar em casa."},
+{pos:"Criatividade refinada e detalhada, romances baseados em cuidados praticos e hobbies produtivos.",neg:"Critica nos romances, perfeccionismo que inibe a diversao e ansiedade com filhos."},
+{pos:"Excelencia no trabalho, rotina organizada e cuidado meticuloso com a saude.",neg:"Workaholic, ansiedade com saude ( hipocondria ) e critica aos colegas."},
+{pos:"Relacionamentos praticos e estaveis, parceiro dedicado e servical.",neg:"Critica constante ao parceiro, foco excessivo em defeitos e frieza emocional."},
+{pos:"Analise cuidadosa de dinheiro compartilhado, transformacao pratica e metodica.",neg:"Obsessao com detalhes de herancas, ansiedade em crises e critica em momentos intimos."},
+{pos:"Estudos metodicos, filosofia pratica e mente discriminadora que busca fatos.",neg:"Ceticismo excessivo, critica a professores e viagens muito planejadas sem espontaneidade."},
+{pos:"Carreira baseada em competencia tecnica, reputacao de eficiencia e perfeccionismo.",neg:"Critica aos chefes, insatisfacao profissional constante e ansiedade por detalhes."},
+{pos:"Amizades leais e prestativas, organizacao eficiente de grupos e sonhos realistas.",neg:"Critica aos amigos, dificuldade em relaxar em grupo e expectativas irreais."},
+{pos:"Espiritualidade pratica, servico compassivo ( hospitais, instituicoes ) e mente analitica do inconsciente.",neg:"Ansiedade oculta, crises de autocritica e isolamento por sentir-se inadequado."}],
+// 6: Libra
+[{pos:"Personalidade charmosa e diplomatica, senso estetico refinado e busca de harmonia.",neg:"Indecisao, dependencia de aprovacao e superficialidade."},
+{pos:"Talento para negocios, senso de valor estetico e equilibrio financeiro.",neg:"Gastos com beleza e luxo, indecisao financeira e materialismo por aparencias."},
+{pos:"Comunicacao diplomatica e charmosa, talento para mediacao e escrita elegante.",neg:"Indecisao ao se expressar, fuga de conflitos e comunicacao superficial."},
+{pos:"Lar harmonioso e elegante, ambiente familiar equilibrado e acolhedor.",neg:"Fuga de conflitos familiares, indecisao sobre moradia e dependencia familiar."},
+{pos:"Criatividade artistica e estetica, romances harmoniosos e elegantes, talento musical.",neg:"Indecisao nos romances, superficialidade nos hobbies e fuga de intensidade."},
+{pos:"Trabalho harmonioso em equipe, diplomacia profissional e ambiente estetico.",neg:"Indecisao profissional, aversao a trabalho pesado e conflitos evitados."},
+{pos:"Relacionamentos harmoniosos e equilibrados, parceiro encantador e sociedades exitosas.",neg:"Dependencia do parceiro, fuga de conflitos necessarios e superficialidade."},
+{pos:"Equilibrio em transformacoes, diplomacia em dinheiro compartilhado e justica em herancas.",neg:"Indecisao em crises, fuga de intensidade e dificuldade em lidar com o lado sombra."},
+{pos:"Filosofia equilibrada, amor por arte e cultura, viagens em busca de beleza.",neg:"Indecisao filosofica, fuga de verdades desconfortaveis e viagens por aparencia."},
+{pos:"Carreira diplomatica, reputacao de charme e equilibrio, sucesso em artes ou justica.",neg:"Indecisao profissional, carreira baseada em aparencias e fuga de responsabilidades."},
+{pos:"Amizades harmonicas, popularidade social e sonhos de paz e justica.",neg:"Dependencia de grupos, fuga de conflitos com amigos e superficialidade social."},
+{pos:"Espiritualidade estetica, compaixao harmoniosa e paz interior profunda.",neg:"Indecisao espiritual, fuga para a beleza como escape e isolamento por conflito interno."}],
+// 7: Escorpiao
+[{pos:"Personalidade magnetica e intensa, presenca poderosa e intuicao penetrante.",neg:"Controlador, vingativo e intensidade emocional avassaladora."},
+{pos:"Instinto financeiro poderoso, capacidade de regenerar recursos e atração por dinheiro.",neg:"Possessividade financeira extrema, obsessao por controle e manipulacao por dinheiro."},
+{pos:"Comunicacao profunda e penetrante, mente investigativa e percepcao de verdades ocultas.",neg:"Comunicacao manipuladora, palavras cortantes e desconfianca."},
+{pos:"Vinculo familiar profundo e intenso, lar protegido e intuicao domestica.",neg:"Segredos familiares, controle sobre a familia e intensidade emocional em casa."},
+{pos:"Criatividade intensa e magnetica, romances apaixonados e profundos, conexao com filhos.",neg:"Ciume doentio, possessividade nos romances e controle sobre filhos."},
+{pos:"Dedicacao intensa ao trabalho, capacidade de pesquisa e investigacao, vitalidade regenerativa.",neg:"Obsessao pelo trabalho, conflitos intensos com colegas e controle no ambiente."},
+{pos:"Relacionamentos profundos e transformadores, parceiro magnetico e vinculo intenso.",neg:"Ciume, possessividade, controle e manipulacao no relacionamento."},
+{pos:"Poder de transformacao imenso, facilidade com dinheiro compartilhado e intensidade regenerativa.",neg:"Obsessao por controle de recursos, manipulacao em herancas e crises devastadoras."},
+{pos:"Busca profunda pela verdade, interesse no ocultismo e viagens transformadoras.",neg:"Fanatismo, dogmatismo intenso e desconfianca de crenças diferentes."},
+{pos:"Carreira poderosa e influente, reputacao magnetica e capacidade de transformar profissionalmente.",neg:"Ambicao obsessiva, controle profissional e reputacao de manipulador."},
+{pos:"Amizades intensas e profundas, lealdade absoluta e sonhos transformadores.",neg:"Possessividade com amigos, desconfianca em grupos e controle social."},
+{pos:"Espiritualidade profunda e mistica, poder de cura e conexao com o inconsciente.",neg:"Medos profundos, paranoia, crises emocionais e inimigos ocultos."}],
+// 8: Sagitario
+[{pos:"Personalidade otimista e aventureira, visao filosofica e energia expansiva.",neg:"Exagero, imprudencia e promessas nao cumpridas."},
+{pos:"Otimismo financeiro, sorte com dinheiro e visao expansiva de valores.",neg:"Gastos excessivos por otimismo, imprudencia financeira e materialismo por exagero."},
+{pos:"Comunicacao entusiasmada e inspiradora, mente filosofica e storytelling talentoso.",neg:"Exagero na fala, promessas vazias e dificuldade em ouvir."},
+{pos:"Lar expansivo e alegre, ambiente familiar otimista e amor por estrangeiros.",neg:"Inquietacao em casa, mudancas frequentes e dificuldade em criar raizes."},
+{pos:"Criatividade expansiva, romances aventureiros e divertidos, talento com ensino.",neg:"Inconstancia nos romances, exagero na diversao e promessas aos filhos nao cumpridas."},
+{pos:"Entusiasmo no trabalho, visao ampla de saude e rotina aventureira.",neg:"Imprudencia no trabalho, excessos na saude e dificuldade com rotinas."},
+{pos:"Atrai parceiros otimistas e aventureiros, relacionamentos expansivos e felizes.",neg:"Inconstancia nos relacionamentos, exagero de promessas e imprudência na escolha."},
+{pos:"Transformacao otimista, sorte com dinheiro compartilhado e visao positiva de crises.",neg:"Imprudencia em investimentos compartilhados, fuga de intensidade e exagero."},
+{pos:"Filosofia expansiva, amor por viagens e ensino, mente livre e aventureira.",neg:"Dogmatismo filosofico, imprudencia em viagens e exagero em crenças."},
+{pos:"Carreira expansiva e exitosa, reputacao otimista e visao de longo prazo.",neg:"Promessas profissionais exageradas, imprudencia de carreira e conflitos com autoridades."},
+{pos:"Amizades alegres e expansivas, popularidade e sonhos grandiosos e otimistas.",neg:"Superficialidade social, excesso de compromissos e promessas vazias a grupos."},
+{pos:"Espiritualidade filosofica, fe inabalavel e busca por sentido no sofrimento.",neg:"Fuga da realidade por exagero otimista, imprudencia espiritual e excessos."}],
+// 9: Capricornio
+[{pos:"Personalidade disciplinada e ambiciosa, presenca seria e responsavel.",neg:"Frieza, pessimismo e rigidez excessiva."},
+{pos:"Administracao financeira disciplinada, ambicao material e trabalho duro pelos recursos.",neg:"Materialismo, avareza e valorizacao excessiva do status."},
+{pos:"Comunicacao estruturada e pratica, mente organizada e capacidade de planejamento.",neg:"Comunicacao fria, pessimismo nas palavras e rigidez mental."},
+{pos:"Lar estruturado e responsavel, tradicoes familiares fortes e ambiente organizado.",neg:"Frieza familiar, rigidez domestica e peso de responsabilidades cedo demais."},
+{pos:"Criatividade estruturada, romances responsaveis e compromisso com filhos.",neg:"Frieza nos romances, dificuldade de se divertir e excesso de responsabilidade."},
+{pos:"Trabalho incansavel e disciplinado, saude estruturada e reputacao de competencia.",neg:"Workaholic, estresse profissional e rigidez na rotina."},
+{pos:"Relacionamentos estaveis e comprometidos, parceiro responsavel e duradouro.",neg:"Frieza no relacionamento, controle pelo dever e dificuldade em demonstrar afeto."},
+{pos:"Disciplina em transformacoes, administracao cuidadosa de dinheiro compartilhado.",neg:"Resistencia a mudancas, controle de recursos do parceiro e pessimismo em crises."},
+{pos:"Filosofia pratica e estruturada, ensino disciplinado e visao realista.",neg:"Ceticismo rigido, dogmatismo e dificuldade em aceitar novas visoes."},
+{pos:"Carreira de sucesso duradouro, ambicao realizada e reputacao de autoridade.",neg:"Ambicao desmedida, trabalho obsessivo e reputacao de frio ou controlador."},
+{pos:"Amizades serias e comprometidas, lideranca em grupos e sonhos realistas.",neg:"Distanciamento social, amizades por interesse e rigidez em grupos."},
+{pos:"Espiritualidade disciplinada, solidao produtiva e fortaleza interior.",neg:"Depressao, isolamento por pessimismo e peso karmico sentido como carga."}],
+// 10: Aquario
+[{pos:"Personalidade original e independente, visao futurista e mentalidade humanitaria.",neg:"Distanciamento emocional, rebeldia sem causa e excentricidade excessiva."},
+{pos:"Originalidade financeira, talento para tecnologia e negocios inovadores.",neg:"Instabilidade financeira por excentricidade, desprezo por valores materiais ou gastanca em causas."},
+{pos:"Comunicacao original e visionaria, mente inventiva e ideias a frente do tempo.",neg:"Comunicacao desconectada, ideias muito abstratas e dificuldade de ser compreendido."},
+{pos:"Lar original e nao-convencional, ambiente familiar liberal e aberto.",neg:"Instabilidade domestica, rebeldia familiar e dificuldade de criar vinculos profundos em casa."},
+{pos:"Criatividade inovadora, romances excentricos e originais, talento digital.",neg:"Desapego nos romances, excentricidade que afasta e dificuldade de compromisso tradicional."},
+{pos:"Trabalho inovador, visao tecnologica da saude e rotinas nao-convencionais.",neg:"Desorganizacao, aversao a rotinas e conflitos com chefes tradicionais."},
+{pos:"Atrai parceiros originais e independentes, relacionamentos nao-convencionais.",neg:"Distanciamento emocional, medo de compromisso e relacionamentos instaveis."},
+{pos:"Transformacao original e inovadora, visao futurista de dinheiro compartilhado.",neg:"Desapego em crises, instabilidade em recursos compartilhados e imprevisibilidade."},
+{pos:"Filosofia futurista e humanitaria, amor por viagens inovadoras e mente aberta.",neg:"Dogmatismo eccentrico, ideias irreais e rebeldia filosofica."},
+{pos:"Carreira inovadora, reputacao de originalidade e sucesso em tecnologia ou causas sociais.",neg:"Instabilidade profissional, conflitos com autoridades e reputacao de eccentrico."},
+{pos:"Amizades diversificadas, networking poderoso e sonhos visionarios.",neg:"Distanciamento emocional dos amigos, grupos eccentricos e imprevisibilidade social."},
+{pos:"Espiritualidade universal, mente transcendente e visao cosmica.",neg:"Alienacao, isolamento emocional e medos irracionais de perder a liberdade."}],
+// 11: Peixes
+[{pos:"Personalidade sensivel e mistica, intuicao poderosa e compaixao universal.",neg:"Confusao de identidade, escapismo e excesso de sensibilidade."},
+{pos:"Intuicao financeira, valorizacao do espiritual sobre o material e generosidade.",neg:"Confusao financeira, gastos por emocao e desorganizacao com dinheiro."},
+{pos:"Comunicacao poetica e inspirada, intuicao mental e escrita criativa.",neg:"Comunicacao confusa, dificuldade de ser claro e pensamento disperso."},
+{pos:"Lar mistico e acolhedor, ambiente familiar sensivel e intuicao domestica.",neg:"Confusao familiar, caos domestico e apego ilusorio ao lar."},
+{pos:"Criatividade artistica e mistica, romances sonhadores e inspiracao espiritual.",neg:"Ilusao nos romances, escapismo pela diversao e decepcoes com filhos."},
+{pos:"Trabalho compassivo e dedicado, saude holistica e servico altruista.",neg:"Confusao no trabalho, hipocondria e dificuldade em manter rotinas claras."},
+{pos:"Relacionamentos compassivos e espirituais, parceiro sensivel e vinculo mistico.",neg:"Ilusao no relacionamento, codependencia e decepcoes amorosas."},
+{pos:"Transformacao espiritual profunda, intuicao em dinheiro compartilhado e conexao mistica.",neg:"Confusao em crises, escapismo e vitimizacao em situacoes de poder."},
+{pos:"Filosofia mistica, amor por viagens espirituais e busca pela uniao com o divino.",neg:"Ilusao filosofica, fanatismo mistico e confusao de crenças."},
+{pos:"Carreira compassiva, reputacao de sensibilidade e sucesso em artes ou espiritualidade.",neg:"Confusao profissional, falta de clareza de objetivos e reputacao de impraticavel."},
+{pos:"Amizades compassivas, sonhos idealistas e conexao espiritual com grupos.",neg:"Ilusoes sobre amigos, decepcoes sociais e isolamento por sensibilidade excessiva."},
+{pos:"Espiritualidade transcendente, conexao direta com o divino e compaixao universal.",neg:"Escapismo, vicios, isolamento e confusao mental."}]
 ];
 
 // ============================================================
@@ -592,6 +761,11 @@ function renderChart(){
       '<div class="hnum">Casa '+hd.n+' - '+cuspSign.sym+' '+cuspSign.name+' '+cuspDeg+'°</div>'+
       '<div class="htheme">'+hd.theme+'</div>'+
       '<div class="hmeaning">'+hd.desc+'</div>'+
+      '<div class="h-sign-interp">'+
+      '<div class="hsi-title">'+cuspSign.sym+' '+cuspSign.name+' na Casa '+hd.n+'</div>'+
+      '<div class="hsi-pos">'+SIGN_IN_HOUSE[cuspSignIdx][i].pos+'</div>'+
+      '<div class="hsi-neg">'+SIGN_IN_HOUSE[cuspSignIdx][i].neg+'</div>'+
+      '</div>'+
       planetsStr+'</div>';
   }
   document.getElementById('houses-section').innerHTML=hHtml;
