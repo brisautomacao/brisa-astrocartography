@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>🔮 Mapa Astral Completo</title>
+<script src="astronomy.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Georgia',serif;background:#0a0a1a;color:#e0e0f0;overflow-x:hidden}
+/* ===== INPUT FORM ===== */
+#form-wrap{max-width:500px;margin:60px auto;padding:24px;background:rgba(15,15,40,.9);
+  border-radius:20px;border:1px solid rgba(147,112,219,.2)}
+#form-wrap h1{text-align:center;font-size:22px;color:#B19CD9;margin-bottom:6px}
+#form-wrap .sub{text-align:center;font-size:13px;color:#888;margin-bottom:24px}
+.f-row{margin-bottom:16px}
+.f-row label{display:block;font-size:13px;color:#B19CD9;margin-bottom:6px}
+.f-row input{width:100%;padding:12px 14px;background:rgba(30,30,60,.6);border:1px solid rgba(147,112,219,.2);
+  border-radius:10px;color:#fff;font-size:16px;font-family:Georgia,serif}
+.f-row input:focus{outline:none;border-color:#9370DB}
+#birth-location{width:100%;padding:12px 14px;background:rgba(30,30,60,.6);border:1px solid rgba(147,112,219,.2);
+  border-radius:10px;color:#fff;font-size:16px}
+.loc-results{margin-top:4px;max-height:200px;overflow-y:auto;border-radius:8px}
+.loc-item{padding:10px 14px;background:rgba(20,20,50,.8);border-bottom:1px solid rgba(147,112,219,.1);
+  cursor:pointer;font-size:14px}
+.loc-item:hover{background:rgba(40,40,80,.8)}
+#gen-btn{width:100%;padding:14px;background:linear-gradient(135deg,#9370DB,#6A0DAD);border:none;
+  border-radius:12px;color:#fff;font-size:17px;font-weight:bold;cursor:pointer;margin-top:8px}
+#gen-btn:active{transform:scale(.98)}
+.error-msg{color:#f44336;text-align:center;padding:10px;font-size:14px;display:none}
+.loading{display:none;text-align:center;padding:20px;color:#B19CD9}
+.spinner{display:inline-block;width:32px;height:32px;border:3px solid rgba(147,112,219,.2);
+  border-top-color:#9370DB;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* ===== RESULTS ===== */
+#results{display:none;padding:12px;max-width:700px;margin:0 auto}
+.section-title{font-size:18px;color:#B19CD9;margin:24px 0 12px;padding-bottom:8px;
+  border-bottom:1px solid rgba(147,112,219,.15)}
+/* Tríade */
+.triade{display:flex;gap:8px;margin:12px 0}
+.triade-card{flex:1;background:rgba(15,15,40,.8);border-radius:14px;padding:16px 8px;text-align:center;
+  border:1px solid rgba(147,112,219,.15)}
+.triade-card .sym{font-size:28px;margin-bottom:4px}
+.triade-card .lbl{font-size:11px;color:#888;margin-bottom:4px}
+.triade-card .val{font-size:15px;color:#fff;font-weight:bold}
+.triade-card .deg{font-size:11px;color:#aaa}
+/* Planet cards */
+.planet-card{background:rgba(15,15,40,.7);border-radius:14px;padding:16px;margin-bottom:10px;
+  border-left:3px solid var(--clr,#9370DB)}
+.planet-card .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.planet-card .sym{font-size:24px}
+.planet-card .pname{font-size:16px;color:#fff;font-weight:bold}
+.planet-card .sign{font-size:13px;color:#aaa}
+.planet-card .house-badge{background:rgba(147,112,219,.15);color:#B19CD9;font-size:11px;
+  padding:3px 8px;border-radius:6px;margin-left:auto}
+.planet-card .retro{color:#FF6B35;font-size:12px}
+.planet-card .meaning{font-size:13px;color:#ccc;line-height:1.6}
+.planet-card .keywords{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px}
+.planet-card .kw{background:rgba(147,112,219,.08);color:#B19CD9;font-size:11px;padding:3px 8px;border-radius:6px}
+/* House cards */
+.house-card{background:rgba(15,15,40,.7);border-radius:14px;padding:16px;margin-bottom:10px;
+  border-left:3px solid rgba(147,112,219,.2)}
+.house-card .hnum{font-size:14px;color:#B19CD9;font-weight:bold}
+.house-card .htheme{font-size:13px;color:#888;margin-bottom:6px}
+.house-card .hmeaning{font-size:13px;color:#ccc;line-height:1.6}
+.house-card .hplanets{margin-top:8px;font-size:12px;color:#aaa}
+/* Aspect cards */
+.aspect-card{background:rgba(15,15,40,.7);border-radius:10px;padding:12px 14px;margin-bottom:6px;
+  display:flex;align-items:center;gap:8px}
+.aspect-card .asym{font-size:18px;width:28px;text-align:center}
+.aspect-card .adesc{flex:1}
+.aspect-card .aname{font-size:13px;color:#fff}
+.aspect-card .aorb{font-size:11px;color:#888}
+.aspect-card .ameaning{font-size:12px;color:#bbb;margin-top:2px}
+/* Chart wheel */
+#wheel-wrap{display:flex;justify-content:center;margin:20px 0}
+/* Back button */
+#back-btn{position:fixed;top:10px;right:10px;z-index:9999;
+  background:rgba(15,15,40,.92);border:1px solid rgba(147,112,219,.3);
+  color:#B19CD9;padding:8px 14px;border-radius:8px;font-size:14px;cursor:pointer}
+/* Summary */
+#summary{background:linear-gradient(135deg,rgba(30,20,60,.6),rgba(60,30,90,.4));
+  border-radius:16px;padding:20px;margin:12px 0;border:1px solid rgba(147,112,219,.15)}
+#summary p{font-size:14px;color:#ccc;line-height:1.7;margin-bottom:10px}
+#summary .highlight{color:#B19CD9;font-weight:bold}
+</style>
+</head>
+<body>
+
+<div id="form-wrap">
+  <h1>🔮 Mapa Astral Completo</h1>
+  <p class="sub">Descubra todos os signos, casas e aspectos do seu nascimento</p>
+  <div class="f-row">
+    <label>📅 Data de nascimento</label>
+    <input type="date" id="birth-date" value="2000-01-01">
+  </div>
+  <div class="f-row">
+    <label>🕐 Hora de nascimento</label>
+    <input type="time" id="birth-time" value="12:00">
+  </div>
+  <div class="f-row">
+    <label>📍 Local de nascimento</label>
+    <input type="text" id="birth-location" placeholder="Digite a cidade..." autocomplete="off">
+    <div class="loc-results" id="loc-results" style="display:none"></div>
+  </div>
+  <button id="gen-btn" onclick="generateChart()">✨ Gerar Mapa Astral</button>
+  <div class="error-msg" id="error"></div>
+  <div class="loading" id="loading"><span class="spinner"></span><p style="margin-top:10px">Calculando posições planetárias...</p></div>
+</div>
+
+<div id="results" style="display:none">
+  <button id="back-btn" onclick="resetForm()">↩ Novo Mapa</button>
+  <div id="chart-info"></div>
+  <div id="summary"></div>
+  <div class="section-title">🌟 A Tríade (Sol, Lua, Ascendente)</div>
+  <div id="triade-section"></div>
+  <div class="section-title">🪐 Planetas e seus Significados</div>
+  <div id="planets-section"></div>
+  <div class="section-title">🏠 As 12 Casas Astrológicas</div>
+  <div id="houses-section"></div>
+  <div class="section-title">⚡ Aspectos Planetários</div>
+  <div id="aspects-section"></div>
+</div>
+
+<script>
+// ============================================================
+// DATA: PLANET DESCRIPTIONS
+// ============================================================
+const PLANETS_DATA={
+  "Sol":{sym:"☉",color:"#FFD700",title:"Essência, Identidade e Vitalidade",
+    desc:"O Sol representa quem voce e no nivel mais profundo - sua identidade central, proposito de vida, ego consciente e a luz que voce traz ao mundo. E o heroi da sua jornada.",
+    kw:["identidade","proposito","vitalidade","criatividade","auto-expressao"]},
+  "Lua":{sym:"☽",color:"#C0C0C0",title:"Emocoes, Instinto e Mundo Interior",
+    desc:"A Lua revela seu mundo emocional - como voce sente, reage instintivamente, nutre e precisa ser nutrido. E sua crianca interior, suas emocoes mais profundas e seu senso de seguranca.",
+    kw:["emocoes","instinto","memoria","nutricao","lar"]},
+  "Mercurio":{sym:"☿",color:"#90EE90",title:"Comunicacao, Mente e Raciocinio",
+    desc:"Mercurio e como voce pensa, fala, aprende e se comunica com o mundo. Governa a logica, a curiosidade mental, a escrita e a forma como processa informacoes.",
+    kw:["comunicacao","logica","aprendizado","viagens curtas","irmãos"]},
+  "Venus":{sym:"♀",color:"#FF69B4",title:"Amor, Relacoes e Valores",
+    desc:"Venus mostra como voce ama, o que valoriza, como atrai e se relaciona. E a deusa do amor, da beleza, da harmonia, do prazer e da atracao. Define seu estilo em relacionamentos.",
+    kw:["amor","beleza","prazer","valores","harmonia","dinheiro"]},
+  "Marte":{sym:"♂",color:"#FF4500",title:"Acao, Energia e Desejo",
+    desc:"Marte e sua forca motriz - como voce age, luta, se afirma e busca o que deseja. E o guerreiro interior: paixao, coragem, agressividade, iniciativa e energia fisica.",
+    kw:["acao","coragem","desejo","energia","competicao","sexualidade"]},
+  "Jupiter":{sym:"♃",color:"#FFA500",title:"Expansao, Fe e Sorte",
+    desc:"Jupiter mostra onde voce tem sorte, expansao, crescimento e oportunidades. E o planeta da sabedoria, do otimismo, da generosidade e da busca por significado maior na vida.",
+    kw:["expansao","sorte","sabedoria","fe","generosidade","oportunidades"]},
+  "Saturno":{sym:"♄",color:"#8B8682",title:"Disciplina, Responsabilidade e Estrutura",
+    desc:"Saturno mostra onde voce tem licoes a aprender, onde precisa de disciplina e estrutura. E o grande mestre: traz desafios, mas tambem recompensas duradouras atraves do esforco e paciencia.",
+    kw:["disciplina","responsabilidade","estrutura","limites","maturidade","tempo"]},
+  "Urano":{sym:"♅",color:"#00CED1",title:"Liberdade, Mudanca e Originalidade",
+    desc:"Urano e o planeta da revolucao, da originalidade, da liberdade e das mudancas subitas. Traz insights, rupturas, inovacao e quebra de velhos padroes.",
+    kw:["liberdade","inovacao","mudanca","rebeliao","originalidade"]},
+  "Netuno":{sym:"♆",color:"#4169E1",title:"Sonhos, Espiritualidade e Ilusao",
+    desc:"Netuno conecta com o divino, os sonhos, a imaginacao e a intuicao. Mas tambem pode trazer ilusoes, confusao e escapismo. E o planeta da dissolucao de fronteiras.",
+    kw:["espiritualidade","sonhos","intuicao","ilusao","arte","compaixao"]},
+  "Plutao":{sym:"♇",color:"#8B0000",title:"Transformacao, Poder e Renascimento",
+    desc:"Plutao e a forca de transformacao mais profunda - morte e renascimento, poder, obsessao, crise e regeneracao. Mostra onde voce passa por mudancas radicais.",
+    kw:["transformacao","poder","renascimento","intensidade","crise","subconsciente"]},
+  "Nodo Norte":{sym:"☊",color:"#9370DB",title:"Destino, Evolucao e Missao de Vida",
+    desc:"O Nodo Norte aponta seu destino - a direcao evolutiva da sua alma. O que voce veio aprender nesta encarnacao. O lado oposto (Nodo Sul) mostra o que ja domina e deve deixar para tras.",
+    kw:["destino","evolucao","missao","crescimento","karma"]}
+};
+
+// ============================================================
+// DATA: ZODIAC SIGNS
+// ============================================================
+const SIGNS_DATA={
+  0:{name:"Aries",sym:"♈",element:"Fogo",quality:"Cardinal",ruler:"Marte",
+    kw:["pioneiro","corajoso","independente","impulsivo","lideranca"],
+    desc:"A energia de Aries e pioneira, corajosa e cheia de iniciativa. Ha um desejo de ser o primeiro, de comecar coisas novas, de agir com impulso e coragem. A independencia e a autonomia sao fundamentais."},
+  1:{name:"Touro",sym:"♉",element:"Terra",quality:"Fixo",ruler:"Venus",
+    kw:["estavel","sensual","persistente","determinado","terreno"],
+    desc:"Touro traz estabilidade, sensualidade e persistencia. Ha uma necessidade de seguranca material, conforto e beleza. A energia e lenta mas incansavel, paciente e profundamente conectada com a natureza."},
+  2:{name:"Gemeos",sym:"♊",element:"Ar",quality:"Mutavel",ruler:"Mercurio",
+    kw:["curioso","versatil","comunicativo","adaptavel","mental"],
+    desc:"Gemeos e curiosidade pura, versatilidade e comunicacao. Ha necessidade de variedade, troca de ideias, aprendizado continuo e movimento. A mente e agil e sempre busca novas informacoes."},
+  3:{name:"Cancer",sym:"♋",element:"Agua",quality:"Cardinal",ruler:"Lua",
+    kw:["sensivel","protetor","nostalgico","emocional","familiar"],
+    desc:"Cancer traz sensibilidade emocional, instinto protetor e forte conexao com familia e lar. Ha necessidade de seguranca emocional, de cuidar e ser cuidado. A memoria emocional e poderosa."},
+  4:{name:"Leao",sym:"♌",element:"Fogo",quality:"Fixo",ruler:"Sol",
+    kw:["criativo","expressivo","orgulhoso","generoso","carismatico"],
+    desc:"Leao e expressao criativa, orgulho, generosidade e carisma. Ha necessidade de brilhar, ser reconhecido e amado. A energia e radiante, dramatica e cheia de calor humano."},
+  5:{name:"Virgem",sym:"♍",element:"Terra",quality:"Mutavel",ruler:"Mercurio",
+    kw:["analitico","pratico","detalhista","servical","aperfeicoador"],
+    desc:"Virgem traz analise, praticidade, atencao aos detalhes e desejo de servir e melhorar. Ha necessidade de ordem, eficiencia e utilidade. A mente e critica e discriminante."},
+  6:{name:"Libra",sym:"♎",element:"Ar",quality:"Cardinal",ruler:"Venus",
+    kw:["harmonioso","diplomatico","sociavel","estetico","equilibrado"],
+    desc:"Libra busca harmonia, equilibrio, parceria e beleza. Ha necessidade de relacionamento, cooperacao e justica. A diplomacia e o charme sao naturais."},
+  7:{name:"Escorpiao",sym:"♏",element:"Agua",quality:"Fixo",ruler:"Plutao/Marte",
+    kw:["intenso","profundo","magnetico","transformador","passional"],
+    desc:"Escorpiao traz intensidade, profundidade emocional e poder de transformacao. Ha necessidade de controle, de mergulhar fundo nas coisas, de viver paixao e intensidade. Nada e superficial."},
+  8:{name:"Sagitario",sym:"♐",element:"Fogo",quality:"Mutavel",ruler:"Jupiter",
+    kw:["aventureiro","filosofico","otimista","livre","expansivo"],
+    desc:"Sagitario e aventura, filosofia, otimismo e busca por liberdade e significado. Ha necessidade de expandir horizontes, viajar, aprender e ensinar. A fe e a confianca na vida sao fortes."},
+  9:{name:"Capricornio",sym:"♑",element:"Terra",quality:"Cardinal",ruler:"Saturno",
+    kw:["ambicioso","disciplinado","responsavel","estrategico","pragmatico"],
+    desc:"Capricornio traz ambicao, disciplina, responsabilidade e pragmatismo. Ha necessidade de realizacao, status, estrutura e reconhecimento atraves do trabalho duro. A paciencia e a estrategia sao pontos fortes."},
+  10:{name:"Aquario",sym:"♒",element:"Ar",quality:"Fixo",ruler:"Urano/Saturno",
+    kw:["original","independente","visionario","humanitario","revolucionario"],
+    desc:"Aquario e originalidade, independencia, visao futurista e humanitarismo. Ha necessidade de liberdade, de quebrar convencoes, de lutar por causas coletivas. A mente e inventiva e nao-conformista."},
+  11:{name:"Peixes",sym:"♓",element:"Agua",quality:"Mutavel",ruler:"Netuno/Jupiter",
+    kw:["sensivel","mistico","compassivo","artistico","intuitivo"],
+    desc:"Peixes traz sensibilidade mistica, compassiva e artistica. Ha necessidade de transcender, de se conectar com o divino, de sonhar. As fronteiras do ego sao fluidas e a empatia e imensa."}
+};
+
+// ============================================================
+// DATA: HOUSES
+// ============================================================
+const HOUSES_DATA=[
+  {n:1,theme:"Eu, Personalidade, Aparencia, Corpo Fisico",
+    desc:"A Casa 1 mostra quem voce e, como se apresenta ao mundo e como os outros o veem. E a sua mascara, seu corpo fisico, sua forma de iniciar coisas. O signo nesta casa e seu Ascendente - a lente atraves da qual voce experiencia tudo."},
+  {n:2,theme:"Valores, Dinheiro, Posses, Autoestima",
+    desc:"A Casa 2 governa tudo que voce valoriza: dinheiro, posses materiais, talentos e sua autoestima. Mostra como voce ganha, gasta e se relaciona com recursos materiais. E tambem seus valores pessoais mais profundos."},
+  {n:3,theme:"Comunicacao, Irmaos, Estudos, Viagens Curtas",
+    desc:"A Casa 3 e a area da comunicacao cotidiana, dos irmaos, vizinhos, estudo basico e viagens curtas. Como voce processa e compartilha informacoes no dia a dia."},
+  {n:4,theme:"Lar, Familia, Raizes, Vida Privada",
+    desc:"A Casa 4 e o seu lar, sua familia de origem, suas raizes e fundacao emocional. Representa o passado, os pais (especialmente a mae), a sensacao de pertencer. E onde voce se recolhe para se sentir seguro."},
+  {n:5,theme:"Criatividade, Filhos, Amor, Diversao",
+    desc:"A Casa 5 e a casa do prazer, da criatividade, dos filhos, do romance, dos hobbies e da auto-expressao. E onde voce brinca, cria, ama e se diverte. Mostra o que te faz sentir vivo."},
+  {n:6,theme:"Trabalho Diario, Saude, Rotina, Servico",
+    desc:"A Casa 6 governa o trabalho cotidiano, a saude, os habitos, a rotina e o servico aos outros. Como voce organiza sua vida pratica e cuida do seu corpo e bem-estar."},
+  {n:7,theme:"Relacionamentos, Casamento, Socios, Inimigos",
+    desc:"A Casa 7 e a casa dos relacionamentos significativos: casamento, sociedades, contratos e parcerias. Mostra o tipo de pessoa que voce atrai e o que busca num companheiro. E o Descendente."},
+  {n:8,theme:"Transformacao, Intimidade, Dinheiro Compartilhado, Sexo, Morte",
+    desc:"A Casa 8 e a area da intensidade: transformacao profunda, intimidade sexual, recursos compartilhados (heranca, impostos, dinheiro do parceiro), psicologia e a morte. E onde voce se funde com o outro e renasce."},
+  {n:9,theme:"Filosofia, Viagens, Ensino Superior, Religiao, Estrangeiro",
+    desc:"A Casa 9 e a busca por significado: filosofia, viagens longas, ensino superior, religiao, etica e o estrangeiro. E onde voce expande sua visao de mundo e busca a verdade."},
+  {n:10,theme:"Carreira, Reputacao, Status, Proposito Publico",
+    desc:"A Casa 10 e o Meio do Ceu: sua carreira, sua reputacao publica, seu status social e seu maior proposito visivel. Mostra o que voce veio realizar no mundo e como sera reconhecido. Representa tambem o pai."},
+  {n:11,theme:"Amizades, Grupos, Sonhos, Esperancas, Causas Sociais",
+    desc:"A Casa 11 governa amizades, grupos sociais, redes, sonhos, esperancas e causas coletivas. Mostra como voce se conecta com a comunidade e o que espera para o futuro."},
+  {n:12,theme:"Inconsciente, Espiritualidade, Isolamento, Karma, Hospitais",
+    desc:"A Casa 12 e o reino do inconsciente: espiritualidade, retiro, isolamento, inimigos ocultos, hospitais, mosteiros e karma passado. E onde voce se dissolve para se reconectar com o divino. O fim de um ciclo."}
+];
+
+// ============================================================
+// DATA: ASPECTS
+// ============================================================
+const ASPECTS_DATA={
+  "conjunction":{sym:"☌",name:"Conjuncao",angle:0,orb:8,
+    desc:"Energias se fundem e se amplificam. Os dois planetas atuam juntos, como um so.",
+    pos:"Uma forca poderosa de combinacao - as qualidades se potencializam mutuamente.",
+    neg:"Pode haver confusao ou excesso, ja que as energias se misturam sem distincional."},
+  "opposition":{sym:"☍",name:"Oposicao",angle:180,orb:8,
+    desc:"Tensao e polaridade entre duas forcas opostas.",
+    pos:"Se integrado, traz visao completa e equilibrio entre opostos.",
+    neg:"Pode causar conflito interno, indecisao ou vai-e-vem entre extremos."},
+  "trine":{sym:"△",name:"Trigono",angle:120,orb:7,
+    desc:"Fluxo harmonico natural entre os planetas. Energias que se apoiam.",
+    pos:"Talento natural, sorte, facilidade - as energias cooperam sem esforco.",
+    neg:"Pode levar a acomodacao ou preguica se os talentos nao forem cultivados."},
+  "square":{sym:"□",name:"Quadratura",angle:90,orb:7,
+    desc:"Desafio interno, tensao que exige acao e resolucao.",
+    pos:"Gera forca motriz, ambitacao e crescimento atraves da superacao.",
+    neg:"Frustracao, conflito, bloqueios que precisam ser enfrentados."},
+  "sextile":{sym:"⚹",name:"Sextil",angle:60,orb:6,
+    desc:"Oportunidade e cooperacao suave entre os planetas.",
+    pos:"Facilidade e abertura - oportunidades que precisam ser ativadas.",
+    neg:"Pode passar despercebido se nao houver esforco consciente."}
+};
+
+// ============================================================
+// ASTROLOGY ENGINE
+// ============================================================
+const SIGNS_PT=["Aries","Touro","Gemeos","Cancer","Leao","Virgem",
+  "Libra","Escorpiao","Sagitario","Capricornio","Aquario","Peixes"];
+
+const BODY_MAP={
+  "Sol":Astronomy.Body.Sun,"Lua":Astronomy.Body.Moon,
+  "Mercurio":Astronomy.Body.Mercury,"Venus":Astronomy.Body.Venus,
+  "Marte":Astronomy.Body.Mars,"Jupiter":Astronomy.Body.Jupiter,
+  "Saturno":Astronomy.Body.Saturn,
+  "Urano":Astronomy.Body.Uranus,"Netuno":Astronomy.Body.Neptune,"Plutao":Astronomy.Body.Pluto
+};
+
+let selectedLat=null,selectedLon=null,selectedName=null;
+
+// City search
+let locTimer;
+document.getElementById('birth-location').addEventListener('input',function(){
+  clearTimeout(locTimer);
+  if(this.value.trim().length<3){document.getElementById('loc-results').style.display='none';return}
+  const q=this.value.trim();
+  locTimer=setTimeout(()=>{
+    fetch('https://nominatim.openstreetmap.org/search?format=json&q='+encodeURIComponent(q)+'&limit=5&accept-language=pt-BR')
+      .then(r=>r.json()).then(data=>{
+        const el=document.getElementById('loc-results');
+        if(data.length===0){el.innerHTML='<div class="loc-item">Nenhuma cidade encontrada</div>';el.style.display='block';return}
+        el.innerHTML=data.map(d=>{
+          const name=d.display_name.split(',').slice(0,3).join(',');
+          return '<div class="loc-item" onclick="selectLocation('+d.lat+','+d.lon+',\''+name.replace(/'/g,'')+'\')">📍 '+name+'</div>';
+        }).join('');
+        el.style.display='block';
+      }).catch(()=>{});
+  },400);
+});
+
+function selectLocation(lat,lon,name){
+  selectedLat=parseFloat(lat);selectedLon=parseFloat(lon);selectedName=name;
+  document.getElementById('birth-location').value=name;
+  document.getElementById('loc-results').style.display='none';
+}
+
+// Compute ecliptic longitude for a planet
+function getEclipticLon(planetName,date){
+  const body=BODY_MAP[planetName];
+  if(!body)return null;
+  const ofdate=Astronomy.Equator(body,date,null,true,true);
+  const ecl=Astronomy.Ecliptic(ofdate);
+  return((ecl.lon%360)+360)%360;
+}
+
+// Compute Nodo Norte (mean lunar node approximation)
+function getNorthNode(date){
+  // Days since J2000 epoch
+  const j2000=new Date(Date.UTC(2000,0,1,12,0,0));
+  const days=(date-j2000)/(1000*60*60*24);
+  // Mean node: 125.0445479 - 0.0529539 * days (in degrees)
+  let lon=(125.0445479-0.0529539*days)%360;
+  if(lon<0)lon+=360;
+  return lon;
+}
+
+// Compute Ascendant
+function getAscendant(date,lat,lon){
+  const gstHours=Astronomy.SiderealTime(date);
+  const lstDeg=(gstHours*15+lon+360)%360;
+  const lstRad=lstDeg*Math.PI/180;
+  const eps=23.4397*Math.PI/180;
+  const latRad=lat*Math.PI/180;
+  // Ascendant = atan2(-cos(LST), sin(LST)*cos(eps) + tan(lat)*sin(eps))
+  let ascRad=Math.atan2(
+    -Math.cos(lstRad),
+    Math.sin(lstRad)*Math.cos(eps)+Math.tan(latRad)*Math.sin(eps)
+  );
+  let ascDeg=ascRad*180/Math.PI;
+  if(ascDeg<0)ascDeg+=360;
+  return ascDeg;
+}
+
+// Compute MC (Midheaven)
+function getMC(date,lon){
+  const gstHours=Astronomy.SiderealTime(date);
+  const ramcDeg=(gstHours*15+lon+360)%360;
+  const ramcRad=ramcDeg*Math.PI/180;
+  const eps=23.4397*Math.PI/180;
+  // MC ecliptic longitude = atan2(sin(RAMC), cos(RAMC)*cos(eps))
+  let mcRad=Math.atan2(
+    Math.sin(ramcRad),
+    Math.cos(ramcRad)*Math.cos(eps)
+  );
+  let mcDeg=mcRad*180/Math.PI;
+  if(mcDeg<0)mcDeg+=360;
+  return mcDeg;
+}
+
+// Compute Equal House cusps
+function getHouseCusps(ascLon){
+  const cusps=[];
+  for(let i=0;i<12;i++){
+    cusps.push((ascLon+i*30)%360);
+  }
+  return cusps;
+}
+
+// Find house for a planet
+function findHouse(planetLon,cusps){
+  for(let i=0;i<12;i++){
+    const c1=cusps[i];
+    const c2=cusps[(i+1)%12];
+    if(c2<c1){
+      if(planetLon>=c1||planetLon<c2)return i+1;
+    }else{
+      if(planetLon>=c1&&planetLon<c2)return i+1;
+    }
+  }
+  return 12;
+}
+
+// Check retrograde
+function isRetrograde(planetName,date){
+  if(planetName==="Sol"||planetName==="Nodo Norte")return false;
+  const d1=new Date(date.getTime());
+  const d2=new Date(date.getTime()+12*3600*1000); // +12 hours
+  const lon1=getEclipticLon(planetName,d1);
+  const lon2=getEclipticLon(planetName,d2);
+  let diff=lon2-lon1;
+  if(diff>180)diff-=360;
+  if(diff<-180)diff+=360;
+  return diff<0;
+}
+
+// ============================================================
+// GENERATE CHART
+// ============================================================
+let chartData=null;
+
+function generateChart(){
+  const dateStr=document.getElementById('birth-date').value;
+  const timeStr=document.getElementById('birth-time').value;
+  if(!dateStr||!timeStr){showError("Preencha data e hora");return}
+  if(selectedLat===null){showError("Selecione um local da lista");return}
+
+  document.getElementById('loading').style.display='block';
+  document.getElementById('error').style.display='none';
+
+  setTimeout(()=>{
+    try{
+      const date=new Date(dateStr+'T'+timeStr+':00');
+      const ascLon=getAscendant(date,selectedLat,selectedLon);
+      const mcLon=getMC(date,selectedLon);
+      const cusps=getHouseCusps(ascLon);
+
+      // Compute all planets
+      const planets={};
+      for(const pname of Object.keys(BODY_MAP)){
+        const lon=getEclipticLon(pname,date);
+        const signIdx=Math.floor(lon/30);
+        const degInSign=lon%30;
+        const deg=Math.floor(degInSign);
+        const mins=Math.floor((degInSign-deg)*60);
+        const house=findHouse(lon,cusps);
+        const retro=isRetrograde(pname,date);
+        planets[pname]={
+          lon:lon,signIdx:signIdx,sign:SIGNS_PT[signIdx],
+          deg:deg,mins:mins,house:house,retro:retro,
+          signData:SIGNS_DATA[signIdx],planetData:PLANETS_DATA[pname]
+        };
+      }
+
+      // Nodo Norte
+      const nnLon=getNorthNode(date);
+      const nnSignIdx=Math.floor(nnLon/30);
+      const nnDegInSign=nnLon%30;
+      const nnDeg=Math.floor(nnDegInSign);
+      const nnMins=Math.floor((nnDegInSign-nnDeg)*60);
+      const nnHouse=findHouse(nnLon,cusps);
+      planets["Nodo Norte"]={
+        lon:nnLon,signIdx:nnSignIdx,sign:SIGNS_PT[nnSignIdx],
+        deg:nnDeg,mins:nnMins,house:nnHouse,retro:false,
+        signData:SIGNS_DATA[nnSignIdx],planetData:PLANETS_DATA["Nodo Norte"]
+      };
+
+      // Aspects
+      const aspects=[];
+      const planetNames=Object.keys(planets);
+      for(let i=0;i<planetNames.length;i++){
+        for(let j=i+1;j<planetNames.length;j++){
+          const p1=planets[planetNames[i]];
+          const p2=planets[planetNames[j]];
+          if(p1===p2)continue;
+          let diff=Math.abs(p1.lon-p2.lon);
+          if(diff>180)diff=360-diff;
+          for(const[akey,adata]of Object.entries(ASPECTS_DATA)){
+            const orb=Math.abs(diff-adata.angle);
+            if(orb<=adata.orb){
+              aspects.push({
+                p1:planetNames[i],p2:planetNames[j],
+                aspect:akey,data:adata,orb:orb
+              });
+            }
+          }
+        }
+      }
+
+      chartData={
+        date:date,planets:planets,aspects:aspects,
+        cusps:cusps,ascSignIdx:Math.floor(ascLon/30),
+        ascDeg:ascLon,mcSignIdx:Math.floor(mcLon/30),mcDeg:mcLon,
+        lat:selectedLat,lon:selectedLon,name:selectedName
+      };
+
+      renderChart();
+    }catch(e){
+      showError("Erro: "+(e.message||e));
+      console.error(e);
+    }
+    document.getElementById('loading').style.display='none';
+  },100);
+}
+
+function showError(msg){
+  document.getElementById('error').textContent=msg;
+  document.getElementById('error').style.display='block';
+  document.getElementById('loading').style.display='none';
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function renderChart(){
+  document.getElementById('form-wrap').style.display='none';
+  document.getElementById('results').style.display='block';
+
+  const d=chartData;
+  const p=d.planets;
+
+  // Chart info
+  const dtStr=d.date.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+  document.getElementById('chart-info').innerHTML=
+    '<div style="text-align:center;margin-bottom:16px">'+
+    '<div style="font-size:20px;color:#B19CD9">🔮 Mapa Astral</div>'+
+    '<div style="font-size:14px;color:#aaa;margin-top:4px">'+dtStr+' as '+
+    d.date.getHours().toString().padStart(2,'0')+':'+d.date.getMinutes().toString().padStart(2,'0')+'</div>'+
+    '<div style="font-size:13px;color:#888">'+d.name+'</div></div>';
+
+  // Summary
+  const sun=p["Sol"],moon=p["Lua"];
+  const ascSign=SIGNS_DATA[d.ascSignIdx];
+  document.getElementById('summary').innerHTML=
+    '<p>Voce tem <span class="highlight">Sol em '+sun.signData.name+'</span>, '+
+    '<span class="highlight">Lua em '+moon.signData.name+'</span> e '+
+    '<span class="highlight">Ascendente em '+ascSign.name+'</span>.</p>'+
+    '<p>Sua essencia (Sol) e '+sun.signData.kw.join(', ')+'. '+
+    'Suas emocoes (Lua) sao '+moon.signData.kw.join(', ')+'. '+
+    'Sua mascara exterior (Ascendente) e '+ascSign.kw.join(', ')+'.</p>'+
+    '<p>O Meio do Ceu (carreira) esta em <span class="highlight">'+SIGNS_DATA[d.mcSignIdx].name+'</span>, '+
+    'mostrando uma vocacao '+SIGNS_DATA[d.mcSignIdx].kw.slice(0,3).join(', ')+'.</p>';
+
+  // Tríade
+  document.getElementById('triade-section').innerHTML=
+    triadeCard("Sol",sun,'#FFD700')+
+    triadeCard("Lua",moon,'#C0C0C0')+
+    triadeCard("ASC",{signIdx:d.ascSignIdx,deg:Math.floor(d.ascDeg%30),
+      mins:Math.floor((d.ascDeg%30-Math.floor(d.ascDeg%30))*60),
+      signData:ascSign,planetData:PLANETS_DATA["Sol"]},'rgba(147,112,219,.3)');
+
+  // Planets
+  let pHtml='';
+  for(const pname of Object.keys(PLANETS_DATA)){
+    const pl=p[pname];
+    if(!pl)continue;
+    const sd=pl.signData;
+    const pd=pl.planetData;
+    let kwHtml=sd.kw.map(k=>'<span class="kw">'+k+'</span>').join('');
+    pHtml+='<div class="planet-card" style="--clr:'+pd.color+'">'+
+      '<div class="top">'+
+      '<span class="sym" style="color:'+pd.color+'">'+pd.sym+'</span>'+
+      '<div><span class="pname">'+pname+'</span>'+
+      (pl.retro?'<span class="retro"> ℞ Retrogrado</span>':'')+'</div>'+
+      '<span class="house-badge">Casa '+pl.house+'</span></div>'+
+      '<div class="sign">'+sd.sym+' '+pl.sign+' '+pl.deg+'°'+pl.mins.toString().padStart(2,'0')+"' ("+sd.element+" / "+sd.quality+" / Regente: "+sd.ruler+')</div>'+
+      '<div class="meaning"><b>'+pd.title+':</b> '+pd.desc+'</div>'+
+      '<div class="meaning" style="margin-top:6px"><b>Em '+sd.name+':</b> '+sd.desc+'</div>'+
+      '<div class="keywords">'+kwHtml+'</div>'+
+      '</div>';
+  }
+  document.getElementById('planets-section').innerHTML=pHtml;
+
+  // Houses
+  let hHtml='';
+  // Group planets by house
+  const housePlanets={};
+  for(const[pname,pl]of Object.entries(p)){
+    if(!housePlanets[pl.house])housePlanets[pl.house]=[];
+    housePlanets[pl.house].push(pname);
+  }
+  for(let i=0;i<12;i++){
+    const hd=HOUSES_DATA[i];
+    const cuspLon=d.cusps[i];
+    const cuspSignIdx=Math.floor(cuspLon/30);
+    const cuspSign=SIGNS_DATA[cuspSignIdx];
+    const cuspDeg=Math.floor(cuspLon%30);
+    const planetsInHouse=housePlanets[i+1]||[];
+    let planetsStr=planetsInHouse.length>0?
+      '<div class="hplanets">🪐 Planetas aqui: '+planetsInHouse.map(pn=>PLANETS_DATA[pn].sym+' '+pn).join(', ')+'</div>':'';
+    hHtml+='<div class="house-card">'+
+      '<div class="hnum">Casa '+hd.n+' - '+cuspSign.sym+' '+cuspSign.name+' '+cuspDeg+'°</div>'+
+      '<div class="htheme">'+hd.theme+'</div>'+
+      '<div class="hmeaning">'+hd.desc+'</div>'+
+      planetsStr+'</div>';
+  }
+  document.getElementById('houses-section').innerHTML=hHtml;
+
+  // Aspects
+  let aHtml='';
+  const sortedAspects=d.aspects.slice().sort((a,b)=>a.orb-b.orb);
+  for(const a of sortedAspects){
+    const ad=a.data;
+    const p1=d.planets[a.p1],p2=d.planets[a.p2];
+    aHtml+='<div class="aspect-card">'+
+      '<span class="asym" style="color:'+p1.planetData.color+'">'+ad.sym+'</span>'+
+      '<div class="adesc">'+
+      '<span class="aname">'+p1.planetData.sym+' '+a.p1+' '+ad.sym+' '+p2.planetData.sym+' '+a.p2+'</span>'+
+      '<span class="aorb"> '+ad.name+' (orbe '+a.orb.toFixed(1)+'°)</span>'+
+      '<div class="ameaning">'+ad.desc+' '+ad.pos+'</div></div></div>';
+  }
+  document.getElementById('aspects-section').innerHTML=aHtml;
+}
+
+function triadeCard(label,planet,color){
+  const sd=planet.signData||SIGNS_DATA[planet.signIdx];
+  return '<div class="triade-card" style="border-color:'+color+'30">'+
+    '<div class="sym" style="color:'+color+'">'+(label==='ASC'?sd.sym:PLANETS_DATA[label]?.sym||sd.sym)+'</div>'+
+    '<div class="lbl">'+label+'</div>'+
+    '<div class="val">'+sd.name+'</div>'+
+    '<div class="deg">'+(planet.deg||0)+'°'+(planet.mins||0).toString().padStart(2,'0')+"'</div>"+
+    '</div>';
+}
+
+function resetForm(){
+  document.getElementById('form-wrap').style.display='block';
+  document.getElementById('results').style.display='none';
+}
+</script>
+</body>
+</html>
