@@ -303,13 +303,12 @@ function selectLocation(lat,lon,name){
 }
 
 // Compute ecliptic longitude for a planet
-let chartObserver=null;
 function getEclipticLon(planetName,date){
   const body=BODY_MAP[planetName];
   if(!body)return null;
-  const ofdate=Astronomy.Equator(body,date,chartObserver,true,true);
-  const ecl=Astronomy.Ecliptic(ofdate);
-  return((ecl.lon%360)+360)%360;
+  const vec=Astronomy.GeoVector(body,date,true);
+  const ecl=Astronomy.Ecliptic(vec);
+  return((ecl.elon%360)+360)%360;
 }
 
 // Compute Nodo Norte (mean lunar node approximation)
@@ -409,7 +408,6 @@ function generateChart(){
   setTimeout(()=>{
     try{
       const date=new Date(dateStr+'T'+timeStr+':00');
-      chartObserver=new Astronomy.Observer(selectedLat,selectedLon,0);
       const ascLon=getAscendant(date,selectedLat,selectedLon);
       const mcLon=getMC(date,selectedLon);
       const cusps=getHouseCusps(ascLon);
