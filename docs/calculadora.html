@@ -311,13 +311,16 @@ function getPlanetRaDec(name, date){
 function computeLines(ra,dec,gstDeg){
   const result={mc:[],ic:[],asc:[],dsc:[]};
 
-  // MC/IC are vertical lines (straight on map)
+  // MC/IC are vertical lines (straight on map) - wrap in segment array
   const mcLon=normalizeLon(ra-gstDeg);
   const icLon=normalizeLon(mcLon+180);
+  const mcPts=[],icPts=[];
   for(let lat=-85;lat<=85;lat+=1){
-    result.mc.push([lat,mcLon]);
-    result.ic.push([lat,icLon]);
+    mcPts.push([lat,mcLon]);
+    icPts.push([lat,icLon]);
   }
+  result.mc=[mcPts];
+  result.ic=[icPts];
 
   // ASC/DSC are curved (depend on latitude)
   let curAsc=[],curDsc=[];
