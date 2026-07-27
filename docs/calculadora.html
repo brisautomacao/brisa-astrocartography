@@ -410,6 +410,7 @@ function generateMap(){
         const info=PLANETS[pname];
         const pos=getPlanetRaDec(pname,date);
         const lines=computeLines(pos.ra,pos.dec,gstDeg);
+        if(pname==='Sol')console.log('Sol lines mc sample:',JSON.stringify(lines.mc[0]?lines.mc[0].slice(0,3):'empty'),'asc len:',lines.asc.length);
 
         const angles=[
           {key:'mc',style:{weight:4,opacity:.85,dashArray:null}},
