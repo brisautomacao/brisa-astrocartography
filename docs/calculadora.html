@@ -427,7 +427,18 @@ function generateMap(){
             if(!seg||seg.length<2)continue;
             const meaning=info[ang.key];
             const aData=ANGLE_INFO[ang.key.toUpperCase()];
-            if(pname==='Sol'&&ang.key==='mc')console.log('Drawing Sol MC: segLen='+seg.length+' first='+JSON.stringify(seg[0]));
+            // Simple test: draw one MC line
+        if(pname==='Sol'){
+          console.log('TEST: about to draw Sol MC polyline');
+          const testSeg = lines.mc[0];
+          console.log('TEST: testSeg length=' + testSeg.length + ' type=' + typeof testSeg);
+          try {
+            L.polyline(testSeg, {color:'#FFD700', weight:4}).addTo(leafletMap);
+            console.log('TEST: Sol MC drawn OK!');
+          } catch(e) {
+            console.error('TEST ERROR: ' + (e.message || e));
+          }
+        }
             const popupHtml='<div style="font-family:Georgia,serif;color:#333;min-width:260px;max-width:320px"><h3 style="color:'+info.color+';margin:0 0 4px">'+info.symbol+' '+pname+' '+aData.symbol+'</h3><p style="font-size:11px;color:#666;margin:0 0 8px">'+info.keyword+'</p><p style="font-size:11px;color:#888;margin:0 0 8px">'+aData.desc+'</p><div style="background:'+info.color+'22;border-left:3px solid '+info.color+';padding:8px;border-radius:4px;font-size:12px;color:#333">'+meaning+'</div></div>';
 
             try{
