@@ -78,6 +78,33 @@ body{font-family:'Georgia',serif;background:#0a0a1a;color:#e0e0f0;overflow-x:hid
 .aspect-card .aname{font-size:13px;color:#fff}
 .aspect-card .aorb{font-size:11px;color:#888}
 .aspect-card .ameaning{font-size:12px;color:#bbb;margin-top:2px}
+/* ===== CURIOSIDADE / PAYWALL ===== */
+.progress-wrap{margin:18px 0 10px;text-align:center}
+.progress-bar-bg{height:7px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#B19CD9,#8B5CF6);border-radius:99px;
+  transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.progress-label{font-size:12px;color:#B19CD9;margin-top:7px}
+.progress-label b{color:#fff}
+.locked{position:relative;background:rgba(15,15,40,.55);border:1px solid rgba(177,156,217,.18);
+  border-radius:12px;padding:13px 15px;margin-bottom:8px;overflow:hidden}
+.locked .lk-top{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.locked .lk-title{font-size:13px;color:#fff;font-weight:600}
+.locked .lk-lock{margin-left:auto;font-size:13px;opacity:.75}
+.locked .lk-hook{font-size:12.5px;color:#B19CD9;line-height:1.45}
+.locked .lk-teaser{position:relative;font-size:12px;color:#8e8ea8;line-height:1.5;margin-top:5px;
+  max-height:2.9em;overflow:hidden}
+.locked .lk-teaser::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1.7em;
+  background:linear-gradient(to bottom,rgba(15,15,40,0),rgba(15,15,40,.98))}
+.locked-group-note{font-size:12px;color:#777;text-align:center;margin:10px 0 16px}
+.cta-wrap{margin:26px 0 40px;padding:22px 18px;text-align:center;
+  background:linear-gradient(160deg,rgba(139,92,246,.16),rgba(15,15,40,.6));
+  border:1px solid rgba(177,156,217,.3);border-radius:16px}
+.cta-wrap h3{font-size:17px;color:#fff;margin-bottom:6px}
+.cta-wrap p{font-size:13px;color:#b9b9cc;margin-bottom:15px;line-height:1.5}
+.cta-btn{display:inline-block;background:linear-gradient(135deg,#8B5CF6,#B19CD9);color:#fff;
+  text-decoration:none;font-size:15px;font-weight:600;padding:13px 26px;border-radius:99px}
+.cta-btn:active{transform:scale(.98)}
+.cta-sub{font-size:11.5px;color:#7d7d94;margin-top:11px}
 /* Chart wheel */
 #wheel-wrap{display:flex;justify-content:center;margin:20px 0}
 /* Back button */
@@ -679,6 +706,46 @@ function showError(msg){
 }
 
 // ============================================================
+// FUNIL: quem chegou aqui pelo direct vem com ?t=<token>
+// ============================================================
+const API_BASE="https://brisadocs.46-225-43-58.sslip.io";
+const TOKEN=new URLSearchParams(location.search).get('t')||'';
+
+// Fire-and-forget: se a API estiver fora, a pagina segue funcionando igual.
+function beacon(tipo,extra){
+  try{
+    fetch(API_BASE+'/api/astral/evento',{
+      method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(Object.assign({t:TOKEN,tipo:tipo},extra||{}))
+    }).catch(function(){});
+  }catch(e){}
+}
+beacon('abriu_pagina');
+
+// Link do direct. O ref volta pra gente no webhook e diz de onde a pessoa veio.
+const DIRECT_URL="https://ig.me/m/brisaastral.ai?ref=mapa";
+
+function lockedCard(titulo,gancho,teaser){
+  return '<div class="locked"><div class="lk-top">'+
+    '<span class="lk-title">'+titulo+'</span>'+
+    '<span class="lk-lock">🔒</span></div>'+
+    '<div class="lk-hook">'+gancho+'</div>'+
+    (teaser?'<div class="lk-teaser">'+teaser+'</div>':'')+
+    '</div>';
+}
+
+// Conjuncao e Oposicao terminam em "o" e sao femininas; Trigono e Sextil,
+// masculinos. Testar so a ultima letra dava "Um oposicao".
+function generoAspecto(nome){
+  return /(cao|a)$/i.test(nome) ? 'f' : 'm';
+}
+
+function corta(txt,n){
+  if(!txt)return '';
+  return txt.length>n?txt.slice(0,n).replace(/\s+\S*$/,'')+'...':txt;
+}
+
+// ============================================================
 // RENDER
 // ============================================================
 function renderChart(){
@@ -718,13 +785,26 @@ function renderChart(){
       mins:Math.floor((d.ascDeg%30-Math.floor(d.ascDeg%30))*60),
       signData:ascSign,planetData:PLANETS_DATA["Sol"]},'rgba(147,112,219,.3)');
 
-  // Planets
-  let pHtml='';
+  // Planets: Sol e Lua abertos (a parte gratis tem que ser boa de verdade),
+  // o resto vira card bloqueado com gancho tirado do mapa da propria pessoa.
+  const ABERTOS=["Sol","Lua"];
+  let pHtml='',bloqueados=0,abertos=3;
   for(const pname of Object.keys(PLANETS_DATA)){
     const pl=p[pname];
     if(!pl)continue;
     const sd=pl.signData;
     const pd=pl.planetData;
+    if(ABERTOS.indexOf(pname)===-1){
+      bloqueados++;
+      const temaCasa=HOUSES_DATA[pl.house-1].theme.split(',').slice(0,2).join(',').trim();
+      pHtml+=lockedCard(
+        pd.sym+' '+pname+' em '+sd.name+', Casa '+pl.house,
+        pname+' fala de '+pd.title.toLowerCase()+'. No seu mapa ele caiu na casa de '+
+          temaCasa.toLowerCase()+'.',
+        corta(pd.desc,160));
+      continue;
+    }
+    abertos++;
     let kwHtml=sd.kw.map(k=>'<span class="kw">'+k+'</span>').join('');
     pHtml+='<div class="planet-card" style="--clr:'+pd.color+'">'+
       '<div class="top">'+
@@ -755,18 +835,16 @@ function renderChart(){
     const cuspSign=SIGNS_DATA[cuspSignIdx];
     const cuspDeg=Math.floor(cuspLon%30);
     const planetsInHouse=housePlanets[i+1]||[];
-    let planetsStr=planetsInHouse.length>0?
-      '<div class="hplanets">🪐 Planetas aqui: '+planetsInHouse.map(pn=>PLANETS_DATA[pn].sym+' '+pn).join(', ')+'</div>':'';
-    hHtml+='<div class="house-card">'+
-      '<div class="hnum">Casa '+hd.n+' - '+cuspSign.sym+' '+cuspSign.name+' '+cuspDeg+'°</div>'+
-      '<div class="htheme">'+hd.theme+'</div>'+
-      '<div class="hmeaning">'+hd.desc+'</div>'+
-      '<div class="h-sign-interp">'+
-      '<div class="hsi-title">'+cuspSign.sym+' '+cuspSign.name+' na Casa '+hd.n+'</div>'+
-      '<div class="hsi-pos">'+SIGN_IN_HOUSE[cuspSignIdx][i].pos+'</div>'+
-      '<div class="hsi-neg">'+SIGN_IN_HOUSE[cuspSignIdx][i].neg+'</div>'+
-      '</div>'+
-      planetsStr+'</div>';
+    // Casa bloqueada: o gancho e verdadeiro (signo na cuspide + planetas
+    // dentro), so a leitura fica de fora.
+    bloqueados++;
+    const dentro=planetsInHouse.length;
+    hHtml+=lockedCard(
+      'Casa '+hd.n+' em '+cuspSign.sym+' '+cuspSign.name,
+      'Essa casa cuida de '+hd.theme.split(',').slice(0,2).join(',').toLowerCase()+'. '+
+        (dentro?'Voce tem '+dentro+' planeta'+(dentro>1?'s':'')+' morando aqui: '+
+          planetsInHouse.join(', ')+'.':'Quem comanda ela no seu mapa e '+cuspSign.name+'.'),
+      corta(SIGN_IN_HOUSE[cuspSignIdx][i].pos,160));
   }
   document.getElementById('houses-section').innerHTML=hHtml;
 
@@ -776,14 +854,78 @@ function renderChart(){
   for(const a of sortedAspects){
     const ad=a.data;
     const p1=d.planets[a.p1],p2=d.planets[a.p2];
-    aHtml+='<div class="aspect-card">'+
-      '<span class="asym" style="color:'+p1.planetData.color+'">'+ad.sym+'</span>'+
-      '<div class="adesc">'+
-      '<span class="aname">'+p1.planetData.sym+' '+a.p1+' '+ad.sym+' '+p2.planetData.sym+' '+a.p2+'</span>'+
-      '<span class="aorb"> '+ad.name+' (orbe '+a.orb.toFixed(1)+'°)</span>'+
-      '<div class="ameaning">'+ad.desc+' '+ad.pos+'</div></div></div>';
+    // O aspecto mais fechado sai de graca e inteiro: e o item que mais
+    // impressiona, e um tier gratis sovina nao gera conversa nenhuma.
+    if(a===sortedAspects[0]){
+      abertos++;
+      aHtml+='<div class="aspect-card">'+
+        '<span class="asym" style="color:'+p1.planetData.color+'">'+ad.sym+'</span>'+
+        '<div class="adesc">'+
+        '<span class="aname">'+p1.planetData.sym+' '+a.p1+' '+ad.sym+' '+p2.planetData.sym+' '+a.p2+'</span>'+
+        '<span class="aorb"> '+ad.name+', orbe '+a.orb.toFixed(1)+'°. O mais forte do seu mapa.</span>'+
+        '<div class="ameaning">'+ad.desc+' '+ad.pos+'</div></div></div>';
+      continue;
+    }
+    // O aspecto em si e o gancho: nome, simbolo e orbe sao dados do mapa dela.
+    bloqueados++;
+    aHtml+=lockedCard(
+      p1.planetData.sym+' '+a.p1+' '+ad.sym+' '+p2.planetData.sym+' '+a.p2,
+      (generoAspecto(ad.name)==='m'?'Um ':'Uma ')+ad.name.toLowerCase()+
+        ' de '+a.orb.toFixed(1)+'°.'+
+        (a.orb<2?(generoAspecto(ad.name)==='m'?' Bem fechado, desses que pesam muito.'
+                                              :' Bem fechada, dessas que pesam muito.'):''),
+      corta(ad.desc,160));
   }
   document.getElementById('aspects-section').innerHTML=aHtml;
+
+  montaCuriosidade(abertos,bloqueados,p,d);
+  beacon('gerou_mapa',{signo:p["Sol"].signData.name});
+}
+
+// Barra de progresso + chamada. A conta e real: quantos pedacos do mapa
+// dela estao abertos e quantos ficaram no cadeado.
+function montaCuriosidade(abertos,bloqueados,p,d){
+  const total=abertos+bloqueados;
+  const pct=Math.round(abertos/total*100);
+
+  const barra=document.createElement('div');
+  barra.className='progress-wrap';
+  barra.innerHTML='<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:0%"></div></div>'+
+    '<div class="progress-label">Seu mapa esta <b>'+pct+'% revelado</b>. '+
+    'Voce abriu '+abertos+' de '+total+' pontos.</div>';
+  const planetas=document.getElementById('planets-section');
+  planetas.parentNode.insertBefore(barra,planetas);
+  requestAnimationFrame(function(){
+    barra.querySelector('.progress-bar-fill').style.width=pct+'%';
+  });
+
+  const aspectos=document.getElementById('aspects-section');
+  const nAsp=d.aspects.length;
+  // [0] ja saiu de graca; o gancho tem que ser o proximo, senao a chamada
+  // promete uma coisa que a pessoa acabou de ler.
+  const maisFechado=d.aspects.slice().sort((a,b)=>a.orb-b.orb)[1];
+  const cta=document.createElement('div');
+  cta.className='cta-wrap';
+  cta.innerHTML='<h3>Ainda tem '+bloqueados+' pedacos do seu mapa fechados 🔒</h3>'+
+    '<p>Sao '+nAsp+' aspectos, 12 casas e os planetas que voce ainda nao leu. '+
+    (maisFechado?'Um deles e a '+maisFechado.data.name.toLowerCase()+' entre '+maisFechado.p1+
+      ' e '+maisFechado.p2+', com orbe de '+maisFechado.orb.toFixed(1)+'°. ':'')+
+    'Tem tambem a astrocartografia, que mostra em que lugar do mundo o seu mapa joga a favor.</p>'+
+    '<a class="cta-btn" href="'+DIRECT_URL+'" target="_blank" rel="noopener" '+
+    'onclick="beacon(\'clicou_completo\')">Quero o mapa completo</a>'+
+    '<div class="cta-sub">Te mando no direct do Instagram</div>';
+  aspectos.parentNode.appendChild(cta);
+
+  // "Chegou nos cadeados" so conta uma vez, e so se a pessoa realmente rolou.
+  if('IntersectionObserver' in window){
+    const obs=new IntersectionObserver(function(entradas){
+      entradas.forEach(function(e){
+        if(e.isIntersecting){beacon('viu_bloqueado');obs.disconnect();}
+      });
+    },{threshold:.4});
+    const primeiro=document.querySelector('.locked');
+    if(primeiro)obs.observe(primeiro);
+  }
 }
 
 function triadeCard(label,planet,color){
