@@ -15,3 +15,4 @@ Registro de decisões de arquitetura e produto do funil de mapa astral da Brisa 
 | ADR | Título | Status |
 |---|---|---|
 | [0001](0001-landing-page-funil-mapa-astral.md) | Landing page do funil MAPA (captura de lead + mapa astral detalhado com cadeado) | Proposto |
+| [0002](0002-identidade-visual-landing-dona-celeste.md) | Identidade visual da landing: Mesa da Celeste (candlelit, paleta dos vídeos, chip Celeste no cadeado) | Proposto |
