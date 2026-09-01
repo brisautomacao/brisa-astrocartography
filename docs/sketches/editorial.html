@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>O seu céu ✦ leitura à luz de velas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Outfit:wght@300..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#2E1E2A;--bg2:#1E1210;--plum:#4A2040;--gold:#C89F50;--brass:#A47F5D;
+  --amber:#F7B567;--cream:#E9D5BD;--silver:#C8C9CB;--lilac:#5E3A53;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:
+ radial-gradient(85% 30% at 50% -4%,rgba(247,181,103,.15),transparent 65%),
+ radial-gradient(60% 34% at 88% 88%,rgba(74,32,64,.4),transparent 70%),
+ linear-gradient(180deg,var(--bg1),var(--bg2) 62%);
+ color:var(--cream);font-family:Outfit,system-ui,sans-serif;overflow-x:hidden}
+.col{max-width:430px;margin:0 auto;padding:0 24px 80px;position:relative}
+/* céu */
+.tw{position:fixed;color:var(--silver);font-size:10px;opacity:.3;animation:tw 4s ease-in-out infinite;z-index:0}
+@keyframes tw{0%,100%{opacity:.08;transform:scale(.8)}50%{opacity:.6;transform:scale(1.15)}}
+.shoot{position:fixed;top:14%;left:-8%;width:110px;height:1px;background:linear-gradient(90deg,transparent,var(--silver));opacity:0;animation:shoot 11s linear infinite;z-index:0}
+@keyframes shoot{0%,92%{opacity:0;transform:translate(0,0) rotate(14deg)}94%{opacity:.8}100%{opacity:0;transform:translate(46vw,16vh) rotate(14deg)}}
+/* herança tipográfica */
+.masthead{padding:64px 0 26px;text-align:center;position:relative;z-index:1}
+.masthead .rule{display:flex;align-items:center;gap:12px;color:var(--gold);margin:18px 0}
+.masthead .rule::before,.masthead .rule::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--brass),transparent)}
+.kicker{font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--amber)}
+h1{font-family:Fraunces,serif;font-weight:330;font-style:italic;font-size:clamp(36px,10vw,54px);line-height:1.08;margin-top:16px}
+h1 span{color:var(--gold)}
+.dek{font-weight:300;font-size:15.5px;color:#cdb897;line-height:1.65;margin:18px auto 0;max-width:32ch}
+/* seções */
+section{padding:44px 0;position:relative;z-index:1}
+.divider{display:flex;align-items:center;gap:12px;color:var(--gold);font-size:12px;margin:8px 0 22px}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(164,127,93,.55),transparent)}
+h2{font-family:Fraunces,serif;font-weight:400;font-size:23px;letter-spacing:.01em}
+.lead{font-weight:300;color:#c9b394;font-size:14.5px;margin-top:6px;line-height:1.6}
+/* formulário: linhas, sem cartão */
+.f{margin-top:26px}
+label{display:block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass);margin:22px 0 4px}
+input{width:100%;background:transparent;border:none;border-bottom:1.2px solid rgba(200,159,80,.4);color:var(--cream);font:400 19px Fraunces,serif;padding:8px 2px;outline:none;transition:border-color .25s}
+input::placeholder{color:#6b564a;font-style:italic}
+input:focus{border-color:var(--amber)}
+input[type=date],input[type=time]{color-scheme:dark}
+.btn{margin-top:34px;width:100%;cursor:pointer;background:transparent;border:1.3px solid var(--gold);color:var(--gold);font:500 14px Outfit;letter-spacing:.24em;text-transform:uppercase;padding:16px;border-radius:2px;transition:.25s;position:relative}
+.btn:hover{background:rgba(200,159,80,.12);box-shadow:0 0 26px rgba(200,159,80,.18)}
+/* resultado */
+#resultado{display:none}
+.versos{margin-top:26px;display:grid;gap:30px}
+.verso{padding-left:18px;border-left:1px solid rgba(200,159,80,.4)}
+.verso .g{font-size:12px;letter-spacing:.3em;color:var(--amber);text-transform:uppercase}
+.verso h3{font-family:Fraunces,serif;font-weight:500;font-size:21px;margin-top:6px}
+.verso h3 i{color:var(--gold)}
+.verso p{font-weight:300;font-size:14.5px;color:#c9b394;margin-top:8px;line-height:1.6;max-width:34ch}
+/* carta constelação */
+.carta{margin:40px 0 6px;text-align:center}
+.carta figcaption{font-family:Fraunces,serif;font-style:italic;color:var(--brass);font-size:13px;margin-top:12px}
+/* bloqueado */
+.lock{position:relative;margin-top:44px;padding:34px 4px 30px;text-align:center;border-top:1px solid rgba(200,159,80,.35);border-bottom:1px solid rgba(200,159,80,.35);overflow:hidden}
+.lock .veil{position:absolute;inset:0;filter:blur(8px);opacity:.35;background:
+ radial-gradient(50% 60% at 30% 30%,rgba(233,213,189,.25),transparent),
+ radial-gradient(40% 50% at 70% 60%,rgba(247,181,103,.2),transparent)}
+.lock>*{position:relative;z-index:1}
+.chip{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;border:1.3px solid var(--gold);padding:3px;background:var(--bg2)}
+.chip img{width:100%;height:100%;border-radius:50%;object-fit:cover;filter:saturate(.95)}
+.lock h2{font-family:Fraunces,serif;font-weight:400;font-style:italic;font-size:20px}
+.lock .say{font-family:Fraunces,serif;font-style:italic;font-size:19px;line-height:1.5;max-width:26ch;margin:10px auto 0;color:var(--cream)}
+.hint{font:300 12.5px Outfit;color:var(--brass);margin-top:12px;letter-spacing:.04em}
+.btn2{display:inline-block;margin-top:20px;text-decoration:none;border:1.3px solid var(--gold);color:var(--gold);font:500 13px Outfit;letter-spacing:.22em;text-transform:uppercase;padding:15px 30px;border-radius:2px;transition:.25s}
+.btn2:hover{background:rgba(200,159,80,.12)}
+footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunces,serif;font-style:italic;font-size:14.5px}
+</style>
+</head>
+<body>
+<span class="tw" style="top:8%;left:14%">✦</span><span class="tw" style="top:13%;right:18%;animation-delay:1.2s">✧</span>
+<span class="tw" style="top:38%;left:7%;animation-delay:2.2s">✦</span><span class="tw" style="top:44%;right:8%;animation-delay:.7s">✦</span>
+<span class="tw" style="top:70%;left:10%;animation-delay:3s">✧</span>
+<div class="shoot"></div>
+
+<div class="col">
+  <header class="masthead">
+    <div class="kicker">Leitura à luz de velas</div>
+    <h1>Óh, meu bem...<br><span>deixa eu ver<br>o seu céu.</span></h1>
+    <div class="rule">✦</div>
+    <p class="dek">Cinquenta anos lendo o que as estrelas susurram. Me conta onde e quando você nasceu.</p>
+  </header>
+
+  <section>
+    <div class="divider">o começo de tudo</div>
+    <h2>Onde o céu te encontrou</h2>
+    <form class="f" id="form">
+      <label for="d">Data de nascimento</label><input id="d" type="date" required>
+      <label for="h">Hora, se souber</label><input id="h" type="time">
+      <label for="c">Cidade</label><input id="c" type="text" placeholder="onde o céu estava" required>
+      <button class="btn" id="go" type="submit">Acender as velas</button>
+    </form>
+  </section>
+
+  <section id="resultado">
+    <div class="divider">o que deu pra ver</div>
+    <h2>Três chaves do seu céu</h2>
+    <p class="lead">O essencial sai agora. O resto é conversa.</p>
+    <div class="versos">
+      <div class="verso"><div class="g">☉ como você brilha</div><h3>Sol em <i>Leão</i></h3><p>Brilho que nasce do coração. Coragem e generosidade de sobra, quando você confia em você.</p></div>
+      <div class="verso"><div class="g">☾ como você sente</div><h3>Lua em <i>Escorpião</i></h3><p>Sente fundo e guarda segredos. Intimidade de verdade, nunca conversa rasa.</p></div>
+      <div class="verso"><div class="g">↑ como o mundo te vê</div><h3>Ascendente em <i>Peixes</i></h3><p>O mundo encontra você com doçura e imaginação. As pessoas sentem sem saber por quê.</p></div>
+    </div>
+
+    <figure class="carta">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Mapa astral em linhas de ouro">
+        <g fill="none" stroke="#C89F50" stroke-width=".8" opacity=".55">
+          <circle cx="150" cy="150" r="134" stroke-dasharray="1 6"/>
+          <circle cx="150" cy="150" r="112" opacity=".5"/>
+        </g>
+        <g font-size="13" fill="#C89F50" text-anchor="middle" font-family="serif" opacity=".85">
+          <text x="150" y="28">♈</text><text x="254" y="64">♉</text><text x="280" y="155">♊</text>
+          <text x="254" y="246">♋</text><text x="150" y="286">♌</text><text x="46" y="246">♍</text>
+          <text x="20" y="155">♎</text><text x="46" y="64">♏</text>
+        </g>
+        <g stroke="#F7B567" stroke-width=".7" stroke-dasharray="1 4" opacity=".7">
+          <path d="M150 62 96 206M150 62l106 46M96 206l160-98M96 206h110"/>
+        </g>
+        <g fill="#F7B567">
+          <circle cx="150" cy="62" r="4.6"><animate attributeName="opacity" values="1;.5;1" dur="3.2s" repeatCount="indefinite"/></circle>
+          <circle cx="96" cy="206" r="4"/><circle cx="256" cy="108" r="3.2"/>
+          <circle cx="206" cy="206" r="3.6"/><circle cx="118" cy="116" r="2.6"/>
+        </g>
+        <g fill="#A47F5D" font-size="8.5" font-family="Outfit,sans-serif" text-anchor="middle" letter-spacing="1">
+          <text x="150" y="52">SOL</text><text x="96" y="197">LUA</text><text x="256" y="98">VÊNUS</text><text x="206" y="197">MARTE</text>
+        </g>
+      </svg>
+      <figcaption>o seu céu, em linha dourada</figcaption>
+    </figure>
+
+    <div class="lock">
+      <div class="veil"></div>
+      <div class="chip"><img src="assets/chip.webp" alt="Dona Celeste"></div>
+      <h2>O mapa completo</h2>
+      <p class="say">Isso aqui eu leio pra você. Quer que eu interprete o que significa?</p>
+      <div class="hint">onze planetas, doze casas e os aspectos, em conversa</div>
+      <a class="btn2" href="#" onclick="return false">Liberar com a Celeste</a>
+    </div>
+  </section>
+
+  <footer>Com carinho, Dona Celeste ✨</footer>
+</div>
+<script>
+const f=document.getElementById('form'),r=document.getElementById('resultado'),b=document.getElementById('go');
+f.addEventListener('submit',e=>{e.preventDefault();b.disabled=true;b.textContent='Acendendo as velas ✦';
+setTimeout(()=>{r.style.display='block';r.scrollIntoView({behavior:'smooth'})},1600)});
+</script>
+</body>
+</html>
