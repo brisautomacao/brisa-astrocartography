@@ -223,6 +223,7 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
 const f=document.getElementById('form'),r=document.getElementById('resultado'),b=document.getElementById('go');
 f.addEventListener('submit',e=>{e.preventDefault();b.disabled=true;b.textContent='Acendendo as velas ✦';
 setTimeout(()=>{r.style.display='block';r.scrollIntoView({behavior:'smooth'})},1600)});
+if(location.hash==='#preview'){r.style.display='block'}
 </script>
 </body>
 </html>
