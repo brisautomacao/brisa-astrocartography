@@ -133,7 +133,7 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
       <label for="d">Data de nascimento</label><input id="d" type="date" required>
       <label for="h">Hora, se souber</label><input id="h" type="time">
       <label for="c">Cidade</label><input id="c" type="text" placeholder="onde o céu estava" required>
-      <button class="btn" id="go" type="submit">Acender as velas</button>
+      <button class="btn" id="go" type="submit">Apontar o telescópio</button>
     </form>
   </section>
 
@@ -241,7 +241,7 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
 </div>
 <script>
 const f=document.getElementById('form'),r=document.getElementById('resultado'),b=document.getElementById('go');
-f.addEventListener('submit',e=>{e.preventDefault();b.disabled=true;b.textContent='Acendendo as velas ✦';
+f.addEventListener('submit',e=>{e.preventDefault();b.disabled=true;b.textContent='Apontando o telescópio ✦';
 setTimeout(()=>{r.style.display='block';r.scrollIntoView({behavior:'smooth'})},1600)});
 if(location.hash==='#preview'){r.style.display='block';document.querySelector('.hero').style.minHeight='430px';document.querySelector('.hero img').style.height='430px'}
 /* ===== exportação do cartão do céu ===== */
