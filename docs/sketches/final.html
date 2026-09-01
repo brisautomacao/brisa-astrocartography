@@ -281,13 +281,11 @@ async function makeCard(W,H){
   if(FE){x.fillText('e tem muito mais trancado 🔒',W/2,940)}
   else{x.fillText('e tem mais: oito planetas,',W/2,cy+R+84);x.fillText('doze casas e todos os aspectos 🔒',W/2,cy+R+138)}
   const chi=FE?1032:1652,cr=FE?66:82;
-  x.save();x.beginPath();x.arc(W/2,chi,cr+6,0,7);x.strokeStyle=GOLD;x.lineWidth=4;x.stroke();
-  x.beginPath();x.arc(W/2,chi,cr,0,7);x.clip();
-  try{const im=await new Promise((ok,no)=>{const j=new Image();j.onload=()=>ok(j);j.onerror=no;j.src='assets/chip.webp'});x.drawImage(im,W/2-cr,chi-cr,cr*2,cr*2)}catch(e){}
-  x.restore();
-  x.fillStyle=CREAM;x.font='500 '+(FE?29:33)+'px Outfit';x.fillText('Comenta MAPA no @brisaastral.ai',W/2,chi+cr+(FE?54:62));
-  x.fillStyle='#dcc9ab';x.font='300 '+(FE?25:29)+'px Outfit';x.fillText('que eu te mando o teu, de graça ✨',W/2,chi+cr+(FE?54:62)+(FE?42:46));
-  x.fillStyle=BRASS;x.font='italic 330 '+(FE?24:28)+'px Fraunces';x.fillText('Com carinho, Dona Celeste',W/2,H-34);
+  x.fillStyle=CREAM;x.font='500 '+(FE?30:34)+'px Outfit';
+  const cta='Faça seu mapa em ';const cw=x.measureText(cta).width;
+  const hnd='@brisaastral.ai';const hw=x.measureText(hnd).width;
+  const x0=W/2-(cw+hw)/2;
+  x.textAlign='left';x.fillText(cta,x0,chi);x.fillStyle=GOLD;x.fillText(hnd,x0+cw,chi);x.textAlign='center';
   return new Promise(ok=>c.toBlob(b=>ok(URL.createObjectURL(b)),'image/png'));
 }
 async function doExport(W,H){const url=await makeCard(W,H);
