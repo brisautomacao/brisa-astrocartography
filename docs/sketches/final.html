@@ -79,6 +79,27 @@ input[type=date],input[type=time]{color-scheme:dark}
 .hint{font:300 12.5px Outfit;color:var(--brass);margin-top:12px;letter-spacing:.04em}
 .btn2{display:inline-block;margin-top:20px;text-decoration:none;border:1.3px solid var(--gold);color:var(--gold);font:500 13px Outfit;letter-spacing:.22em;text-transform:uppercase;padding:15px 30px;border-radius:2px;transition:.25s}
 .btn2:hover{background:rgba(200,159,80,.12)}
+.cadeado-card{position:relative;margin-top:26px;padding:24px 20px 22px;border:1px solid rgba(200,159,80,.3);border-radius:4px;background:rgba(30,18,16,.5);overflow:hidden}
+.cadeado-card::before{content:"";position:absolute;inset:0;filter:blur(9px);opacity:.4;background:repeating-linear-gradient(180deg,rgba(233,213,189,.09) 0 22px,transparent 22px 32px);pointer-events:none}
+.cadeado-card>*{position:relative;z-index:1}
+.cc-head{display:flex;align-items:center;gap:9px;color:var(--brass);font-size:11px;letter-spacing:.28em;text-transform:uppercase}
+.cc-head .lk{color:var(--gold);font-size:14px;letter-spacing:0}
+.cadeado-card h3{font-family:Fraunces,serif;font-weight:450;font-size:19px;margin-top:8px}
+.cadeado-card .cc-sub{font-weight:300;font-size:13.5px;color:#b7a184;margin-top:4px;line-height:1.55}
+/* fileiras de planetas trancados */
+.prow{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px dashed rgba(200,159,80,.16)}
+.prow:last-child{border-bottom:none}
+.prow .pg{flex:0 0 36px;width:36px;height:36px;border-radius:50%;border:1.1px solid rgba(200,159,80,.5);display:flex;align-items:center;justify-content:center;color:var(--amber);font-size:16px;background:radial-gradient(circle at 35% 30%,rgba(247,181,103,.14),transparent)}
+.prow .who b{display:block;font-family:Fraunces,serif;font-weight:550;font-size:15.5px}
+.prow .who small{font:300 11.5px Outfit;color:#b7a184;letter-spacing:.05em}
+.prow .tease{flex:1;text-align:right}
+.prow .tease i{display:block;font-style:normal;font-size:11.5px;color:#8d795f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:26ch}
+.prow .tease b{display:block;font:300 12px Outfit;color:var(--cream);filter:blur(4.5px);user-select:none;line-height:1.7}
+.prow .lk{color:rgba(200,159,80,.75);font-size:13px;margin-left:6px}
+/* casas */
+.casas{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.casas span{border:1px solid rgba(200,159,80,.35);border-radius:999px;padding:7px 13px;font:300 12.5px Outfit;color:#cbb694;display:inline-flex;gap:7px;align-items:center}
+.casas span::before{content:"✦";color:var(--gold);font-size:9px}
 footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunces,serif;font-style:italic;font-size:14.5px}
 </style>
 </head>
@@ -122,7 +143,7 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
     </div>
 
     <figure class="carta">
-      <svg viewBox="0 0 300 300" role="img" aria-label="Mapa astral em linhas de ouro">
+      <svg viewBox="0 0 300 300" role="img" aria-label="Mapa astral completo em linhas de ouro">
         <g fill="none" stroke="#C89F50" stroke-width=".8" opacity=".55">
           <circle cx="150" cy="150" r="134" stroke-dasharray="1 6"/>
           <circle cx="150" cy="150" r="112" opacity=".5"/>
@@ -132,27 +153,66 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
           <text x="254" y="246">♋</text><text x="150" y="286">♌</text><text x="46" y="246">♍</text>
           <text x="20" y="155">♎</text><text x="46" y="64">♏</text>
         </g>
-        <g stroke="#F7B567" stroke-width=".7" stroke-dasharray="1 4" opacity=".7">
-          <path d="M150 62 96 206M150 62l106 46M96 206l160-98M96 206h110"/>
+        <g stroke="#F7B567" stroke-width=".65" stroke-dasharray="1 4" opacity=".65">
+          <path d="M150 62 96 206M150 62l88 24M96 206 258 168M96 206h118M238 86 74 196M238 86l120 62M112 70 258 148M112 70l118 178M196 236 74 196M258 168l-20 68M64 118 112 70M64 118l186 74"/>
         </g>
         <g fill="#F7B567">
           <circle cx="150" cy="62" r="4.6"><animate attributeName="opacity" values="1;.5;1" dur="3.2s" repeatCount="indefinite"/></circle>
-          <circle cx="96" cy="206" r="4"/><circle cx="256" cy="108" r="3.2"/>
-          <circle cx="206" cy="206" r="3.6"/><circle cx="118" cy="116" r="2.6"/>
+          <circle cx="238" cy="86" r="3.4"/><circle cx="258" cy="148" r="4.2"/>
+          <circle cx="214" cy="214" r="3.8"/><circle cx="140" cy="248" r="4.4"/>
+          <circle cx="74" cy="196" r="3.6"/><circle cx="96" cy="206" r="4"/>
+          <circle cx="64" cy="118" r="3.2"/><circle cx="112" cy="70" r="3"/>
+          <circle cx="196" cy="236" r="2.8"/><circle cx="258" cy="168" r="2.6"/>
+          <circle cx="196" cy="152" r="3.4"/>
         </g>
-        <g fill="#A47F5D" font-size="8.5" font-family="Outfit,sans-serif" text-anchor="middle" letter-spacing="1">
-          <text x="150" y="52">SOL</text><text x="96" y="197">LUA</text><text x="256" y="98">VÊNUS</text><text x="206" y="197">MARTE</text>
+        <g fill="#A47F5D" font-size="8" font-family="Outfit,sans-serif" text-anchor="middle" letter-spacing=".5">
+          <text x="150" y="52">SOL</text><text x="238" y="76">MERCÚRIO</text><text x="258" y="138">VÊNUS</text>
+          <text x="214" y="227">MARTE</text><text x="140" y="261">JÚPITER</text><text x="74" y="209">SATURNO</text>
+          <text x="64" y="109">URANO</text><text x="112" y="61">NETUNO</text><text x="196" y="249">PLUTÃO</text>
+          <text x="196" y="143">NODO</text><text x="96" y="197">LUA</text>
         </g>
       </svg>
-      <figcaption>o seu céu, em linha dourada</figcaption>
+      <figcaption>o seu céu inteiro, em linha dourada</figcaption>
     </figure>
+
+    <div class="cadeado-card">
+      <div class="cc-head"><span class="lk">🔒</span> mais moradores, trancados</div>
+      <h3>Os outros oito planetas</h3>
+      <p class="cc-sub">Cada um mora num canto do seu céu e conta um segredo diferente.</p>
+      <div class="prow"><div class="pg">☿</div><div class="who"><b>Mercúrio</b><small>como você pensa e fala</small></div><div class="tease"><i>a palavra certa na hora certa...</i><b>mente rápida que costura ideias, mas que se perde quando</b></div><span class="lk">🔒</span></div>
+      <div class="prow"><div class="pg">♀</div><div class="who"><b>Vênus</b><small>como você ama</small></div><div class="tease"><i>o amor pede beleza e calma...</i><b>você ama devagar, com gestos, com carta, com ceia longa. Ciúme</b></div><span class="lk">🔒</span></div>
+      <div class="prow"><div class="pg">♂</div><div class="who"><b>Marte</b><small>como você age</small></div><div class="tease"><i>força que espera a hora certa...</i><b>age com paciência de tear, mas quando decide, não tem quem segure</b></div><span class="lk">🔒</span></div>
+      <div class="prow"><div class="pg">♃</div><div class="who"><b>Júpiter</b><small>onde a vida te favorece</small></div><div class="tease"><i>porteira que abre sozinha...</i><b>expansão vem pelo estudo, por estrada longa, por gente de outro</b></div><span class="lk">🔒</span></div>
+      <div class="prow"><div class="pg">♄</div><div class="who"><b>Saturno</b><small>as lições que não fogem</small></div><div class="tease"><i>o professor exigente...</i><b>pede estrutura nos alicerces: casa, ofício, compromisso. Depois</b></div><span class="lk">🔒</span></div>
+      <div class="prow"><div class="pg">♆</div><div class="who"><b>Urano, Netuno, Plutão</b><small>as camadas mais fundas</small></div><div class="tease"><i>o que se move por baixo...</i><b>mudança súbita, sonho que avisa, poder que renasce. É aqui que</b></div><span class="lk">🔒</span></div>
+      <div class="prow"><div class="pg">☊</div><div class="who"><b>Nodo Lunar</b><small>para onde a alma pede pra ir</small></div><div class="tease"><i>a bússola da carta...</i><b>o caminho de crescimento pede coragem de soltar o que já foi</b></div><span class="lk">🔒</span></div>
+    </div>
+
+    <div class="cadeado-card">
+      <div class="cc-head"><span class="lk">🔒</span> doze gavetas, todas trancadas</div>
+      <h3>As 12 casas da sua vida</h3>
+      <p class="cc-sub">A carta tem doze gavetas. Cada planeta mora numa, e a gaveta conta onde aquilo acontece na sua vida.</p>
+      <div class="casas">
+        <span>amor</span><span>dinheiro</span><span>família</span><span>carreira</span>
+        <span>amizades</span><span>saúde</span><span>viagens</span><span>estudos</span>
+        <span>espiritualidade</span><span>comunicação</span><span>lar</span><span>propósito</span>
+      </div>
+    </div>
+
+    <div class="cadeado-card">
+      <div class="cc-head"><span class="lk">🔒</span> conversas particulares</div>
+      <h3>Os aspectos</h3>
+      <p class="cc-sub">Aqueles riscos dourados na carta? Cada um é uma conversa entre dois planetas. Umas te ajudam, outras pedem cuidado.</p>
+      <div class="prow"><div class="pg">✶</div><div class="who"><b>Sol e Lua</b><small>o que você quer x o que você sente</small></div><div class="tease"><i>harmonia ou puxa de tapete...</i><b>quando os dois conversam bem, a vida anda com o coração no lugar</b></div><span class="lk">🔒</span></div>
+      <div class="prow"><div class="pg">✶</div><div class="who"><b>Vênus e Saturno</b><small>o amor e a exigência</small></div><div class="tease"><i>o amor que amadurece...</i><b>relação que pede presença, promessa cumprida e pé no chão</b></div><span class="lk">🔒</span></div>
+    </div>
 
     <div class="lock">
       <div class="veil"></div>
       <div class="chip"><img src="assets/chip.webp" alt="Dona Celeste"></div>
-      <h2>O mapa completo</h2>
-      <p class="say">Isso aqui eu leio pra você. Quer que eu interprete o que significa?</p>
-      <div class="hint">onze planetas, doze casas e os aspectos, em conversa</div>
+      <h2>A leitura completa</h2>
+      <p class="say">Tudo isso eu leio pra você, com calma, do meu jeito. Quer que eu interprete o que o seu céu está dizendo?</p>
+      <div class="hint">onze planetas, doze casas, todos os aspectos, em conversa</div>
       <a class="btn2" href="#" onclick="return false">Liberar com a Celeste</a>
     </div>
   </section>
