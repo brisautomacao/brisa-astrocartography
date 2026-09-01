@@ -149,6 +149,14 @@ editorial para títulos). Direção de arte:
    de promessa de futuro certo; texto da página em pt-BR coloquial da
    persona (meu bem, anota aí).
 
+## Adendo 1 (2026-09-01): cartão compartilhável
+
+A Adriana pediu que a tríade + carta possam ser exportadas para story/feed. Decisão:
+- **Como**: canvas 2D desenhado no próprio navegador (`makeCard(W,H)` em `docs/sketches/final.html`), sem backend. A pessoa toca em "Pra story" (1080x1920) ou "Pro feed" (1080x1350), a página gera o PNG e oferece download; em navegadores de app, fallback de toque e segurar para salvar.
+- **Conteúdo do cartão**: kicker "O MEU CÉU", as três chaves em Fraunces itálico, a carta em linha dourada, a foto da Celeste em círculo dourado, o tease do que continua trancado e o CTA "Comenta MAPA no @brisaastral.ai".
+- **Por quê**: o lead posta o próprio céu e vira mídia do funil; o CTA fecha o loop reels → MAPA → landing → story do lead → novos comentários MAPA.
+- **No MVP 1**: os valores da tríade e as posições dos planetas saem do cálculo real (Swiss Ephemeris), não dos dados de exemplo.
+
 ## Plano de Migração
 
 1. Preparar assets: crops circulares da Celeste em 2-3 tamanhos (chip
