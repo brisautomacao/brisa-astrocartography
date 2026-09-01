@@ -160,22 +160,22 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
           <text x="13" y="156">♑</text><text x="37" y="91">♒</text><text x="85" y="43">♓</text>
         </g>
         <g stroke="#F7B567" stroke-width=".65" stroke-dasharray="1 4" opacity=".65">
-          <path d="M150 62 96 206M150 62l88 24M96 206 258 168M96 206h118M238 86 74 196M238 86l120 62M112 70 258 148M112 70l118 178M196 236 74 196M258 168l-20 68M64 118 112 70M64 118l186 74"/>
+          <path d="M231 202 106 236M231 202 175 211M231 202 240 158M106 236 85 200M106 236 141 199M161 71 204 86M161 71 88 71M61 159 98 113M61 159 141 199M230 114 240 158M98 113 88 71"/>
         </g>
         <g fill="#F7B567">
-          <circle cx="150" cy="62" r="4.6"><animate attributeName="opacity" values="1;.5;1" dur="3.2s" repeatCount="indefinite"/></circle>
-          <circle cx="238" cy="86" r="3.4"/><circle cx="258" cy="148" r="4.2"/>
-          <circle cx="214" cy="214" r="3.8"/><circle cx="140" cy="248" r="4.4"/>
-          <circle cx="74" cy="196" r="3.6"/><circle cx="96" cy="206" r="4"/>
-          <circle cx="64" cy="118" r="3.2"/><circle cx="112" cy="70" r="3"/>
-          <circle cx="196" cy="236" r="2.8"/><circle cx="258" cy="168" r="2.6"/>
-          <circle cx="196" cy="152" r="3.4"/>
+          <circle cx="231" cy="202" r="4.6"><animate attributeName="opacity" values="1;.5;1" dur="3.2s" repeatCount="indefinite"/></circle>
+          <circle cx="106" cy="236" r="4.4"/><circle cx="175" cy="211" r="3.4"/>
+          <circle cx="240" cy="158" r="4.2"/><circle cx="161" cy="71" r="3.8"/>
+          <circle cx="61" cy="159" r="4.4"/><circle cx="141" cy="199" r="3.6"/>
+          <circle cx="98" cy="113" r="3.2"/><circle cx="204" cy="86" r="3"/>
+          <circle cx="85" cy="200" r="2.8"/><circle cx="230" cy="114" r="2.6"/>
+          <circle cx="88" cy="71" r="3.4"/>
         </g>
         <g fill="#A47F5D" font-size="8" font-family="Outfit,sans-serif" text-anchor="middle" letter-spacing=".5">
-          <text x="150" y="52">SOL</text><text x="238" y="76">MERCÚRIO</text><text x="258" y="138">VÊNUS</text>
-          <text x="214" y="227">MARTE</text><text x="140" y="261">JÚPITER</text><text x="74" y="209">SATURNO</text>
-          <text x="64" y="109">URANO</text><text x="112" y="61">NETUNO</text><text x="196" y="249">PLUTÃO</text>
-          <text x="196" y="143">NODO</text><text x="96" y="197">LUA</text>
+          <text x="231" y="192">SOL</text><text x="175" y="201">MERCÚRIO</text><text x="240" y="148">VÊNUS</text>
+          <text x="161" y="61">MARTE</text><text x="61" y="149">JÚPITER</text><text x="141" y="189">SATURNO</text>
+          <text x="98" y="103">URANO</text><text x="204" y="76">NETUNO</text><text x="85" y="190">PLUTÃO</text>
+          <text x="230" y="104">NODO</text><text x="106" y="226">LUA</text><text x="88" y="61">ASC</text>
         </g>
       </svg>
       <figcaption>o seu céu inteiro, em linha dourada</figcaption>
@@ -247,8 +247,8 @@ if(location.hash==='#preview'){r.style.display='block';document.querySelector('.
 /* ===== exportação do cartão do céu ===== */
 const GOLD='#C89F50',AMBER='#F7B567',CREAM='#E9D5BD',BRASS='#A47F5D';
 const TRI=[{g:'☉',k:'Sol',s:'Leão',d:'o que faz o seu coração brilhar'},{g:'☾',k:'Lua',s:'Escorpião',d:'o jeito de sentir e de cuidar'},{g:'↑',k:'Ascendente',s:'Peixes',d:'a porta por onde o mundo te encontra'}];
-const PLAN=[[150,62,'SOL'],[238,86,'MERCÚRIO'],[258,148,'VÊNUS'],[214,214,'MARTE'],[140,248,'JÚPITER'],[74,196,'SATURNO'],[64,118,'URANO'],[112,70,'NETUNO'],[196,236,'PLUTÃO'],[96,206,'LUA'],[196,152,'NODO']];
-const ASP=[[150,62,96,206],[150,62,238,86],[96,206,258,168],[96,206,214,214],[238,86,74,196],[238,86,258,148],[112,70,258,148],[112,70,214,214],[196,236,74,196],[64,118,112,70],[64,118,258,148]];
+const PLAN=[[231,202,'SOL'],[106,236,'LUA'],[175,211,'MERCÚRIO'],[240,158,'VÊNUS'],[161,71,'MARTE'],[61,159,'JÚPITER'],[141,199,'SATURNO'],[98,113,'URANO'],[204,86,'NETUNO'],[85,200,'PLUTÃO'],[230,114,'NODO'],[88,71,'ASC']];
+const ASP=[[231,202,106,236],[231,202,175,211],[231,202,240,158],[106,236,85,200],[106,236,141,199],[161,71,204,86],[161,71,88,71],[61,159,98,113],[61,159,141,199],[230,114,240,158],[98,113,88,71]];
 const SIG=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 const sp=s=>[...s].join(' ');
 async function makeCard(W,H){
