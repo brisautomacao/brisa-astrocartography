@@ -14,5 +14,6 @@ Registro de decisões de arquitetura e produto do funil de mapa astral da Brisa 
 
 | ADR | Título | Status |
 |---|---|---|
-| [0001](0001-landing-page-funil-mapa-astral.md) | Landing page do funil MAPA (captura de lead + mapa astral detalhado com cadeado) | Proposto |
-| [0002](0002-identidade-visual-landing-dona-celeste.md) | Identidade visual da landing: Mesa da Celeste (candlelit, paleta dos vídeos, chip Celeste no cadeado) | Proposto |
+| [0001](0001-landing-page-funil-mapa-astral.md) | Landing page do funil MAPA (captura de lead + mapa astral detalhado com cadeado) | Aceito (Frente 1 entregue 01/09/2026) |
+| [0002](0002-identidade-visual-landing-dona-celeste.md) | Identidade visual da landing: Mesa da Celeste (candlelit, paleta dos vídeos, chip Celeste no cadeado) | Aceito |
+| [0003](0003-frente1-captura-de-lead-whatsapp-brisadocs.md) | Frente 1: captura de lead com WhatsApp via API pública do brisadocs (SQLite no PVC, aba /painel/leads) | Aceito |
