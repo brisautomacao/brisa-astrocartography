@@ -154,9 +154,10 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
           <circle cx="150" cy="150" r="112" opacity=".5"/>
         </g>
         <g font-size="13" fill="#C89F50" text-anchor="middle" font-family="serif" opacity=".85">
-          <text x="150" y="28">♈</text><text x="254" y="64">♉</text><text x="280" y="155">♊</text>
-          <text x="254" y="246">♋</text><text x="150" y="286">♌</text><text x="46" y="246">♍</text>
-          <text x="20" y="155">♎</text><text x="46" y="64">♏</text>
+          <text x="150" y="25">♈</text><text x="215" y="43">♉</text><text x="263" y="91">♊</text>
+          <text x="287" y="156">♋</text><text x="263" y="221">♌</text><text x="215" y="269">♍</text>
+          <text x="150" y="287">♎</text><text x="85" y="269">♏</text><text x="37" y="221">♐</text>
+          <text x="13" y="156">♑</text><text x="37" y="91">♒</text><text x="85" y="43">♓</text>
         </g>
         <g stroke="#F7B567" stroke-width=".65" stroke-dasharray="1 4" opacity=".65">
           <path d="M150 62 96 206M150 62l88 24M96 206 258 168M96 206h118M238 86 74 196M238 86l120 62M112 70 258 148M112 70l118 178M196 236 74 196M258 168l-20 68M64 118 112 70M64 118l186 74"/>
@@ -245,10 +246,10 @@ setTimeout(()=>{r.style.display='block';r.scrollIntoView({behavior:'smooth'})},1
 if(location.hash==='#preview'){r.style.display='block';document.querySelector('.hero').style.minHeight='430px';document.querySelector('.hero img').style.height='430px'}
 /* ===== exportação do cartão do céu ===== */
 const GOLD='#C89F50',AMBER='#F7B567',CREAM='#E9D5BD',BRASS='#A47F5D';
-const TRI=[{g:'☉',k:'Sol',s:'Leão'},{g:'☾',k:'Lua',s:'Escorpião'},{g:'↑',k:'Asc',s:'Peixes'}];
+const TRI=[{g:'☉',k:'Sol',s:'Leão',d:'o que faz o seu coração brilhar'},{g:'☾',k:'Lua',s:'Escorpião',d:'o jeito de sentir e de cuidar'},{g:'↑',k:'Ascendente',s:'Peixes',d:'a porta por onde o mundo te encontra'}];
 const PLAN=[[150,62,'SOL'],[238,86,'MERCÚRIO'],[258,148,'VÊNUS'],[214,214,'MARTE'],[140,248,'JÚPITER'],[74,196,'SATURNO'],[64,118,'URANO'],[112,70,'NETUNO'],[196,236,'PLUTÃO'],[96,206,'LUA'],[196,152,'NODO']];
 const ASP=[[150,62,96,206],[150,62,238,86],[96,206,258,168],[96,206,214,214],[238,86,74,196],[238,86,258,148],[112,70,258,148],[112,70,214,214],[196,236,74,196],[64,118,112,70],[64,118,258,148]];
-const SIG=['♈','♉','♊','♋','♌','♍','♎','♏'];
+const SIG=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 const sp=s=>[...s].join(' ');
 async function makeCard(W,H){
   const FE=H<1600;
@@ -263,14 +264,22 @@ async function makeCard(W,H){
   x.strokeStyle='#C8C9CB';x.globalAlpha=.5;x.beginPath();x.moveTo(W*.06,H*.2);x.lineTo(W*.3,H*.26);x.stroke();x.globalAlpha=1;
   x.fillStyle=AMBER;x.font=(FE?'500 28px':'500 30px')+' Outfit';x.fillText(sp('O MEU CÉU'),W/2,FE?130:150);
   x.fillStyle='rgba(233,213,189,.85)';x.font='300 '+(FE?24:26)+'px Outfit';x.fillText(sp('as três chaves, lidas por Dona Celeste'),W/2,FE?176:200);
-  TRI.forEach((t,i)=>{const y=(FE?280:320)+i*(FE?96:128);x.font='300 '+(FE?48:58)+'px serif';x.fillStyle=AMBER;x.fillText(t.g,W*.14,y);
-    x.textAlign='left';x.font='italic 330 '+(FE?60:72)+'px Fraunces';x.fillStyle=CREAM;x.fillText(t.k+' em ',W*.2,y);
-    const w=x.measureText(t.k+' em ').width;x.fillStyle=GOLD;x.fillText(t.s,W*.2+w,y);x.textAlign='center'});
-  const cy=FE?690:1056,R=FE?200:324;
+  TRI.forEach((t,i)=>{const y=(FE?295:310)+i*(FE?120:160);x.font='300 '+(FE?48:58)+'px serif';x.fillStyle=AMBER;x.fillText(t.g,W*.14,y);
+    x.textAlign='left';let fs=FE?54:64;
+    const pre=t.k+' em ';
+    x.font='italic 330 '+fs+'px Fraunces';
+    let w=x.measureText(pre).width;const w2=x.measureText(t.s).width;
+    const maxW=W-70-W*.2;
+    if(w+w2>maxW){fs=Math.max(FE?40:48,Math.floor(fs*maxW/(w+w2)));x.font='italic 330 '+fs+'px Fraunces';w=x.measureText(pre).width}
+    x.fillStyle=CREAM;x.fillText(pre,W*.2,y);
+    x.fillStyle=GOLD;x.fillText(t.s,W*.2+w,y);
+    x.font='300 '+(FE?28:31)+'px Outfit';x.fillStyle='#c9b394';x.fillText(t.d,W*.2,y+(FE?52:60));
+    x.textAlign='center'});
+  const cy=FE?895:1080,R=FE?210:280;
   x.strokeStyle=GOLD;x.globalAlpha=.6;x.setLineDash([3,8]);x.lineWidth=2.4;x.beginPath();x.arc(W/2,cy,R,0,7);x.stroke();
   x.setLineDash([]);x.globalAlpha=.5;x.beginPath();x.arc(W/2,cy,R*.84,0,7);x.stroke();x.globalAlpha=1;
-  SIG.forEach((s,i)=>{const a=-Math.PI/2+i*Math.PI/4;x.font='300 '+(FE?26:34)+'px serif';x.fillStyle=GOLD;x.globalAlpha=.85;
-    x.fillText(s,W/2+Math.cos(a)*(R+30),cy+Math.sin(a)*(R+30)+10);x.globalAlpha=1});
+  SIG.forEach((s,i)=>{const a=-Math.PI/2+i*Math.PI/6;x.font='300 '+(FE?26:30)+'px serif';x.fillStyle=GOLD;x.globalAlpha=.85;
+    x.fillText(s,W/2+Math.cos(a)*(R+(FE?30:34)),cy+Math.sin(a)*(R+(FE?30:34))+10);x.globalAlpha=1});
   x.strokeStyle=AMBER;x.globalAlpha=.65;x.setLineDash([2,7]);x.lineWidth=2;
   const P=(p)=>[W/2+(p[0]-150)/150*R,cy+(p[1]-150)/150*R];
   ASP.forEach(a=>{const[ax,ay]=P([a[0],a[1]]),[bx,by]=P([a[2],a[3]]);x.beginPath();x.moveTo(ax,ay);x.lineTo(bx,by);x.stroke()});
@@ -278,9 +287,8 @@ async function makeCard(W,H){
   PLAN.forEach((p,i)=>{const[px,py]=P(p);x.fillStyle=AMBER;x.beginPath();x.arc(px,py,(FE?5:7)+(i===0?3:0),0,7);x.fill();
     if(!FE){x.fillStyle=BRASS;x.font='500 17px Outfit';x.fillText(sp(p[2]),px,py-16)}});
   x.fillStyle='#dcc9ab';x.font='italic 330 '+(FE?34:40)+'px Fraunces';
-  if(FE){x.fillText('e isso é só o começo ✨',W/2,940)}
-  else{x.fillText('e tem mais: oito planetas,',W/2,cy+R+84);x.fillText('doze casas e conversas entre estrelas ✨',W/2,cy+R+138)}
-  const chi=FE?1032:1652,cr=FE?66:82;
+  if(FE){x.fillText('e isso é só o começo ✨',W/2,1205)}
+  const chi=FE?1290:1560;
   x.fillStyle=CREAM;x.font='500 '+(FE?30:34)+'px Outfit';
   const cta='Faça seu mapa em ';const cw=x.measureText(cta).width;
   const hnd='@brisaastral.ai';const hw=x.measureText(hnd).width;
