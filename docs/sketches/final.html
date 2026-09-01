@@ -120,7 +120,7 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
   <div class="hero-txt">
     <div class="kicker">O seu céu, meu bem</div>
     <h1>Óh, meu bem...<br>deixa eu ver <em>o seu céu.</em></h1>
-    <p class="sub">Cinquenta anos lendo o que as estrelas susurram. Me conta onde e quando você nasceu.</p>
+    <p class="sub">O céu inteiro guarda histórias. A sua está esperando. Me conta onde e quando você nasceu.</p>
     <a class="cue" href="#comeco">Ver o meu céu <span>✦</span></a>
   </div>
 </header>
@@ -182,20 +182,20 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
 
     <div class="export">
       <div class="cc-head" style="justify-content:center"><span class="lk">✦</span> leve o seu céu com você</div>
-      <p class="cc-sub">Salve e poste no seu story ou no seu feed: as três chaves do seu céu, do jeitinho da Celeste.</p>
+      <p class="cc-sub">Toque e o compartilhar do Instagram abre com a imagem pronta: as três chaves do seu céu, do jeitinho da Celeste.</p>
       <div class="ex-btns">
-        <a class="btn2 exb" id="exStory" href="#" onclick="return false">Pra story</a>
-        <a class="btn2 exb" id="exFeed" href="#" onclick="return false">Pro feed</a>
+        <a class="btn2 exb" id="exStory" href="#" onclick="return false">Compartilhar no story</a>
+        <a class="btn2 exb" id="exFeed" href="#" onclick="return false">Compartilhar no feed</a>
       </div>
       <div id="exOut" style="display:none">
         <img id="exImg" alt="Cartão do seu céu para compartilhar">
-        <a id="exDl" class="btn2" download="meu-ceu-dona-celeste.png" href="#">Baixar imagem</a>
-        <p class="hint">se o download não abrir, toque e segure na imagem e escolha salvar</p>
+        <a id="exDl" class="btn2" download="meu-ceu.png" href="#">Salvar imagem</a>
+        <p class="hint">se o compartilhar não abrir no seu aparelho, salve a imagem e poste direto no Instagram</p>
       </div>
     </div>
 
     <div class="cadeado-card">
-      <div class="cc-head"><span class="lk">🔒</span> mais moradores, trancados</div>
+      <div class="cc-head"><span class="lk">✦</span> os outros moradores do céu</div>
       <h3>Os outros oito planetas</h3>
       <p class="cc-sub">Cada um mora num canto do seu céu e conta um segredo diferente.</p>
       <div class="prow"><div class="pg">☿</div><div class="who"><b>Mercúrio</b><small>como você pensa e fala</small></div><div class="tease"><i>a palavra certa na hora certa...</i><b>mente rápida que costura ideias, mas que se perde quando</b></div><span class="lk">🔒</span></div>
@@ -208,7 +208,7 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
     </div>
 
     <div class="cadeado-card">
-      <div class="cc-head"><span class="lk">🔒</span> doze gavetas, todas trancadas</div>
+      <div class="cc-head"><span class="lk">✦</span> doze gavetas, uma vida inteira</div>
       <h3>As 12 casas da sua vida</h3>
       <p class="cc-sub">A carta tem doze gavetas. Cada planeta mora numa, e a gaveta conta onde aquilo acontece na sua vida.</p>
       <div class="casas">
@@ -219,7 +219,7 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
     </div>
 
     <div class="cadeado-card">
-      <div class="cc-head"><span class="lk">🔒</span> conversas particulares</div>
+      <div class="cc-head"><span class="lk">✶</span> conversas particulares</div>
       <h3>Os aspectos</h3>
       <p class="cc-sub">Aqueles riscos dourados na carta? Cada um é uma conversa entre dois planetas. Umas te ajudam, outras pedem cuidado.</p>
       <div class="prow"><div class="pg">✶</div><div class="who"><b>Sol e Lua</b><small>o que você quer x o que você sente</small></div><div class="tease"><i>harmonia ou puxa de tapete...</i><b>quando os dois conversam bem, a vida anda com o coração no lugar</b></div><span class="lk">🔒</span></div>
@@ -278,8 +278,8 @@ async function makeCard(W,H){
   PLAN.forEach((p,i)=>{const[px,py]=P(p);x.fillStyle=AMBER;x.beginPath();x.arc(px,py,(FE?5:7)+(i===0?3:0),0,7);x.fill();
     if(!FE){x.fillStyle=BRASS;x.font='500 17px Outfit';x.fillText(sp(p[2]),px,py-16)}});
   x.fillStyle='#dcc9ab';x.font='italic 330 '+(FE?34:40)+'px Fraunces';
-  if(FE){x.fillText('e tem muito mais trancado 🔒',W/2,940)}
-  else{x.fillText('e tem mais: oito planetas,',W/2,cy+R+84);x.fillText('doze casas e todos os aspectos 🔒',W/2,cy+R+138)}
+  if(FE){x.fillText('e isso é só o começo ✨',W/2,940)}
+  else{x.fillText('e tem mais: oito planetas,',W/2,cy+R+84);x.fillText('doze casas e conversas entre estrelas ✨',W/2,cy+R+138)}
   const chi=FE?1032:1652,cr=FE?66:82;
   x.fillStyle=CREAM;x.font='500 '+(FE?30:34)+'px Outfit';
   const cta='Faça seu mapa em ';const cw=x.measureText(cta).width;
@@ -289,6 +289,14 @@ async function makeCard(W,H){
   return new Promise(ok=>c.toBlob(b=>ok(URL.createObjectURL(b)),'image/png'));
 }
 async function doExport(W,H){const url=await makeCard(W,H);
+  try{
+    const blob=await (await fetch(url)).blob();
+    const file=new File([blob],'meu-ceu.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({files:[file],title:'Meu céu',text:'Faça seu mapa em @brisaastral.ai'});
+      return;
+    }
+  }catch(e){}
   document.getElementById('exOut').style.display='block';
   document.getElementById('exImg').src=url;document.getElementById('exDl').href=url;
   document.getElementById('exOut').scrollIntoView({behavior:'smooth'})}
