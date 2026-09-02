@@ -628,6 +628,37 @@ const ISCA={
 const ISCA_DOM={'Mercúrio':'mente','Vênus':'amor','Marte':'acao',
   'Júpiter':'sorte','Saturno':'licao'};
 
+/* ===== conversas entre os planetas =====
+   Antes cada linha repetia a descricao do TIPO de aspecto: dois sextis no
+   mesmo mapa saiam com a frase identica, e nenhuma delas falava da pessoa.
+   Agora a frase se monta com o que cada planeta representa nela mais o jeito
+   como os dois se falam. Texto isolado, igual a tabela ISCA. */
+const AREA={
+  'Sol':'o seu brilho','Lua':'o seu jeito de sentir',
+  'Mercúrio':'a sua cabeça','Vênus':'o seu amor','Marte':'a sua força',
+  'Júpiter':'a sua sorte','Saturno':'as suas cobranças',
+  'Urano':'a sua vontade de romper','Netuno':'a sua intuição',
+  'Plutão':'o seu poder de recomeçar','Nodo Norte':'o caminho que a sua alma pede',
+  'Nodo Lunar':'o caminho que a sua alma pede'};
+const JEITO={
+  'Conjunção':'caminham lado a lado, e um puxa o outro junto',
+  'Oposição':'puxam para lados opostos e pedem que você equilibre os dois',
+  'Trígono':'fluem sem esforço, e é aí que você se destaca sem nem perceber',
+  'Quadratura':'se atritam, e é desse atrito que você cresce',
+  'Sextil':'se ajudam sempre que você deixa acontecer'};
+function conversa(a,b,tipo,destaque){
+  const x=AREA[a],y=AREA[b],j=JEITO[tipo];
+  if(!x||!y||!j)return null;
+  let f=x+' e '+y+' '+j+'.';
+  f=f.charAt(0).toUpperCase()+f.slice(1);
+  /* o orbe ja esta na tela; aqui ele vira gente: quanto mais fechado, mais
+     essa conversa aparece no dia a dia da pessoa */
+  /* so a mais fechada do mapa ganha o destaque: repetir em todas seria o
+     mesmo defeito de antes, com outra frase */
+  if(destaque)f+=' É a conversa mais fechada do seu céu, dessas que se ouvem todo dia.';
+  return f;
+}
+
 function render(){
   const c=chart,p=c.planets;
   fd('metaLine').innerHTML='calculado para <b>'+fmtDate(userData.dateStr)+(userData.hasTime?', às '+userData.timeStr:'')+'</b> em <b>'+userData.city.name+'</b>'+(userData.hasTime?'':' · sem a hora, li o céu do meio-dia: o Ascendente pode variar');
@@ -680,10 +711,10 @@ function renderMoradas(){
 function renderAspects(){
   const p=chart.planets,c=chart;
   const ax=c.aspects.slice(0,unlocked?5:3);
-  fd('aspects').innerHTML=ax.map(a=>{
+  fd('aspects').innerHTML=ax.map((a,i)=>{
     const dd=Math.abs(p[a.a].lon-p[a.b].lon)>180?'x':'e';
     const lk=unlocked?'':'<span class="lk" style="align-self:center">✦</span>';
-    return '<div class="asp-row"><div class="ag">'+a.type.sym+'</div><div class="aw"><b>'+a.a+' '+dd+' '+a.b+'</b><small>'+a.type.n+' · orbe '+a.orb.toFixed(1)+'°</small><span class="tease-b">'+a.type.d+'</span></div>'+lk+'</div>';
+    return '<div class="asp-row"><div class="ag">'+a.type.sym+'</div><div class="aw"><b>'+a.a+' '+dd+' '+a.b+'</b><small>'+a.type.n+' · orbe '+a.orb.toFixed(1)+'°</small><span class="tease-b">'+(conversa(a.a,a.b,a.type.n,i===0)||a.type.d)+'</span></div>'+lk+'</div>';
   }).join('')||'<p class="cc-sub">Conversas mais raras hoje, meu bem.</p>';
 }
 
