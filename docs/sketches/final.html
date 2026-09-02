@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Outfit:wght@300..600&display=swap" rel="stylesheet">
+<script src="../astronomy.min.js"></script>
 <style>
 :root{
   --bg1:#2E1E2A;--bg2:#1E1210;--plum:#4A2040;--gold:#C89F50;--brass:#A47F5D;
@@ -14,22 +15,22 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:Outfit,system-ui,sans-serif;color:var(--cream);overflow-x:hidden;
+body{font-family:Outfit,system-ui,sans-serif;font-size:17px;color:var(--cream);overflow-x:hidden;
 background:
  radial-gradient(85% 30% at 50% 0,rgba(247,181,103,.15),transparent 65%),
  radial-gradient(60% 34% at 88% 88%,rgba(74,32,64,.4),transparent 70%),
  linear-gradient(180deg,var(--bg1),var(--bg2) 62%);
  background-attachment:fixed}
-/* ===== HERO (variação 1) ===== */
+/* ===== HERO ===== */
 .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;filter:saturate(.92)}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(185deg,rgba(30,18,16,.5) 0,rgba(30,18,16,.15) 26%,rgba(34,21,28,.8) 72%,var(--bg1) 97%)}
 .hero-txt{position:relative;z-index:1;padding:0 26px 12vh}
-.kicker{font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
-h1{font-family:Fraunces,serif;font-weight:330;font-style:italic;font-size:clamp(34px,9vw,52px);line-height:1.12}
+.kicker{font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+h1{font-family:Fraunces,serif;font-weight:330;font-style:italic;font-size:clamp(36px,9vw,54px);line-height:1.12}
 h1 em{color:var(--gold)}
-.sub{margin-top:14px;font-weight:300;font-size:16px;color:#dcc9ab;max-width:30ch;line-height:1.6}
-.cue{margin-top:26px;display:inline-flex;gap:10px;align-items:center;color:var(--gold);font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(200,159,80,.55);border-radius:2px;padding:13px 24px;text-decoration:none;background:rgba(30,18,16,.3);backdrop-filter:blur(3px);transition:.25s}
+.sub{margin-top:14px;font-weight:300;font-size:17px;color:#dcc9ab;max-width:30ch;line-height:1.6}
+.cue{margin-top:26px;display:inline-flex;gap:10px;align-items:center;color:var(--gold);font-size:13px;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(200,159,80,.55);border-radius:2px;padding:14px 26px;text-decoration:none;background:rgba(30,18,16,.3);backdrop-filter:blur(3px);transition:.25s}
 .cue:hover{background:rgba(200,159,80,.12)}
 .cue span{animation:bob 1.8s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
@@ -40,72 +41,104 @@ h1 em{color:var(--gold)}
 @keyframes shoot{0%,92%{opacity:0;transform:translate(0,0) rotate(14deg)}94%{opacity:.8}100%{opacity:0;transform:translate(46vw,16vh) rotate(14deg)}}
 .dust{position:fixed;width:4px;height:4px;border-radius:50%;background:var(--amber);opacity:.35;filter:blur(1px);animation:fl 10s linear infinite;z-index:0}
 @keyframes fl{0%{transform:translateY(8vh);opacity:0}12%{opacity:.5}88%{opacity:.3}100%{transform:translateY(-12vh) translateX(14px);opacity:0}}
-/* ===== EDITORIAL (variação 3) ===== */
-.col{max-width:430px;margin:0 auto;padding:0 24px 80px;position:relative;z-index:1}
-.divider{display:flex;align-items:center;gap:12px;color:var(--gold);font-size:11px;letter-spacing:.3em;text-transform:uppercase;margin:8px 0 22px}
+/* ===== EDITORIAL ===== */
+.col{max-width:480px;margin:0 auto;padding:0 24px 80px;position:relative;z-index:1}
+.divider{display:flex;align-items:center;gap:12px;color:var(--gold);font-size:12px;letter-spacing:.3em;text-transform:uppercase;margin:8px 0 22px}
 .divider::before,.divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(164,127,93,.55),transparent)}
-h2{font-family:Fraunces,serif;font-weight:400;font-size:23px}
-.lead{font-weight:300;color:#c9b394;font-size:14.5px;margin-top:6px;line-height:1.6}
-section{padding:46px 0 38px}
+h2{font-family:Fraunces,serif;font-weight:400;font-size:27px;line-height:1.25}
+.lead{font-weight:300;color:#c9b394;font-size:16.5px;margin-top:8px;line-height:1.65}
+section{padding:48px 0 40px}
 /* formulário: linhas */
-label{display:block;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--brass);margin:22px 0 4px}
-input{width:100%;background:transparent;border:none;border-bottom:1.2px solid rgba(200,159,80,.4);color:var(--cream);font:400 19px Fraunces,serif;padding:8px 2px;outline:none;transition:border-color .25s}
+label{display:block;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);margin:24px 0 6px}
+input{width:100%;background:transparent;border:none;border-bottom:1.2px solid rgba(200,159,80,.4);color:var(--cream);font:400 21px Fraunces,serif;padding:10px 2px;outline:none;transition:border-color .25s}
 input::placeholder{color:#6b564a;font-style:italic}
 input:focus{border-color:var(--amber)}
 input[type=date],input[type=time]{color-scheme:dark}
-.btn{margin-top:34px;width:100%;cursor:pointer;background:transparent;border:1.3px solid var(--gold);color:var(--gold);font:500 14px Outfit;letter-spacing:.24em;text-transform:uppercase;padding:16px;border-radius:2px;transition:.25s}
+.btn{margin-top:36px;width:100%;cursor:pointer;background:transparent;border:1.3px solid var(--gold);color:var(--gold);font:500 15.5px Outfit;letter-spacing:.2em;text-transform:uppercase;padding:18px;border-radius:2px;transition:.25s}
 .btn:hover{background:rgba(200,159,80,.12);box-shadow:0 0 26px rgba(200,159,80,.18)}
+/* autocomplete de cidades */
+.ac-wrap{position:relative}
+#acList{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:30;background:#241722;border:1px solid rgba(200,159,80,.45);border-radius:8px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.55);max-height:322px;overflow-y:auto}
+.ac-item{display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;color:var(--cream);padding:13px 16px;font:400 16.5px Outfit;border-bottom:1px solid rgba(200,159,80,.14)}
+.ac-item:last-child{border-bottom:none}
+.ac-item small{display:block;font:300 13.5px Outfit;color:#b7a184;margin-top:2px}
+.ac-item:hover,.ac-item.sel{background:rgba(200,159,80,.16)}
+.ac-empty{padding:14px 16px;font:300 14.5px Outfit;color:#b7a184}
+.err{display:none;color:#F08C8C;font:300 14px Outfit;margin-top:8px}
 /* resultado em versos */
 #resultado{display:none}
-.versos{margin-top:26px;display:grid;gap:30px}
+.meta-line{font:300 13.5px Outfit;color:var(--brass);margin-top:2px;letter-spacing:.03em}
+.meta-line b{color:#cbb694;font-weight:500}
+.versos{margin-top:28px;display:grid;gap:32px}
 .verso{padding-left:18px;border-left:1px solid rgba(200,159,80,.4)}
-.verso .g{font-size:12px;letter-spacing:.3em;color:var(--amber);text-transform:uppercase}
-.verso h3{font-family:Fraunces,serif;font-weight:500;font-size:21px;margin-top:6px}
+.verso .g{font-size:13px;letter-spacing:.28em;color:var(--amber);text-transform:uppercase}
+.verso h3{font-family:Fraunces,serif;font-weight:500;font-size:24px;margin-top:8px}
 .verso h3 i{color:var(--gold)}
-.verso p{font-weight:300;font-size:14.5px;color:#c9b394;margin-top:8px;line-height:1.6;max-width:34ch}
+.verso p{font-weight:300;font-size:16px;color:#c9b394;margin-top:10px;line-height:1.65;max-width:36ch}
 /* carta constelação */
-.carta{margin:40px 0 6px;text-align:center}
-.carta figcaption{font-family:Fraunces,serif;font-style:italic;color:var(--brass);font-size:13px;margin-top:12px}
+.carta{margin:44px 0 6px;text-align:center}
+.carta figcaption{font-family:Fraunces,serif;font-style:italic;color:var(--brass);font-size:14px;margin-top:12px}
+/* botão de pagamento */
+.pay{display:block;width:100%;margin-top:30px;text-align:center;text-decoration:none;cursor:pointer;border:none;border-radius:8px;padding:18px 16px;background:linear-gradient(180deg,#F8C078,#EDa551);color:#2A1810;font:600 17px Outfit;letter-spacing:.02em;box-shadow:0 6px 24px rgba(247,181,103,.25);transition:.2s}
+.pay:hover{filter:brightness(1.05)}
+.pay .big{display:block;font-size:18px;font-weight:600}
+.pay .small{display:block;font:400 13.5px Outfit;margin-top:4px;opacity:.85}
+.pay.pay2{background:linear-gradient(180deg,#E9D5BD,#D8B98A);font-size:18px}
 /* bloqueado */
-.lock{position:relative;margin-top:44px;padding:38px 4px 32px;text-align:center;border-top:1px solid rgba(200,159,80,.35);border-bottom:1px solid rgba(200,159,80,.35);overflow:hidden}
+.lock{position:relative;margin-top:48px;padding:40px 4px 34px;text-align:center;border-top:1px solid rgba(200,159,80,.35);border-bottom:1px solid rgba(200,159,80,.35);overflow:hidden}
 .lock .veil{position:absolute;inset:0;filter:blur(8px);opacity:.35;background:
  radial-gradient(50% 60% at 30% 30%,rgba(233,213,189,.25),transparent),
  radial-gradient(40% 50% at 70% 60%,rgba(247,181,103,.2),transparent)}
 .lock>*{position:relative;z-index:1}
 .chip{width:66px;height:66px;margin:0 auto 14px;border-radius:50%;border:1.3px solid var(--gold);padding:3px;background:var(--bg2)}
 .chip img{width:100%;height:100%;border-radius:50%;object-fit:cover;filter:saturate(.95)}
-.lock h2{font-weight:400;font-style:italic;font-size:20px}
-.lock .say{font-family:Fraunces,serif;font-style:italic;font-size:19px;line-height:1.5;max-width:26ch;margin:10px auto 0;color:var(--cream)}
-.hint{font:300 12.5px Outfit;color:var(--brass);margin-top:12px;letter-spacing:.04em}
-.btn2{display:inline-block;margin-top:20px;text-decoration:none;border:1.3px solid var(--gold);color:var(--gold);font:500 13px Outfit;letter-spacing:.22em;text-transform:uppercase;padding:15px 30px;border-radius:2px;transition:.25s}
+.lock h2{font-weight:400;font-style:italic;font-size:22px}
+.lock .say{font-family:Fraunces,serif;font-style:italic;font-size:20px;line-height:1.55;max-width:28ch;margin:12px auto 0;color:var(--cream)}
+.hint{font:300 13.5px Outfit;color:var(--brass);margin-top:12px;letter-spacing:.04em}
+.btn2{display:inline-block;margin-top:20px;text-decoration:none;border:1.3px solid var(--gold);color:var(--gold);font:500 13.5px Outfit;letter-spacing:.2em;text-transform:uppercase;padding:16px 30px;border-radius:2px;transition:.25s}
 .btn2:hover{background:rgba(200,159,80,.12)}
-.cadeado-card{position:relative;margin-top:26px;padding:24px 20px 22px;border:1px solid rgba(200,159,80,.3);border-radius:4px;background:rgba(30,18,16,.5);overflow:hidden}
+.cadeado-card{position:relative;margin-top:28px;padding:26px 20px 24px;border:1px solid rgba(200,159,80,.3);border-radius:4px;background:rgba(30,18,16,.5);overflow:hidden}
 .cadeado-card::before{content:"";position:absolute;inset:0;filter:blur(9px);opacity:.4;background:repeating-linear-gradient(180deg,rgba(233,213,189,.09) 0 22px,transparent 22px 32px);pointer-events:none}
 .cadeado-card>*{position:relative;z-index:1}
-.cc-head{display:flex;align-items:center;gap:9px;color:var(--brass);font-size:11px;letter-spacing:.28em;text-transform:uppercase}
-.cc-head .lk{color:var(--gold);font-size:14px;letter-spacing:0}
-.cadeado-card h3{font-family:Fraunces,serif;font-weight:450;font-size:19px;margin-top:8px}
-.cadeado-card .cc-sub{font-weight:300;font-size:13.5px;color:#b7a184;margin-top:4px;line-height:1.55}
+.cc-head{display:flex;align-items:center;gap:9px;color:var(--brass);font-size:12px;letter-spacing:.28em;text-transform:uppercase}
+.cc-head .lk{color:var(--gold);font-size:15px;letter-spacing:0}
+.cadeado-card h3{font-family:Fraunces,serif;font-weight:450;font-size:21px;margin-top:10px}
+.cadeado-card .cc-sub{font-weight:300;font-size:14.5px;color:#b7a184;margin-top:6px;line-height:1.6}
 /* fileiras de planetas com teaser */
-.prow{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px dashed rgba(200,159,80,.16)}
+.prow{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px dashed rgba(200,159,80,.16)}
 .prow:last-child{border-bottom:none}
-.prow .pg{flex:0 0 36px;width:36px;height:36px;border-radius:50%;border:1.1px solid rgba(200,159,80,.5);display:flex;align-items:center;justify-content:center;color:var(--amber);font-size:16px;background:radial-gradient(circle at 35% 30%,rgba(247,181,103,.14),transparent)}
-.prow .who b{display:block;font-family:Fraunces,serif;font-weight:550;font-size:15.5px}
-.prow .who small{font:300 11.5px Outfit;color:#b7a184;letter-spacing:.05em}
-.prow .tease{flex:1;text-align:right}
-.prow .tease i{display:block;font-style:normal;font-size:11.5px;color:#8d795f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:26ch}
-.prow .tease b{display:block;font:300 12px Outfit;color:var(--cream);filter:blur(4.5px);user-select:none;line-height:1.7}
-.prow .lk{color:rgba(200,159,80,.75);font-size:13px;margin-left:6px}
+.prow .pg{flex:0 0 38px;width:38px;height:38px;border-radius:50%;border:1.1px solid rgba(200,159,80,.5);display:flex;align-items:center;justify-content:center;color:var(--amber);font-size:17px;background:radial-gradient(circle at 35% 30%,rgba(247,181,103,.14),transparent)}
+.prow .who{min-width:0}
+.prow .who b{display:block;font-family:Fraunces,serif;font-weight:550;font-size:16.5px}
+.prow .who small{font:300 12.5px Outfit;color:#b7a184;letter-spacing:.04em;display:block;margin-top:2px}
+.prow .who small i{font-style:normal;color:#dcc9ab}
+.prow .tease{flex:1;text-align:right;min-width:0}
+.prow .tease i{display:block;font-style:normal;font-size:12px;color:#8d795f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:24ch}
+.prow .tease b{display:block;font:300 13px Outfit;color:var(--cream);filter:blur(5px);user-select:none;line-height:1.65;margin-top:2px}
+.prow .lk{color:rgba(200,159,80,.75);font-size:14px;margin-left:4px}
 /* casas */
-.casas{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.casas span{border:1px solid rgba(200,159,80,.35);border-radius:999px;padding:7px 13px;font:300 12.5px Outfit;color:#cbb694;display:inline-flex;gap:7px;align-items:center}
+.moradas{margin-top:16px;display:grid;gap:10px}
+.moradas p{font:300 14.5px Outfit;color:#cbb694;line-height:1.6}
+.moradas b{color:var(--cream);font-weight:500}
+.casas{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.casas span{border:1px solid rgba(200,159,80,.35);border-radius:999px;padding:8px 14px;font:300 13.5px Outfit;color:#cbb694;display:inline-flex;gap:7px;align-items:center}
 .casas span::before{content:"✦";color:var(--gold);font-size:9px}
-.export{margin-top:26px;text-align:center}
+/* aspectos reais */
+.asp-row{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px dashed rgba(200,159,80,.16)}
+.asp-row:last-child{border-bottom:none}
+.asp-row .ag{flex:0 0 38px;width:38px;height:38px;border-radius:50%;border:1.1px solid rgba(200,159,80,.5);display:flex;align-items:center;justify-content:center;color:var(--amber);font-size:16px;background:radial-gradient(circle at 35% 30%,rgba(247,181,103,.14),transparent)}
+.asp-row .aw{min-width:0;flex:1}
+.asp-row .aw b{display:block;font-family:Fraunces,serif;font-weight:550;font-size:16px}
+.asp-row .aw small{font:300 12.5px Outfit;color:#b7a184;display:block;margin-top:2px}
+.asp-row .aw .tease-b{display:block;font:300 13px Outfit;color:var(--cream);filter:blur(5px);user-select:none;line-height:1.65;margin-top:4px}
+/* exportação */
+.export{margin-top:28px;text-align:center}
 .ex-btns{display:flex;gap:12px;justify-content:center;margin-top:16px}
-.ex-btns .exb{margin-top:0;padding:13px 22px;font-size:12px}
+.ex-btns .exb{margin-top:0;padding:14px 22px;font-size:12.5px}
 #exOut{margin-top:22px}
 #exImg{width:100%;display:block;border:1px solid rgba(200,159,80,.35);border-radius:6px;margin-bottom:14px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
-footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunces,serif;font-style:italic;font-size:14.5px}
+footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunces,serif;font-style:italic;font-size:15px}
+@media (max-width:420px){.prow .tease i{display:none}}
 </style>
 </head>
 <body>
@@ -128,60 +161,37 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
 <div class="col">
   <section id="comeco">
     <div class="divider">o começo de tudo</div>
-    <h2>Onde o céu te encontrou</h2>
-    <form id="form">
+    <h2>Como estava seu céu?</h2>
+    <p class="lead">Me conta: eu calculo o seu mapa astral de verdade, planetinha por planetinha.</p>
+    <form id="form" novalidate>
       <label for="d">Data de nascimento</label><input id="d" type="date" required>
       <label for="h">Hora, se souber</label><input id="h" type="time">
-      <label for="c">Cidade</label><input id="c" type="text" placeholder="onde o céu estava" required>
-      <label for="w">Seu WhatsApp</label><input id="w" type="tel" inputmode="tel" autocomplete="tel" placeholder="(31) 98765-4321, pra receber a leitura" required>
-      <input type="text" id="hp" name="website" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label for="c">Onde você nasceu</label>
+      <div class="ac-wrap">
+        <input id="c" type="text" placeholder="escreva e escolha na lista" autocomplete="off" required>
+        <div id="acList" style="display:none" role="listbox"></div>
+      </div>
+      <span class="err" id="cErr">Escolha a sua cidade na lista que aparece embaixo, pra eu achar o céu certo.</span>
       <button class="btn" id="go" type="submit">Apontar o telescópio</button>
     </form>
   </section>
 
   <section id="resultado">
-    <div class="divider">o que deu pra ver</div>
+    <div class="divider">o que o céu mostrou</div>
     <h2>Três chaves do seu céu</h2>
     <p class="lead">O essencial sai agora. O resto é conversa.</p>
-    <div class="versos">
-      <div class="verso"><div class="g">☉ como você brilha</div><h3>Sol em <i>Leão</i></h3><p>Brilho que nasce do coração. Coragem e generosidade de sobra, quando você confia em você.</p></div>
-      <div class="verso"><div class="g">☾ como você sente</div><h3>Lua em <i>Escorpião</i></h3><p>Sente fundo e guarda segredos. Intimidade de verdade, nunca conversa rasa.</p></div>
-      <div class="verso"><div class="g">↑ como o mundo te vê</div><h3>Ascendente em <i>Peixes</i></h3><p>O mundo encontra você com doçura e imaginação. As pessoas sentem sem saber por quê.</p></div>
-    </div>
+    <p class="meta-line" id="metaLine"></p>
+    <div class="versos" id="versos"></div>
 
     <figure class="carta">
-      <svg viewBox="0 0 300 300" role="img" aria-label="Mapa astral completo em linhas de ouro">
-        <g fill="none" stroke="#C89F50" stroke-width=".8" opacity=".55">
-          <circle cx="150" cy="150" r="134" stroke-dasharray="1 6"/>
-          <circle cx="150" cy="150" r="112" opacity=".5"/>
-        </g>
-        <g font-size="13" fill="#C89F50" text-anchor="middle" font-family="serif" opacity=".85">
-          <text x="150" y="25">♈</text><text x="215" y="43">♉</text><text x="263" y="91">♊</text>
-          <text x="287" y="156">♋</text><text x="263" y="221">♌</text><text x="215" y="269">♍</text>
-          <text x="150" y="287">♎</text><text x="85" y="269">♏</text><text x="37" y="221">♐</text>
-          <text x="13" y="156">♑</text><text x="37" y="91">♒</text><text x="85" y="43">♓</text>
-        </g>
-        <g stroke="#F7B567" stroke-width=".65" stroke-dasharray="1 4" opacity=".65">
-          <path d="M231 202 106 236M231 202 98 113M231 202 61 159M106 236 230 114M106 236 98 113M161 71 141 199M161 71 240 158M204 86 85 200M175 211 98 113M240 158 85 200"/>
-        </g>
-        <g fill="#F7B567">
-          <circle cx="231" cy="202" r="4.6"><animate attributeName="opacity" values="1;.5;1" dur="3.2s" repeatCount="indefinite"/></circle>
-          <circle cx="106" cy="236" r="4.4"/><circle cx="175" cy="211" r="3.4"/>
-          <circle cx="240" cy="158" r="4.2"/><circle cx="161" cy="71" r="3.8"/>
-          <circle cx="61" cy="159" r="4.4"/><circle cx="141" cy="199" r="3.6"/>
-          <circle cx="98" cy="113" r="3.2"/><circle cx="204" cy="86" r="3"/>
-          <circle cx="85" cy="200" r="2.8"/><circle cx="230" cy="114" r="2.6"/>
-          <circle cx="88" cy="71" r="3.4"/>
-        </g>
-        <g fill="#A47F5D" font-size="8" font-family="Outfit,sans-serif" text-anchor="middle" letter-spacing=".5">
-          <text x="231" y="192">SOL</text><text x="175" y="201">MERCÚRIO</text><text x="240" y="148">VÊNUS</text>
-          <text x="161" y="61">MARTE</text><text x="61" y="149">JÚPITER</text><text x="141" y="189">SATURNO</text>
-          <text x="98" y="103">URANO</text><text x="204" y="76">NETUNO</text><text x="85" y="190">PLUTÃO</text>
-          <text x="230" y="104">NODO</text><text x="106" y="226">LUA</text><text x="88" y="61">ASC</text>
-        </g>
-      </svg>
-      <figcaption>o seu céu inteiro, em linha dourada</figcaption>
+      <div id="wheelBox"></div>
+      <figcaption>o seu céu inteiro, calculado agora, em linha dourada</figcaption>
     </figure>
+
+    <button class="pay" type="button" data-pay="990">
+      <span class="big">🔒 Revelação completa · R$ 9,90</span>
+      <span class="small">abre todos os cadeados do seu céu</span>
+    </button>
 
     <div class="export">
       <div class="cc-head" style="justify-content:center"><span class="lk">✦</span> leve o seu céu com você</div>
@@ -200,71 +210,314 @@ footer{text-align:center;padding:46px 0 0;color:var(--brass);font-family:Fraunce
     <div class="cadeado-card">
       <div class="cc-head"><span class="lk">✦</span> os outros moradores do céu</div>
       <h3>Os outros oito planetas</h3>
-      <p class="cc-sub">Cada um mora num canto do seu céu e conta um segredo diferente.</p>
-      <div class="prow"><div class="pg">☿</div><div class="who"><b>Mercúrio</b><small>como você pensa e fala</small></div><div class="tease"><i>a palavra certa na hora certa...</i><b>mente rápida que costura ideias, mas que se perde quando</b></div><span class="lk">🔒</span></div>
-      <div class="prow"><div class="pg">♀</div><div class="who"><b>Vênus</b><small>como você ama</small></div><div class="tease"><i>o amor pede beleza e calma...</i><b>você ama devagar, com gestos, com carta, com ceia longa. Ciúme</b></div><span class="lk">🔒</span></div>
-      <div class="prow"><div class="pg">♂</div><div class="who"><b>Marte</b><small>como você age</small></div><div class="tease"><i>força que espera a hora certa...</i><b>age com paciência de tear, mas quando decide, não tem quem segure</b></div><span class="lk">🔒</span></div>
-      <div class="prow"><div class="pg">♃</div><div class="who"><b>Júpiter</b><small>onde a vida te favorece</small></div><div class="tease"><i>porteira que abre sozinha...</i><b>expansão vem pelo estudo, por estrada longa, por gente de outro</b></div><span class="lk">🔒</span></div>
-      <div class="prow"><div class="pg">♄</div><div class="who"><b>Saturno</b><small>as lições que não fogem</small></div><div class="tease"><i>o professor exigente...</i><b>pede estrutura nos alicerces: casa, ofício, compromisso. Depois</b></div><span class="lk">🔒</span></div>
-      <div class="prow"><div class="pg">♆</div><div class="who"><b>Urano, Netuno, Plutão</b><small>as camadas mais fundas</small></div><div class="tease"><i>o que se move por baixo...</i><b>mudança súbita, sonho que avisa, poder que renasce. É aqui que</b></div><span class="lk">🔒</span></div>
-      <div class="prow"><div class="pg">☊</div><div class="who"><b>Nodo Lunar</b><small>para onde a alma pede pra ir</small></div><div class="tease"><i>a bússola da carta...</i><b>o caminho de crescimento pede coragem de soltar o que já foi</b></div><span class="lk">🔒</span></div>
+      <p class="cc-sub">Cada um mora num canto do seu céu e conta um segredo diferente. Estes aqui embaixo são os seus, de verdade.</p>
+      <div id="prows"></div>
+      <button class="pay" type="button" data-pay="990">
+        <span class="big">🔒 Revelação completa · R$ 9,90</span>
+        <span class="small">cada planeta, cada casa, cada conversa entre eles</span>
+      </button>
     </div>
 
     <div class="cadeado-card">
       <div class="cc-head"><span class="lk">✦</span> doze gavetas, uma vida inteira</div>
       <h3>As 12 casas da sua vida</h3>
       <p class="cc-sub">A carta tem doze gavetas. Cada planeta mora numa, e a gaveta conta onde aquilo acontece na sua vida.</p>
+      <div class="moradas" id="moradas"></div>
       <div class="casas">
         <span>amor</span><span>dinheiro</span><span>família</span><span>carreira</span>
         <span>amizades</span><span>saúde</span><span>viagens</span><span>estudos</span>
         <span>espiritualidade</span><span>comunicação</span><span>lar</span><span>propósito</span>
       </div>
+      <button class="pay" type="button" data-pay="990">
+        <span class="big">🔒 Revelação completa · R$ 9,90</span>
+        <span class="small">as doze gavetas abertas, uma por uma</span>
+      </button>
     </div>
 
     <div class="cadeado-card">
       <div class="cc-head"><span class="lk">✶</span> conversas particulares</div>
       <h3>Os aspectos</h3>
-      <p class="cc-sub">Aqueles riscos dourados na carta? Cada um é uma conversa entre dois planetas. Umas te ajudam, outras pedem cuidado.</p>
-      <div class="prow"><div class="pg">✶</div><div class="who"><b>Sol e Lua</b><small>o que você quer x o que você sente</small></div><div class="tease"><i>harmonia ou puxa de tapete...</i><b>quando os dois conversam bem, a vida anda com o coração no lugar</b></div><span class="lk">🔒</span></div>
-      <div class="prow"><div class="pg">✶</div><div class="who"><b>Vênus e Saturno</b><small>o amor e a exigência</small></div><div class="tease"><i>o amor que amadurece...</i><b>relação que pede presença, promessa cumprida e pé no chão</b></div><span class="lk">🔒</span></div>
+      <p class="cc-sub">Aqueles riscos dourados na carta? Cada um é uma conversa entre dois planetas. Estas são as conversas que mais se ouvem no seu céu.</p>
+      <div id="aspects"></div>
+      <button class="pay" type="button" data-pay="990">
+        <span class="big">🔒 Revelação completa · R$ 9,90</span>
+        <span class="small">todas as conversas do seu céu, traduzidas</span>
+      </button>
     </div>
 
     <div class="lock">
       <div class="veil"></div>
       <div class="chip"><img src="assets/chip.webp" alt="Dona Celeste"></div>
       <h2>A leitura completa</h2>
-      <p class="say">Tudo isso eu leio pra você, com calma, do meu jeito. Quer que eu interprete o que o seu céu está dizendo?</p>
+      <p class="say">Tudo isso eu leio pra você, com calma, do meu jeito. Quer a interpretação com a Dona Celeste?</p>
       <div class="hint">onze planetas, doze casas, todos os aspectos, em conversa</div>
-      <a class="btn2" href="#" onclick="return false">Liberar com a Celeste</a>
+      <button class="pay pay2" type="button" data-pay="2990">
+        <span class="big">✨ Interpretação com a Dona Celeste · R$ 29,90</span>
+        <span class="small">a leitura inteira, contada por ela</span>
+      </button>
     </div>
   </section>
 
   <footer>Com carinho, Dona Celeste ✨</footer>
 </div>
 <script>
+/* =====================================================================
+   LINKS DE PAGAMENTO (Stripe)
+   Cole aqui os links quando a Adriana criar no Stripe:
+   LINK_COMPLETO = produto "Revelação completa" R$ 9,90
+   LINK_CELESTE  = produto "Interpretação com a Dona Celeste" R$ 29,90
+   Enquanto estiverem vazios, os botões avisam que está quase pronto.
+===================================================================== */
+const LINK_COMPLETO='';
+const LINK_CELESTE='';
+
+/* ===== dados dos signos ===== */
+const SIGN=[
+{n:'Áries',g:'♈',sol:'O seu brilho acende na hora do começo. Onde os outros hesitam, você já deu o primeiro passo: coragem que não pede licença.',lua:'Seu coração sente em brasa: rápido, quente, sincero. Quando emociona, ação na hora, e o carinho chega antes do jeito educado.',asc:'O mundo encontra você na frente, decidindo. Sua presença chega antes de você, com energia de quem abre caminho.',gen:'a energia que começa: iniciativa, pressa, coragem de quem abre estrada onde não tem trilha'},
+{n:'Touro',g:'♉',sol:'O seu brilho é firme como pão saindo do forno. Calma, constância e um talento raro pra transformar pouco em muito.',lua:'Seu coração pede chão firme: rotina boa, comida de verdade, carinho que não muda. Ama devagar e pra ficar.',asc:'O mundo encontra você com calma e firmeza. Sua presença acalma: transmite confiança de quem sabe esperar.',gen:'a força que permanece: calma, senso de valor, prazer nas coisas bem feitas e duradouras'},
+{n:'Gêmeos',g:'♊',sol:'O seu brilho mora nas conversas. Curiosidade que não envelhece, palavra fácil e alegria de quem aprende a vida inteira.',lua:'Seu coração conversa pra entender o que sente. Precisa de papo, de novidade e de rir junto pra se sentir em casa.',asc:'O mundo encontra você conversando, perguntando, ligando. Sua presença é leve, jovem, de quem tem sempre mais uma história.',gen:'a mente curiosa: palavra fácil, aprendizado constante, mil interesses que conversam entre si'},
+{n:'Câncer',g:'♋',sol:'O seu brilho acende em casa, na mesa cheia, em quem você cuida. Memória do coração e um colo que o mundo inteiro sente.',lua:'Seu coração mora onde a família está. Sente com memória longa, cuida sem contar e magoa fácil, mas ama mais fácil ainda.',asc:'O mundo encontra você cuidando. Sua presença acolhe: as pessoas se sentem em casa do seu lado, sem saber por quê.',gen:'a água que acolhe: memória, cuidado, apego ao que é de dentro, da casa, da família'},
+{n:'Leão',g:'♌',sol:'O seu brilho nasce do coração e ilumina a sala inteira. Generosidade de sobra e coragem de quem nasceu pra ser vista.',lua:'Seu coração é generoso e orgulhoso. Precisa de reconhecimento como planta precisa de sol: com ele, floresce pra todo mundo.',asc:'O mundo encontra você no palco. Sua presença reúne, ilumina e deixa saudade quando você sai da sala.',gen:'o fogo que ilumina: criatividade, orgulho bom, generosidade de quem gosta de brilhar pra aquecer'},
+{n:'Virgem',g:'♍',sol:'O seu brilho mora nos detalhes que ninguém vê e você não esquece. Mãos que arrumam, olhos que cuidam, carinho que vira coisa útil.',lua:'Seu coração cuida com atitude: remédio na hora, comida feita, problema resolvido. Pra você, amar é fazer, não só dizer.',asc:'O mundo encontra você resolvendo. Sua presença organiza: na sua mão, bagunça vira arranjo.',gen:'a mão que aperfeiçoa: método, detalhe, vontade de servir e deixar tudo melhor do que achou'},
+{n:'Libra',g:'♎',sol:'O seu brilho mora na harmonia. Um jeito de acalmar a briga, de enfeitar o dia, de fazer as pazes valer a pena.',lua:'Seu coração quer paz e companhia. Detesta briga, ama parceria e floresce quando a relação anda em pé de igualdade.',asc:'O mundo encontra você de sorriso e mediação. Sua presença equilibra a energia de qualquer ambiente.',gen:'a balança que equilibra: diplomacia, beleza, necessidade de paz e de parceria'},
+{n:'Escorpião',g:'♏',sol:'O seu brilho é fundo como poço de estância. Você sente o que ninguém fala e renasce de cada fim mais sábia.',lua:'Seu coração sente fundo e guarda segredo. Ama de corpo e alma, sem meio termo: ou é de verdade, ou nem começa.',asc:'O mundo encontra você com respeito. Sua presença é intensa e magnética: você chega e o ambiente fica sério, profundo, verdadeiro.',gen:'a água funda: intensidade, verdade sem maquiagem, poder de renascer de qualquer fim'},
+{n:'Sagitário',g:'♐',sol:'O seu brilho é estrada adiante. Otimismo que contagia, fé que se renova e uma risada que abre portas por onde passa.',lua:'Seu coração se cura com horizonte. Tristeza passa na estrada, na viagem, na fé renovada. Precisa de liberdade pra amar bem.',asc:'O mundo encontra você rindo e planejando viagem. Sua presença otimista desarma qualquer clima pesado.',gen:'a flecha adiante: otimismo, fé, fome de mundo e de sentido maior'},
+{n:'Capricórnio',g:'♑',sol:'O seu brilho mora na palavra cumprida. Paciência de quem constrói devagar e chega longe com o nome limpo.',lua:'Seu coração é sério e fiel. Custa a abrir a gaveta dos sentimentos, mas quando ama, ama com compromisso de obra-prima.',asc:'O mundo encontra você sério, de palavra. Sua presença impõe respeito sem esforço: cara de quem resolve.',gen:'a montanha que se sobe devagar: ambição séria, disciplina, palavra cumprida'},
+{n:'Aquário',g:'♒',sol:'O seu brilho mora nas ideias que ainda não viraram moda. Liberdade de pensar e um coração que abraça o mundo inteiro.',lua:'Seu coração ama de um jeito próprio, amigo primeiro de tudo. Precisa de liberdade e conversa pra se entregar de vez.',asc:'O mundo encontra você diferente, e isso é elogio. Sua presença traz ideias novas e uma liberdade que contagia.',gen:'o vento diferente: liberdade, ideias novas, amizade com o futuro'},
+{n:'Peixes',g:'♓',sol:'O seu brilho mora entre a realidade e o sonho. Intuição fina, compaixão sem medida e uma arte de sentir o que está por vir.',lua:'Seu coração é esponja do mundo: sente o seu e o dos outros. Sonho, música e silêncio são remédio de amor pra você.',asc:'O mundo encontra você com doçura e imaginação. As pessoas sentem sem saber por quê: sua porta tem cortina de sonho.',gen:'o oceano que mistura: intuição, compaixão, arte e sonho no mesmo barco'}];
+
+/* ===== cálculo astronômico (verificado contra Swiss Ephemeris) ===== */
+const BODIES={Sol:Astronomy.Body.Sun,Lua:Astronomy.Body.Moon,Mercúrio:Astronomy.Body.Mercury,Vênus:Astronomy.Body.Venus,Marte:Astronomy.Body.Mars,Júpiter:Astronomy.Body.Jupiter,Saturno:Astronomy.Body.Saturn,Urano:Astronomy.Body.Uranus,Netuno:Astronomy.Body.Neptune,Plutão:Astronomy.Body.Pluto};
+const ABREV={Sol:'SOL',Lua:'LUA',Mercúrio:'MER',Vênus:'VÊN',Marte:'MAR',Júpiter:'JÚP',Saturno:'SAT',Urano:'URA',Netuno:'NET',Plutão:'PLU','Nodo Norte':'NODO'};
+const GLYPH={Sol:'☉',Lua:'☾',Mercúrio:'☿',Vênus:'♀',Marte:'♂',Júpiter:'♃',Saturno:'♄',Urano:'♅',Netuno:'♆',Plutão:'♇','Nodo Norte':'☊'};
+
+function tzOffsetMs(utcMs,tz){
+  const d=new Date(utcMs);
+  const f=new Intl.DateTimeFormat('en-US',{timeZone:tz,hour12:false,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const p={};f.formatToParts(d).forEach(x=>p[x.type]=x.value);
+  return Date.UTC(+p.year,+p.month-1,+p.day,(+p.hour)%24,+p.minute,+p.second)-utcMs;
+}
+function localToUtc(dateStr,timeStr,tz){
+  const[y,m,d]=dateStr.split('-').map(Number);
+  const[hh,mm]=timeStr.split(':').map(Number);
+  let utc=Date.UTC(y,m-1,d,hh,mm);
+  for(let i=0;i<3;i++)utc=Date.UTC(y,m-1,d,hh,mm)-tzOffsetMs(utc,tz);
+  return new Date(utc);
+}
+function eclLon(body,date){
+  const ecl=Astronomy.Ecliptic(Astronomy.GeoVector(body,date,true));
+  return((ecl.elon%360)+360)%360;
+}
+function meanNode(date){
+  const j2000=new Date(Date.UTC(2000,0,1,12,0,0));
+  let lon=(125.0445479-0.0529539*((date-j2000)/86400000))%360;
+  return(lon+360)%360;
+}
+function ascMc(date,lat,lon){
+  const lst=(Astronomy.SiderealTime(date)*15+lon+360)%360;
+  const eps=23.4397*Math.PI/180,r=lst*Math.PI/180,lr=lat*Math.PI/180;
+  let mc=Math.atan2(Math.sin(r),Math.cos(r)*Math.cos(eps))*180/Math.PI;if(mc<0)mc+=360;
+  let asc=Math.atan2(-Math.cos(r),Math.sin(r)*Math.cos(eps)+Math.tan(lr)*Math.sin(eps))*180/Math.PI;if(asc<0)asc+=360;
+  if(((asc-mc)%360+360)%360>180)asc=(asc+180)%360;
+  return{asc:asc,mc:mc};
+}
+function houseOf(lon,asc){return Math.floor((((lon-asc)%360+360)%360)/30)+1}
+function isRetro(name,date){
+  if(name==='Sol'||name==='Nodo Norte')return false;
+  const a=eclLon(BODIES[name],date),b=eclLon(BODIES[name],new Date(date.getTime()+12*3600000));
+  let d=b-a;if(d>180)d-=360;if(d<-180)d+=360;return d<0;
+}
+const HOUSE_THEME=['da sua presença e do seu jeito de chegar','do que você valoriza e do seu dinheiro','da comunicação e dos estudos','do lar e da família','do amor e da criatividade','do trabalho e da rotina','dos relacionamentos e das parcerias','das transformações e da intimidade','das viagens e da fé','da carreira e do seu nome','das amizades e dos sonhos','do seu mundo interior'];
+const ASPECTS=[
+{n:'Conjunção',sym:'☌',angle:0,orb:8,d:'as duas forças andam juntas, uma potencia a outra'},
+{n:'Oposição',sym:'☍',angle:180,orb:8,d:'um puxa pra cá, outro pra lá: a vida pede equilíbrio'},
+{n:'Trígono',sym:'△',angle:120,orb:7,d:'conversa boa, talento natural: as energias se ajudam'},
+{n:'Quadratura',sym:'□',angle:90,orb:7,d:'atrito que ensina: o desafio faz crescer'},
+{n:'Sextil',sym:'⚹',angle:60,orb:6,d:'oportunidade de mão beijada, basta aceitar'}];
+
+function calcChart(date,lat,lon){
+  const am=ascMc(date,lat,lon);
+  const pl={};
+  for(const[n,b]of Object.entries(BODIES)){
+    const L=eclLon(b,date);
+    pl[n]={lon:L,sign:Math.floor(L/30),house:houseOf(L,am.asc),retro:isRetro(n,date)};
+  }
+  const L=meanNode(date);
+  pl['Nodo Norte']={lon:L,sign:Math.floor(L/30),house:houseOf(L,am.asc),retro:false};
+  const names=Object.keys(pl),aspects=[];
+  for(let i=0;i<names.length;i++)for(let j=i+1;j<names.length;j++){
+    let diff=Math.abs(pl[names[i]].lon-pl[names[j]].lon);if(diff>180)diff=360-diff;
+    for(const a of ASPECTS){const orb=Math.abs(diff-a.angle);if(orb<=a.orb){aspects.push({a:names[i],b:names[j],type:a,orb:orb});break}}
+  }
+  aspects.sort((x,y)=>x.orb-y.orb);
+  return{planets:pl,asc:am.asc,mc:am.mc,ascSign:Math.floor(am.asc/30),mcSign:Math.floor(am.mc/30),aspects:aspects};
+}
+
+/* ===== roda do céu (SVG) ===== */
+function wheelPos(lon,asc,r){
+  const th=Math.PI-(lon-asc)*Math.PI/180;
+  return[160+r*Math.cos(th),160-r*Math.sin(th)];
+}
+function drawWheel(ch){
+  const S=ns=>document.createElementNS('http://www.w3.org/2000/svg',ns);
+  const svg=S('svg');svg.setAttribute('viewBox','0 0 320 320');svg.setAttribute('role','img');
+  svg.setAttribute('aria-label','Mapa astral completo em linhas de ouro');
+  svg.style.width='100%';svg.style.maxWidth='360px';svg.style.height='auto';
+  const mk=(n,at,parent)=>{const e=S(n);for(const k in at)e.setAttribute(k,at[k]);(parent||svg).appendChild(e);return e};
+  mk('circle',{cx:160,cy:160,r:148,fill:'none',stroke:'#C89F50','stroke-width':.8,'stroke-dasharray':'1 6',opacity:.55});
+  mk('circle',{cx:160,cy:160,r:126,fill:'none',stroke:'#C89F50','stroke-width':.8,opacity:.5});
+  for(let i=0;i<12;i++){
+    const lon0=ch.asc+i*30,[x1,y1]=wheelPos(lon0,ch.asc,126),[x2,y2]=wheelPos(lon0,ch.asc,148);
+    mk('line',{x1:x1,y1:y1,x2:x2,y2:y2,stroke:'#C89F50','stroke-width':.7,opacity:.4});
+    const[tx,ty]=wheelPos(lon0+15,ch.asc,137);
+    mk('text',{x:tx,y:ty+5,'text-anchor':'middle','font-size':13,fill:'#C89F50',opacity:.85,'font-family':'serif'}).textContent=SIGN[i].g;
+  }
+  const[ax,ay]=wheelPos(ch.asc,ch.asc,126),[ax2,ay2]=wheelPos(ch.asc+180,ch.asc,126);
+  mk('line',{x1:ax,y1:ay,x2:ax2,y2:ay2,stroke:'#E9D5BD','stroke-width':.7,'stroke-dasharray':'3 5',opacity:.5});
+  const[mx,my]=wheelPos(ch.mc,ch.asc,126),[mx2,my2]=wheelPos(ch.mc+180,ch.asc,126);
+  mk('line',{x1:mx,y1:my,x2:mx2,y2:my2,stroke:'#E9D5BD','stroke-width':.7,'stroke-dasharray':'3 5',opacity:.5});
+  mk('text',{x:ax-10,y:ay+4,'text-anchor':'middle','font-size':9,fill:'#E9D5BD','font-family':'Outfit,sans-serif','letter-spacing':.5}).textContent='ASC';
+  mk('text',{x:mx,y:my-8,'text-anchor':'middle','font-size':9,fill:'#E9D5BD','font-family':'Outfit,sans-serif','letter-spacing':.5}).textContent='MC';
+  ch.aspects.slice(0,12).forEach(a=>{
+    const[x1,y1]=wheelPos(ch.planets[a.a].lon,ch.asc,110),[x2,y2]=wheelPos(ch.planets[a.b].lon,ch.asc,110);
+    mk('line',{x1:x1,y1:y1,x2:x2,y2:y2,stroke:'#F7B567','stroke-width':.65,'stroke-dasharray':'1 4',opacity:.65});
+  });
+  const entries=[['ASC',ch.asc]].concat(Object.keys(ch.planets).map(n=>[n,ch.planets[n].lon]));
+  entries.sort((p,q)=>((p[1]-ch.asc)%360+360)%360-((q[1]-ch.asc)%360+360)%360);
+  const spaced=[];entries.forEach(e=>{let a=((e[1]-ch.asc)%360+360)%360;while(spaced.some(s=>Math.min(Math.abs(s-a),360-Math.abs(s-a))<10))a=(a+10)%360;spaced.push(a)});
+  entries.forEach((e,i)=>{
+    const lon=ch.asc+spaced[i];
+    const[px,py]=wheelPos(e[1],ch.asc,110);
+    const dot=mk('circle',{cx:px,cy:py,r:4.6,fill:'#F7B567'});
+    const an=S('animate');an.setAttribute('attributeName','opacity');an.setAttribute('values','1;.5;1');an.setAttribute('dur','3.2s');an.setAttribute('repeatCount','indefinite');dot.appendChild(an);
+    const[lx,ly]=wheelPos(lon,ch.asc,92);
+    mk('text',{x:lx,y:ly+3,'text-anchor':'middle','font-size':8,fill:'#A47F5D','font-family':'Outfit,sans-serif','letter-spacing':.5}).textContent=ABREV[e[0]]||e[0];
+    mk('line',{x1:px,y1:py,x2:lx,y2:ly,stroke:'#A47F5D','stroke-width':.4,opacity:.5});
+  });
+  return svg;
+}
+
+/* ===== estado e fluxo ===== */
 const f=document.getElementById('form'),r=document.getElementById('resultado'),b=document.getElementById('go');
-const API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-leads';
 const fd=id=>document.getElementById(id);
-f.addEventListener('submit',e=>{e.preventDefault();
-const wv=(fd('w').value||'').replace(/\D/g,'');
-if(wv.length<10){alert('Confira o seu WhatsApp: faltam números.');return}
-b.disabled=true;b.textContent='Apontando o telescópio ✦';
-const body={birth_date:fd('d').value,birth_time:fd('h').value||'',city:fd('c').value.trim(),whatsapp:fd('w').value.trim(),website:(fd('hp')||{}).value||'',source:(location.search||'?direto').slice(1,120),page_url:location.href.slice(0,300)};
-let okSent=false;
-const send=()=>{if(okSent)return;fetch(API,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(()=>{okSent=true}).catch(()=>{setTimeout(send,4000)})};
-send();
-setTimeout(()=>{r.style.display='block';r.scrollIntoView({behavior:'smooth'})},1600)});
-if(location.hash==='#preview'){r.style.display='block';document.querySelector('.hero').style.minHeight='430px';document.querySelector('.hero img').style.height='430px'}
+let selCity=null,chart=null,userData=null;
+const API='https://geocoding-api.open-meteo.com/v1/search';
+
+/* autocomplete de cidades reais */
+let acTimer,acIdx=-1,acItems=[];
+const ci=fd('c'),cl=fd('acList');
+ci.addEventListener('input',()=>{
+  selCity=null;fd('cErr').style.display='none';
+  clearTimeout(acTimer);
+  const q=ci.value.trim();
+  if(q.length<2){cl.style.display='none';return}
+  cl.innerHTML='<div class="ac-empty">procurando cidades...</div>';cl.style.display='block';
+  acTimer=setTimeout(()=>{
+    fetch(API+'?name='+encodeURIComponent(q)+'&count=10&language=pt&format=json')
+      .then(r=>r.json()).then(d=>{
+        const res=(d.results||[]).slice().sort((a,b)=>(b.population||0)-(a.population||0));
+        acItems=res;acIdx=-1;
+        if(!res.length){cl.innerHTML='<div class="ac-empty">Não achei essa cidade. Escreva de outro jeito, tipo: cidade e estado.</div>';return}
+        cl.innerHTML=res.map((it,i)=>'<button type="button" class="ac-item" data-i="'+i+'"><b>'+it.name+'</b><small>'+[it.admin1,it.country].filter(Boolean).join(', ')+'</small></button>').join('');
+        cl.querySelectorAll('.ac-item').forEach(el=>el.addEventListener('click',()=>pickCity(+el.dataset.i)));
+      }).catch(()=>{cl.innerHTML='<div class="ac-empty">Não deu pra buscar agora. Confira a internet e tente de novo.</div>'});
+  },350);
+});
+function pickCity(i){
+  const it=acItems[i];if(!it)return;
+  selCity={name:it.name,region:[it.admin1,it.country].filter(Boolean).join(', '),lat:it.latitude,lon:it.longitude,tz:it.timezone||'UTC'};
+  ci.value=it.name+', '+selCity.region;
+  cl.style.display='none';
+}
+ci.addEventListener('keydown',e=>{
+  const items=cl.querySelectorAll('.ac-item');
+  if(!items.length)return;
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault();
+    acIdx=(acIdx+(e.key==='ArrowDown'?1:-1)+items.length)%items.length;
+    items.forEach((el,i)=>el.classList.toggle('sel',i===acIdx));
+    items[acIdx].scrollIntoView({block:'nearest'});
+  }else if(e.key==='Enter'&&cl.style.display!=='none'&&acIdx>=0){e.preventDefault();pickCity(acIdx)}
+  else if(e.key==='Escape'){cl.style.display='none'}
+});
+ci.addEventListener('blur',()=>setTimeout(()=>cl.style.display='none',200));
+
+/* enviar */
+f.addEventListener('submit',e=>{
+  e.preventDefault();
+  if(!fd('d').value){fd('d').focus();return}
+  if(!selCity){fd('cErr').style.display='block';ci.focus();return}
+  const timeStr=fd('h').value||'12:00';
+  const date=localToUtc(fd('d').value,timeStr,selCity.tz);
+  b.disabled=true;b.textContent='Apontando o telescópio ✦';
+  setTimeout(()=>{
+    chart=calcChart(date,selCity.lat,selCity.lon);
+    userData={dateStr:fd('d').value,timeStr:timeStr,hasTime:!!fd('h').value,city:selCity};
+    render();
+    b.disabled=false;b.textContent='Apontar o telescópio';
+    r.style.display='block';
+    r.scrollIntoView({behavior:'smooth'});
+  },600);
+});
+
+function fmtDate(ds){const[y,m,d]=ds.split('-');return d+'/'+m+'/'+y}
+
+function render(){
+  const c=chart,p=c.planets;
+  fd('metaLine').innerHTML='calculado para <b>'+fmtDate(userData.dateStr)+(userData.hasTime?', às '+userData.timeStr:'')+'</b> em <b>'+userData.city.name+'</b>'+(userData.hasTime?'':' · sem a hora, li o céu do meio-dia: o Ascendente pode variar');
+  const keys=[
+    {g:'☉',k:'Sol',s:SIGN[p.Sol.sign],t:'como você brilha',d:p.Sol,txt:s=>s.sol},
+    {g:'☾',k:'Lua',s:SIGN[p.Lua.sign],t:'como você sente',d:p.Lua,txt:s=>s.lua},
+    {g:'↑',k:'Ascendente',s:SIGN[c.ascSign],t:'como o mundo te vê',d:null,txt:s=>s.asc}];
+  fd('versos').innerHTML=keys.map(k=>'<div class="verso"><div class="g">'+k.g+' '+k.t+'</div><h3>'+k.k+' em <i>'+k.s.n+'</i></h3><p>'+k.txt(k.s)+'</p></div>').join('');
+  fd('wheelBox').innerHTML='';fd('wheelBox').appendChild(drawWheel(c));
+
+  /* planetas travados, com dados reais */
+  const pr=(glyph,who,sub,tease,blur)=>'<div class="prow"><div class="pg">'+glyph+'</div><div class="who"><b>'+who+'</b><small>'+sub+'</small></div><div class="tease"><i>'+tease+'</i><b>'+blur+'</b></div><span class="lk">🔒</span></div>';
+  const sg=n=>SIGN[p[n].sign].n+(p[n].retro?' ℞':'')+' · casa '+p[n].house;
+  const gen=n=>SIGN[p[n].sign].gen;
+  fd('prows').innerHTML=
+    pr('☿','Mercúrio','como você pensa e fala · <i>'+sg('Mercúrio')+'</i>','a palavra certa na hora certa...',gen('Mercúrio'))+
+    pr('♀','Vênus','como você ama · <i>'+sg('Vênus')+'</i>','o amor pede beleza e calma...',gen('Vênus'))+
+    pr('♂','Marte','como você age · <i>'+sg('Marte')+'</i>','força que espera a hora certa...',gen('Marte'))+
+    pr('♃','Júpiter','onde a vida te favorece · <i>'+sg('Júpiter')+'</i>','porteira que abre sozinha...',gen('Júpiter'))+
+    pr('♄','Saturno','as lições que não fogem · <i>'+sg('Saturno')+'</i>','o professor exigente...',gen('Saturno'))+
+    pr('♆','Urano, Netuno, Plutão','as camadas mais fundas · <i>'+SIGN[p.Urano.sign].n+', '+SIGN[p.Netuno.sign].n+' e '+SIGN[p.Plutão.sign].n+'</i>','o que se move por baixo...','mudança súbita ('+SIGN[p.Urano.sign].n+'), o sonho que avisa ('+SIGN[p.Netuno.sign].n+'), o poder que renasce ('+SIGN[p.Plutão.sign].n+')')+
+    pr('☊','Nodo Lunar','para onde a alma pede pra ir · <i>'+sg('Nodo Norte')+'</i>','a bússola da carta...','o caminho de crescimento pede coragem de soltar o que já foi');
+
+  /* casas: moradas reais */
+  const mor=(art,pl,label)=>'<p>'+art+' <b>'+label+' mora na casa '+p[pl].house+'</b>, '+HOUSE_THEME[p[pl].house-1]+', em '+SIGN[p[pl].sign].n+'.</p>';
+  fd('moradas').innerHTML=mor('O seu','Sol','Sol')+mor('Sua','Lua','Lua')+mor('Sua','Vênus','Vênus');
+
+  /* aspectos reais (top 3) */
+  const ax=c.aspects.slice(0,3);
+  fd('aspects').innerHTML=ax.map(a=>{
+    const dd=Math.abs(p[a.a].lon-p[a.b].lon)>180?'x':'e';
+    return '<div class="asp-row"><div class="ag">'+a.type.sym+'</div><div class="aw"><b>'+a.a+' '+dd+' '+a.b+'</b><small>'+a.type.n+' · orbe '+a.orb.toFixed(1)+'°</small><span class="tease-b">'+a.type.d+'</span></div><span class="lk" style="align-self:center">🔒</span></div>';
+  }).join('')||'<p class="cc-sub">Conversas mais raras hoje, meu bem.</p>';
+
+  bindPay();
+}
+
+/* ===== pagamento ===== */
+function bindPay(){
+  document.querySelectorAll('[data-pay]').forEach(el=>{
+    el.onclick=()=>{
+      const link=el.dataset.pay==='2990'?LINK_CELESTE:LINK_COMPLETO;
+      if(!link){alert('O pagamento ainda está sendo arrumado, meu bem. Já já está pronto!');return}
+      window.location.href=link;
+    };
+  });
+}
+
 /* ===== exportação do cartão do céu ===== */
 const GOLD='#C89F50',AMBER='#F7B567',CREAM='#E9D5BD',BRASS='#A47F5D';
-const TRI=[{g:'☉',k:'Sol',s:'Leão',d:'o que faz o seu coração brilhar'},{g:'☾',k:'Lua',s:'Escorpião',d:'o jeito de sentir e de cuidar'},{g:'↑',k:'Ascendente',s:'Peixes',d:'a porta por onde o mundo te encontra'}];
-const PLAN=[[231,202,'SOL'],[106,236,'LUA'],[175,211,'MERCÚRIO'],[240,158,'VÊNUS'],[161,71,'MARTE'],[61,159,'JÚPITER'],[141,199,'SATURNO'],[98,113,'URANO'],[204,86,'NETUNO'],[85,200,'PLUTÃO'],[230,114,'NODO'],[88,71,'ASC']];
-const ASP=[[231,202,106,236],[231,202,98,113],[231,202,61,159],[106,236,230,114],[106,236,98,113],[161,71,141,199],[161,71,240,158],[204,86,85,200],[175,211,98,113],[240,158,85,200]];
 const SIG=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 const sp=s=>[...s].join(' ');
+function cardPos(lon,asc,W,cy,R){const th=Math.PI-(lon-asc)*Math.PI/180;return[W/2+R*Math.cos(th),cy-R*Math.sin(th)]}
 async function makeCard(W,H){
-  const FE=H<1600;
-  const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  const c=chart,u=userData,FE=H<1600;
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
   await Promise.all([document.fonts.load('italic 330 90px Fraunces'),document.fonts.load('400 34px Outfit'),document.fonts.ready]).catch(()=>{});
   const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#2E1E2A');g.addColorStop(.62,'#1E1210');x.fillStyle=g;x.fillRect(0,0,W,H);
   const rg=x.createRadialGradient(W/2,0,50,W/2,0,H*.55);rg.addColorStop(0,'rgba(247,181,103,.16)');rg.addColorStop(1,'transparent');x.fillStyle=rg;x.fillRect(0,0,W,H);
@@ -275,6 +528,10 @@ async function makeCard(W,H){
   x.strokeStyle='#C8C9CB';x.globalAlpha=.5;x.beginPath();x.moveTo(W*.06,H*.2);x.lineTo(W*.3,H*.26);x.stroke();x.globalAlpha=1;
   x.fillStyle=AMBER;x.font=(FE?'500 28px':'500 30px')+' Outfit';x.fillText(sp('O MEU CÉU'),W/2,FE?130:150);
   x.fillStyle='rgba(233,213,189,.85)';x.font='300 '+(FE?24:26)+'px Outfit';x.fillText(sp('as três chaves, lidas por Dona Celeste'),W/2,FE?176:200);
+  const TRI=[
+    {g:'☉',k:'Sol',s:SIGN[c.planets.Sol.sign].n,d:'o que faz o seu coração brilhar'},
+    {g:'☾',k:'Lua',s:SIGN[c.planets.Lua.sign].n,d:'o jeito de sentir e de cuidar'},
+    {g:'↑',k:'Ascendente',s:SIGN[c.ascSign].n,d:'a porta por onde o mundo te encontra'}];
   TRI.forEach((t,i)=>{const y=(FE?295:310)+i*(FE?120:160);x.font='300 '+(FE?48:58)+'px serif';x.fillStyle=AMBER;x.fillText(t.g,W*.14,y);
     x.textAlign='left';let fs=FE?54:64;
     const pre=t.k+' em ';
@@ -289,14 +546,17 @@ async function makeCard(W,H){
   const cy=FE?895:1080,R=FE?210:280;
   x.strokeStyle=GOLD;x.globalAlpha=.6;x.setLineDash([3,8]);x.lineWidth=2.4;x.beginPath();x.arc(W/2,cy,R,0,7);x.stroke();
   x.setLineDash([]);x.globalAlpha=.5;x.beginPath();x.arc(W/2,cy,R*.84,0,7);x.stroke();x.globalAlpha=1;
-  SIG.forEach((s,i)=>{const a=-Math.PI/2+i*Math.PI/6;x.font='300 '+(FE?26:30)+'px serif';x.fillStyle=GOLD;x.globalAlpha=.85;
-    x.fillText(s,W/2+Math.cos(a)*(R+(FE?30:34)),cy+Math.sin(a)*(R+(FE?30:34))+10);x.globalAlpha=1});
+  for(let i=0;i<12;i++){const lon=c.asc+i*30;const[tx,ty]=cardPos(lon+15,c.asc,W,cy,R+(FE?30:34));
+    x.font='300 '+(FE?26:30)+'px serif';x.fillStyle=GOLD;x.globalAlpha=.85;x.fillText(SIG[i],tx,ty+10);x.globalAlpha=1}
   x.strokeStyle=AMBER;x.globalAlpha=.65;x.setLineDash([2,7]);x.lineWidth=2;
-  const P=(p)=>[W/2+(p[0]-150)/150*R,cy+(p[1]-150)/150*R];
-  ASP.forEach(a=>{const[ax,ay]=P([a[0],a[1]]),[bx,by]=P([a[2],a[3]]);x.beginPath();x.moveTo(ax,ay);x.lineTo(bx,by);x.stroke()});
+  c.aspects.slice(0,10).forEach(a=>{
+    const[ax,ay]=cardPos(c.planets[a.a].lon,c.asc,W,cy,R*.88),[bx,by]=cardPos(c.planets[a.b].lon,c.asc,W,cy,R*.88);
+    x.beginPath();x.moveTo(ax,ay);x.lineTo(bx,by);x.stroke()});
   x.setLineDash([]);x.globalAlpha=1;
-  PLAN.forEach((p,i)=>{const[px,py]=P(p);x.fillStyle=AMBER;x.beginPath();x.arc(px,py,(FE?5:7)+(i===0?3:0),0,7);x.fill();
-    if(!FE){x.fillStyle=BRASS;x.font='500 17px Outfit';x.fillText(sp(p[2]),px,py-16)}});
+  Object.keys(c.planets).forEach((n,i)=>{
+    const[px,py]=cardPos(c.planets[n].lon,c.asc,W,cy,R*.88);
+    x.fillStyle=AMBER;x.beginPath();x.arc(px,py,(FE?5:7)+(n==='Sol'?3:0),0,7);x.fill();
+    if(!FE){x.fillStyle=BRASS;x.font='500 17px Outfit';x.fillText(sp(ABREV[n]),px,py-16)}});
   x.fillStyle='#dcc9ab';x.font='italic 330 '+(FE?34:40)+'px Fraunces';
   if(FE){x.fillText('e isso é só o começo ✨',W/2,1205)}
   const chi=FE?1290:1560;
@@ -305,11 +565,11 @@ async function makeCard(W,H){
   const hnd='@brisaastral.ai';const hw=x.measureText(hnd).width;
   const x0=W/2-(cw+hw)/2;
   x.textAlign='left';x.fillText(cta,x0,chi);x.fillStyle=GOLD;x.fillText(hnd,x0+cw,chi);x.textAlign='center';
-  return new Promise(ok=>c.toBlob(b=>ok(URL.createObjectURL(b)),'image/png'));
+  return new Promise(ok=>cv.toBlob(bb=>ok(URL.createObjectURL(bb)),'image/png'));
 }
 async function doExport(W,H){const url=await makeCard(W,H);
   try{
-    const blob=await (await fetch(url)).blob();
+    const blob=await(await fetch(url)).blob();
     const file=new File([blob],'meu-ceu.png',{type:'image/png'});
     if(navigator.canShare&&navigator.canShare({files:[file]})){
       await navigator.share({files:[file],title:'Meu céu',text:'Faça seu mapa em @brisaastral.ai'});
@@ -321,7 +581,19 @@ async function doExport(W,H){const url=await makeCard(W,H);
   document.getElementById('exOut').scrollIntoView({behavior:'smooth'})}
 document.getElementById('exStory').addEventListener('click',()=>doExport(1080,1920));
 document.getElementById('exFeed').addEventListener('click',()=>doExport(1080,1350));
-if(location.hash==='#preview')doExport(1080,1920);
+
+/* preview: #preview mostra o mapa da Adriana */
+if(location.hash==='#preview'){
+  fd('d').value='1989-05-27';fd('h').value='08:30';
+  selCity={name:'Porto Alegre',region:'Rio Grande do Sul, Brasil',lat:-30.03283,lon:-51.23019,tz:'America/Sao_Paulo'};
+  ci.value='Porto Alegre, Rio Grande do Sul, Brasil';
+  document.querySelector('.hero').style.minHeight='430px';
+  document.querySelector('.hero img').style.height='430px';
+  const date=localToUtc('1989-05-27','08:30','America/Sao_Paulo');
+  chart=calcChart(date,selCity.lat,selCity.lon);
+  userData={dateStr:'1989-05-27',timeStr:'08:30',hasTime:true,city:selCity};
+  render();r.style.display='block';
+}
 </script>
 </body>
 </html>
