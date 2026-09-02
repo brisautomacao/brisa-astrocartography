@@ -25,18 +25,22 @@ criados), a Adriana testou a landing publicada e trouxe quatro pontos em 02/09/2
 
 ### v1 (URL oficial: `sketches/final.html`)
 
-- Chaves (Sol/Lua/ASC) + roda + compartilhar seguem abertos.
-- Logo depois, um **portão**: formulário de WhatsApp com `<select>` de país (18 países,
-  Brasil default) + campo do número completo com DDI à mostra. Validação no cliente:
-  Brasil exige DDD + 9 números começando em 9; demais países aceitam 6-12 dígitos.
+- Chaves (Sol/Lua/ASC) + roda + compartilhar abertos.
+- Seções de planetas, casas e aspectos **visíveis com blur + cadeados** (iscas de
+  curiosidade): 2 moradas e 3 aspectos legíveis à mostra, o resto embaçado.
+- **Quatro chamadas "Abrir o meu céu"** (após a roda, planetas, casas e aspectos),
+  todas gratuitas: rolam até o portão de WhatsApp e focam o campo do número.
+- **Portão**: `<select>` de país (18 países, Brasil default) + número completo com DDI
+  à mostra. Validação no cliente: Brasil exige DDD + 9 números começando em 9; demais
+  países aceitam 6-12 dígitos.
 - Ao enviar: `POST https://brisadocs.46-225-43-58.sslip.io/api/mapa-leads` (API do
-  ADR-0003, honeypot incluso). Se a rede falhar, o conteúdo abre mesmo assim (captura é
-  best-effort; o céu nunca fica trancado por erro técnico).
-- Após o envio: **tudo aberto** — 8 planetas com texto completo (sem blur, sem 🔒),
-  8 moradas de casas (antes 3), top 5 aspectos (antes 3) e o convite final para a Dona
-  Celeste apontando para o Instagram (sem preço nesta versão).
-- `#preview` continua calculando o mapa da Adriana e agora também destrava tudo sem
-  disparar lead.
+  ADR-0003, honeypot incluso). Se a rede falhar, abre mesmo assim (best-effort).
+- Após o envio (`body.liberado`): blur e cadeados somem, moradas expandem para 8,
+  aspectos para 5, e o convite final da Dona Celeste (Instagram) é revelado.
+- **Legibilidade no celular (feedback da Adriana)**: linhas de planeta em grid com o
+  texto embaixo do nome, alinhado à esquerda, 15px/1.75 (antes: 13px comprimido à
+  direita). Mesma correção aplicada à v2.
+- `#preview` continua calculando o mapa da Adriana e destrava tudo sem disparar lead.
 
 ### v2 (`sketches/final-v2.html`)
 

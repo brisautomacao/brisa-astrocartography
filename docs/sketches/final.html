@@ -108,14 +108,18 @@ input[type=date],input[type=time]{color-scheme:dark}
 .prow{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px dashed rgba(200,159,80,.16)}
 .prow:last-child{border-bottom:none}
 .prow .pg{flex:0 0 38px;width:38px;height:38px;border-radius:50%;border:1.1px solid rgba(200,159,80,.5);display:flex;align-items:center;justify-content:center;color:var(--amber);font-size:17px;background:radial-gradient(circle at 35% 30%,rgba(247,181,103,.14),transparent)}
+.prow{display:grid;grid-template-columns:44px 1fr;gap:2px 12px;padding:13px 0;border-bottom:1px solid rgba(200,159,80,.14);align-items:center}
+.prow:last-child{border-bottom:0}
+.pg{font-size:20px;text-align:center;grid-row:1/3;align-self:center}
 .prow .who{min-width:0}
-.prow .who b{display:block;font-family:Fraunces,serif;font-weight:550;font-size:16.5px}
-.prow .who small{font:300 12.5px Outfit;color:#b7a184;letter-spacing:.04em;display:block;margin-top:2px}
+.prow .who b{font-family:Fraunces,serif;font-weight:550;font-size:17px;letter-spacing:.2px}
+.prow .who small{font:300 12.5px Outfit;color:#b7a184;display:block;margin-top:2px}
 .prow .who small i{font-style:normal;color:#dcc9ab}
-.prow .tease{flex:1;text-align:right;min-width:0}
-.prow .tease i{display:block;font-style:normal;font-size:12px;color:#8d795f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:24ch}
-.prow .tease b{display:block;font:300 13px Outfit;color:var(--cream);line-height:1.65;margin-top:2px}
-.prow .tease b i{display:inline;white-space:normal;overflow:visible;text-overflow:clip;color:#dcc9ab}
+.prow .tease{grid-column:2;text-align:left;min-width:0}
+.prow .tease i{display:block;font-style:italic;font-size:13.5px;color:#9c8465;white-space:normal;line-height:1.5}
+.prow .tease b{display:block;font:300 15px/1.75 Outfit;color:var(--cream);filter:blur(5px);user-select:none;margin-top:5px}
+body.liberado .prow .tease b{filter:none;user-select:auto}
+.prow .lk{color:rgba(200,159,80,.8);font-size:14px;grid-column:2;justify-self:start;margin-top:7px}
 /* casas */
 .moradas{margin-top:16px;display:grid;gap:10px}
 .moradas p{font:300 14.5px Outfit;color:#cbb694;line-height:1.6}
@@ -130,7 +134,8 @@ input[type=date],input[type=time]{color-scheme:dark}
 .asp-row .aw{min-width:0;flex:1}
 .asp-row .aw b{display:block;font-family:Fraunces,serif;font-weight:550;font-size:16px}
 .asp-row .aw small{font:300 12.5px Outfit;color:#b7a184;display:block;margin-top:2px}
-.asp-row .aw .tease-b{display:block;font:300 13px Outfit;color:var(--cream);line-height:1.65;margin-top:4px}
+.asp-row .aw .tease-b{display:block;font:300 15px/1.75 Outfit;color:var(--cream);filter:blur(5px);user-select:none;margin-top:6px}
+body.liberado .asp-row .aw .tease-b{filter:none;user-select:auto}
 /* portão de WhatsApp (v1): país + número completo */
 .gated{display:none}
 select{width:100%;background:#241722;border:1.2px solid rgba(200,159,80,.4);border-radius:6px;color:var(--cream);font:400 18px Outfit;padding:12px 10px;outline:none;transition:border-color .25s;color-scheme:dark}
@@ -193,6 +198,11 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
       <figcaption>o seu céu inteiro, calculado agora, em linha dourada</figcaption>
     </figure>
 
+    <button class="pay" type="button" data-gate>
+      <span class="big">✦ Abrir o meu céu</span>
+      <span class="small">com o seu WhatsApp: de graça, é só deixar o número</span>
+    </button>
+
     <div class="export">
       <div class="cc-head" style="justify-content:center"><span class="lk">✦</span> leve o seu céu com você</div>
       <p class="cc-sub">Toque e o compartilhar do Instagram abre com a imagem pronta: as três chaves do seu céu, do jeitinho da Celeste.</p>
@@ -248,14 +258,18 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
       </form>
     </div>
 
-    <div class="cadeado-card gated" id="cardPlanetas">
+    <div class="cadeado-card" id="cardPlanetas">
       <div class="cc-head"><span class="lk">✦</span> os outros moradores do céu</div>
       <h3>Os outros oito planetas</h3>
       <p class="cc-sub">Cada um mora num canto do seu céu e conta um segredo diferente. Estes aqui embaixo são os seus, de verdade.</p>
       <div id="prows"></div>
+      <button class="pay" type="button" data-gate>
+        <span class="big">🔒 Abrir tudo isso também</span>
+        <span class="small">de graça, só com o seu WhatsApp</span>
+      </button>
     </div>
 
-    <div class="cadeado-card gated" id="cardCasas">
+    <div class="cadeado-card" id="cardCasas">
       <div class="cc-head"><span class="lk">✦</span> doze gavetas, uma vida inteira</div>
       <h3>As 12 casas da sua vida</h3>
       <p class="cc-sub">A carta tem doze gavetas. Cada planeta mora numa, e a gaveta conta onde aquilo acontece na sua vida.</p>
@@ -265,13 +279,21 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
         <span>amizades</span><span>saúde</span><span>viagens</span><span>estudos</span>
         <span>espiritualidade</span><span>comunicação</span><span>lar</span><span>propósito</span>
       </div>
+      <button class="pay" type="button" data-gate>
+        <span class="big">🔒 Abrir as doze gavetas</span>
+        <span class="small">o seu WhatsApp abre todas, de graça</span>
+      </button>
     </div>
 
-    <div class="cadeado-card gated" id="cardAspectos">
+    <div class="cadeado-card" id="cardAspectos">
       <div class="cc-head"><span class="lk">✶</span> conversas particulares</div>
       <h3>Os aspectos</h3>
       <p class="cc-sub">Aqueles riscos dourados na carta? Cada um é uma conversa entre dois planetas. Estas são as conversas que mais se ouvem no seu céu.</p>
       <div id="aspects"></div>
+      <button class="pay" type="button" data-gate>
+        <span class="big">🔒 Ouvir as conversas inteiras</span>
+        <span class="small">de graça, com o seu WhatsApp</span>
+      </button>
     </div>
 
     <div class="lock gated" id="cardCeleste">
@@ -496,8 +518,8 @@ function render(){
   fd('versos').innerHTML=keys.map(k=>'<div class="verso"><div class="g">'+k.g+' '+k.t+'</div><h3>'+k.k+' em <i>'+k.s.n+'</i></h3><p>'+k.txt(k.s)+'</p></div>').join('');
   fd('wheelBox').innerHTML='';fd('wheelBox').appendChild(drawWheel(c));
 
-  /* planetas: dados reais, texto completo */
-  const pr=(glyph,who,sub,tease,full)=>'<div class="prow"><div class="pg">'+glyph+'</div><div class="who"><b>'+who+'</b><small>'+sub+'</small></div><div class="tease"><i>'+tease+'</i><b>'+full+'</b></div></div>';
+  /* planetas: dados reais, texto embaixo (legível no celular) */
+  const pr=(glyph,who,sub,tease,full)=>'<div class="prow"><div class="pg">'+glyph+'</div><div class="who"><b>'+who+'</b><small>'+sub+'</small></div><div class="tease"><i>'+tease+'</i><b>'+full+'</b></div><span class="lk">🔒</span></div>';
   const sg=n=>SIGN[p[n].sign].n+(p[n].retro?' ℞':'')+' · casa '+p[n].house;
   const gen=n=>SIGN[p[n].sign].gen;
   fd('prows').innerHTML=
@@ -509,15 +531,26 @@ function render(){
     pr('♆','Urano, Netuno, Plutão','as camadas mais fundas · <i>'+SIGN[p.Urano.sign].n+', '+SIGN[p.Netuno.sign].n+' e '+SIGN[p.Plutão.sign].n+'</i>','o que se move por baixo...','mudança súbita ('+SIGN[p.Urano.sign].n+'), o sonho que avisa ('+SIGN[p.Netuno.sign].n+'), o poder que renasce ('+SIGN[p.Plutão.sign].n+')')+
     pr('☊','Nodo Lunar','para onde a alma pede pra ir · <i>'+sg('Nodo Norte')+'</i>','a bússola da carta...','o caminho de crescimento pede coragem de soltar o que já foi');
 
-  /* casas: moradas reais */
-  const mor=(art,pl,label)=>'<p>'+art+' <b>'+label+' mora na casa '+p[pl].house+'</b>, '+HOUSE_THEME[p[pl].house-1]+', em '+SIGN[p[pl].sign].n+'.</p>';
-  fd('moradas').innerHTML=mor('O seu','Sol','Sol')+mor('Sua','Lua','Lua')+mor('O seu','Mercúrio','Mercúrio')+mor('Sua','Vênus','Vênus')+mor('O seu','Marte','Marte')+mor('O seu','Júpiter','Júpiter')+mor('O seu','Saturno','Saturno')+mor('O seu','Nodo Norte','Nodo Lunar');
+  /* casas e aspectos: 3 à mostra antes do portão, tudo depois de liberar */
+  renderMoradas();
+  renderAspects();
+}
 
-  /* aspectos reais (top 5) */
-  const ax=c.aspects.slice(0,5);
+function renderMoradas(){
+  const p=chart.planets;
+  const mor=(art,pl,label)=>'<p>'+art+' <b>'+label+' mora na casa '+p[pl].house+'</b>, '+HOUSE_THEME[p[pl].house-1]+', em '+SIGN[p[pl].sign].n+'.</p>';
+  const lista=[['O seu','Sol','Sol'],['Sua','Lua','Lua']];
+  if(typeof unlocked!=='undefined'&&unlocked)lista.push(['O seu','Mercúrio','Mercúrio'],['Sua','Vênus','Vênus'],['O seu','Marte','Marte'],['O seu','Júpiter','Júpiter'],['O seu','Saturno','Saturno'],['O seu','Nodo Norte','Nodo Lunar']);
+  fd('moradas').innerHTML=lista.map(x=>mor(x[0],x[1],x[2])).join('');
+}
+
+function renderAspects(){
+  const p=chart.planets,c=chart;
+  const ax=c.aspects.slice(0,unlocked?5:3);
   fd('aspects').innerHTML=ax.map(a=>{
     const dd=Math.abs(p[a.a].lon-p[a.b].lon)>180?'x':'e';
-    return '<div class="asp-row"><div class="ag">'+a.type.sym+'</div><div class="aw"><b>'+a.a+' '+dd+' '+a.b+'</b><small>'+a.type.n+' · orbe '+a.orb.toFixed(1)+'°</small><span class="tease-b">'+a.type.d+'</span></div></div>';
+    const lk=unlocked?'':'<span class="lk" style="align-self:center">🔒</span>';
+    return '<div class="asp-row"><div class="ag">'+a.type.sym+'</div><div class="aw"><b>'+a.a+' '+dd+' '+a.b+'</b><small>'+a.type.n+' · orbe '+a.orb.toFixed(1)+'°</small><span class="tease-b">'+a.type.d+'</span></div>'+lk+'</div>';
   }).join('')||'<p class="cc-sub">Conversas mais raras hoje, meu bem.</p>';
 }
 
@@ -529,6 +562,10 @@ waP.addEventListener('change',()=>{waD.textContent='+'+waP.value;waN.placeholder
 let unlocked=false;
 function unlock(titulo){
   if(unlocked)return;unlocked=true;
+  document.body.classList.add('liberado');
+  document.querySelectorAll('.prow .lk,.asp-row .lk').forEach(e=>e.remove());
+  document.querySelectorAll('[data-gate]').forEach(e=>e.style.display='none');
+  renderMoradas();renderAspects();
   document.querySelectorAll('.gated').forEach(el=>el.classList.remove('gated'));
   fd('gateCard').innerHTML='<div class="cc-head"><span class="lk">✦</span> anotado!</div><h3>'+titulo+'</h3><p class="cc-sub">Agora desce sem pressa, que está tudo aberto: os planetas, as casas, as conversas... e a Dona Celeste te espera no fim.</p>';
 }
@@ -561,6 +598,10 @@ fd('waForm').addEventListener('submit',e=>{
     })
     .catch(()=>unlock('Anotado, meu bem! ✦'));
 });
+document.querySelectorAll('[data-gate]').forEach(b=>b.addEventListener('click',()=>{
+  fd('gateCard').scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(()=>waN.focus(),500);
+}));
 
 /* ===== exportação do cartão do céu ===== */
 const GOLD='#C89F50',AMBER='#F7B567',CREAM='#E9D5BD',BRASS='#A47F5D';
