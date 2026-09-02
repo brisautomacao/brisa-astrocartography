@@ -16,6 +16,7 @@ Registro de decisões de arquitetura e produto do funil de mapa astral da Brisa 
 |---|---|---|
 | [0001](0001-landing-page-funil-mapa-astral.md) | Landing page do funil MAPA (captura de lead + mapa astral detalhado com cadeado) | Aceito (Frente 1 entregue 01/09/2026) |
 | [0002](0002-identidade-visual-landing-dona-celeste.md) | Identidade visual da landing: Mesa da Celeste (candlelit, paleta dos vídeos, chip Celeste no cadeado) | Aceito |
-| [0003](0003-frente1-captura-de-lead-whatsapp-brisadocs.md) | Frente 1: captura de lead com WhatsApp via API pública do brisadocs (SQLite no PVC, aba /painel/leads) | Aceito (parcialmente suspenso por ADR-0005 em 02/09/2026) |
+| [0003](0003-frente1-captura-de-lead-whatsapp-brisadocs.md) | Frente 1: captura de lead com WhatsApp via API pública do brisadocs (SQLite no PVC, aba /painel/leads) | Aceito (suspenso por ADR-0005; reativado na v1 por ADR-0006) |
 | [0004](0004-calculo-real-no-navegador-astronomy-engine.md) | Cálculo real do mapa astral no navegador (Astronomy Engine + Open-Meteo geocoding, validação de cidade) | Aceito |
-| [0005](0005-monetizacao-stripe-pausa-whatsapp.md) | Monetização com Stripe Payment Links (R$ 9,90 / R$ 29,90), UX para público mais velho, pausa da captura de WhatsApp | Aceito |
+| [0005](0005-monetizacao-stripe-pausa-whatsapp.md) | Monetização com Stripe Payment Links (R$ 9,90 / R$ 29,90), UX para público mais velho, pausa da captura de WhatsApp | Aceito (agendado: aplica-se à v2, ver ADR-0006) |
+| [0006](0006-duas-versoes-v1-aberta-whatsapp-v2-stripe.md) | Duas versões do funil: v1 aberta com portão de WhatsApp (país + número completo), v2 monetizada com Stripe | Aceito |

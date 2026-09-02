@@ -114,8 +114,8 @@ input[type=date],input[type=time]{color-scheme:dark}
 .prow .who small i{font-style:normal;color:#dcc9ab}
 .prow .tease{flex:1;text-align:right;min-width:0}
 .prow .tease i{display:block;font-style:normal;font-size:12px;color:#8d795f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:24ch}
-.prow .tease b{display:block;font:300 13px Outfit;color:var(--cream);line-height:1.65;margin-top:2px}
-.prow .tease b i{display:inline;white-space:normal;overflow:visible;text-overflow:clip;color:#dcc9ab}
+.prow .tease b{display:block;font:300 13px Outfit;color:var(--cream);filter:blur(5px);user-select:none;line-height:1.65;margin-top:2px}
+.prow .lk{color:rgba(200,159,80,.75);font-size:14px;margin-left:4px}
 /* casas */
 .moradas{margin-top:16px;display:grid;gap:10px}
 .moradas p{font:300 14.5px Outfit;color:#cbb694;line-height:1.6}
@@ -130,13 +130,7 @@ input[type=date],input[type=time]{color-scheme:dark}
 .asp-row .aw{min-width:0;flex:1}
 .asp-row .aw b{display:block;font-family:Fraunces,serif;font-weight:550;font-size:16px}
 .asp-row .aw small{font:300 12.5px Outfit;color:#b7a184;display:block;margin-top:2px}
-.asp-row .aw .tease-b{display:block;font:300 13px Outfit;color:var(--cream);line-height:1.65;margin-top:4px}
-/* portão de WhatsApp (v1): país + número completo */
-.gated{display:none}
-select{width:100%;background:#241722;border:1.2px solid rgba(200,159,80,.4);border-radius:6px;color:var(--cream);font:400 18px Outfit;padding:12px 10px;outline:none;transition:border-color .25s;color-scheme:dark}
-select:focus{border-color:var(--amber)}
-.wa-row{display:flex;gap:12px;align-items:flex-end}
-.wa-ddi{font:400 21px Fraunces,serif;color:var(--amber);padding:10px 2px;white-space:nowrap}
+.asp-row .aw .tease-b{display:block;font:300 13px Outfit;color:var(--cream);filter:blur(5px);user-select:none;line-height:1.65;margin-top:4px}
 /* exportação */
 .export{margin-top:28px;text-align:center}
 .ex-btns{display:flex;gap:12px;justify-content:center;margin-top:16px}
@@ -193,6 +187,11 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
       <figcaption>o seu céu inteiro, calculado agora, em linha dourada</figcaption>
     </figure>
 
+    <button class="pay" type="button" data-pay="990">
+      <span class="big">🔒 Revelação completa · R$ 9,90</span>
+      <span class="small">abre todos os cadeados do seu céu</span>
+    </button>
+
     <div class="export">
       <div class="cc-head" style="justify-content:center"><span class="lk">✦</span> leve o seu céu com você</div>
       <p class="cc-sub">Toque e o compartilhar do Instagram abre com a imagem pronta: as três chaves do seu céu, do jeitinho da Celeste.</p>
@@ -207,55 +206,18 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
       </div>
     </div>
 
-    <div class="cadeado-card" id="gateCard">
-      <div class="cc-head"><span class="lk">✦</span> o resto do seu céu</div>
-      <h3>Quer abrir tudo, meu bem?</h3>
-      <p class="cc-sub">Me deixa o seu WhatsApp que eu abro cada gaveta deste céu: os planetas, as casas e as conversas entre eles. Depois eu ainda te mando a leitura completa, contada do meu jeito.</p>
-      <form id="waForm" novalidate>
-        <label for="waPais">País do seu WhatsApp</label>
-        <select id="waPais" autocomplete="country">
-          <option value="55" selected>Brasil (+55)</option>
-          <option value="34">Espanha (+34)</option>
-          <option value="351">Portugal (+351)</option>
-          <option value="54">Argentina (+54)</option>
-          <option value="598">Uruguai (+598)</option>
-          <option value="595">Paraguai (+595)</option>
-          <option value="591">Bolívia (+591)</option>
-          <option value="56">Chile (+56)</option>
-          <option value="51">Peru (+51)</option>
-          <option value="57">Colômbia (+57)</option>
-          <option value="52">México (+52)</option>
-          <option value="1">Estados Unidos e Canadá (+1)</option>
-          <option value="39">Itália (+39)</option>
-          <option value="49">Alemanha (+49)</option>
-          <option value="33">França (+33)</option>
-          <option value="44">Reino Unido (+44)</option>
-          <option value="61">Austrália (+61)</option>
-          <option value="81">Japão (+81)</option>
-        </select>
-        <label for="waNum">Número completo, com DDD</label>
-        <div class="wa-row">
-          <span class="wa-ddi" id="waDdi">+55</span>
-          <input id="waNum" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="51 98765 4321" required>
-        </div>
-        <span class="err" id="waErr">Confere o número pra mim? Celular completo, com o DDD, que acesse o WhatsApp.</span>
-        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" style="display:none" aria-hidden="true">
-        <button class="pay" type="submit" id="waGo">
-          <span class="big">Abrir o meu céu ✦</span>
-          <span class="small">de graça: eu só quero te encontrar depois</span>
-        </button>
-        <p class="hint">o seu número fica com a Dona Celeste, e mais ninguém vê</p>
-      </form>
-    </div>
-
-    <div class="cadeado-card gated" id="cardPlanetas">
+    <div class="cadeado-card">
       <div class="cc-head"><span class="lk">✦</span> os outros moradores do céu</div>
       <h3>Os outros oito planetas</h3>
       <p class="cc-sub">Cada um mora num canto do seu céu e conta um segredo diferente. Estes aqui embaixo são os seus, de verdade.</p>
       <div id="prows"></div>
+      <button class="pay" type="button" data-pay="990">
+        <span class="big">🔒 Revelação completa · R$ 9,90</span>
+        <span class="small">cada planeta, cada casa, cada conversa entre eles</span>
+      </button>
     </div>
 
-    <div class="cadeado-card gated" id="cardCasas">
+    <div class="cadeado-card">
       <div class="cc-head"><span class="lk">✦</span> doze gavetas, uma vida inteira</div>
       <h3>As 12 casas da sua vida</h3>
       <p class="cc-sub">A carta tem doze gavetas. Cada planeta mora numa, e a gaveta conta onde aquilo acontece na sua vida.</p>
@@ -265,22 +227,33 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
         <span>amizades</span><span>saúde</span><span>viagens</span><span>estudos</span>
         <span>espiritualidade</span><span>comunicação</span><span>lar</span><span>propósito</span>
       </div>
+      <button class="pay" type="button" data-pay="990">
+        <span class="big">🔒 Revelação completa · R$ 9,90</span>
+        <span class="small">as doze gavetas abertas, uma por uma</span>
+      </button>
     </div>
 
-    <div class="cadeado-card gated" id="cardAspectos">
+    <div class="cadeado-card">
       <div class="cc-head"><span class="lk">✶</span> conversas particulares</div>
       <h3>Os aspectos</h3>
       <p class="cc-sub">Aqueles riscos dourados na carta? Cada um é uma conversa entre dois planetas. Estas são as conversas que mais se ouvem no seu céu.</p>
       <div id="aspects"></div>
+      <button class="pay" type="button" data-pay="990">
+        <span class="big">🔒 Revelação completa · R$ 9,90</span>
+        <span class="small">todas as conversas do seu céu, traduzidas</span>
+      </button>
     </div>
 
-    <div class="lock gated" id="cardCeleste">
+    <div class="lock">
       <div class="veil"></div>
       <div class="chip"><img src="assets/chip.webp" alt="Dona Celeste"></div>
       <h2>A leitura completa</h2>
       <p class="say">Tudo isso eu leio pra você, com calma, do meu jeito. Quer a interpretação com a Dona Celeste?</p>
       <div class="hint">onze planetas, doze casas, todos os aspectos, em conversa</div>
-      <a class="btn2" href="https://www.instagram.com/brisaastral.ai/" target="_blank" rel="noopener">Chamar no Instagram ✦</a>
+      <button class="pay pay2" type="button" data-pay="2990">
+        <span class="big">✨ Interpretação com a Dona Celeste · R$ 29,90</span>
+        <span class="small">a leitura inteira, contada por ela</span>
+      </button>
     </div>
   </section>
 
@@ -288,10 +261,14 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
 </div>
 <script>
 /* =====================================================================
- VERSÃO 1 (aberta): sem pagamento. Pra liberar o resto do céu, a pessoa
- deixa o WhatsApp (país + número completo) e o lead vai pro painel.
- A versão monetizada (Stripe) é a final-v2.html.
+   LINKS DE PAGAMENTO (Stripe)
+   Cole aqui os links quando a Adriana criar no Stripe:
+   LINK_COMPLETO = produto "Revelação completa" R$ 9,90
+   LINK_CELESTE  = produto "Interpretação com a Dona Celeste" R$ 29,90
+   Enquanto estiverem vazios, os botões avisam que está quase pronto.
 ===================================================================== */
+const LINK_COMPLETO='';
+const LINK_CELESTE='';
 
 /* ===== dados dos signos ===== */
 const SIGN=[
@@ -496,8 +473,8 @@ function render(){
   fd('versos').innerHTML=keys.map(k=>'<div class="verso"><div class="g">'+k.g+' '+k.t+'</div><h3>'+k.k+' em <i>'+k.s.n+'</i></h3><p>'+k.txt(k.s)+'</p></div>').join('');
   fd('wheelBox').innerHTML='';fd('wheelBox').appendChild(drawWheel(c));
 
-  /* planetas: dados reais, texto completo */
-  const pr=(glyph,who,sub,tease,full)=>'<div class="prow"><div class="pg">'+glyph+'</div><div class="who"><b>'+who+'</b><small>'+sub+'</small></div><div class="tease"><i>'+tease+'</i><b>'+full+'</b></div></div>';
+  /* planetas travados, com dados reais */
+  const pr=(glyph,who,sub,tease,blur)=>'<div class="prow"><div class="pg">'+glyph+'</div><div class="who"><b>'+who+'</b><small>'+sub+'</small></div><div class="tease"><i>'+tease+'</i><b>'+blur+'</b></div><span class="lk">🔒</span></div>';
   const sg=n=>SIGN[p[n].sign].n+(p[n].retro?' ℞':'')+' · casa '+p[n].house;
   const gen=n=>SIGN[p[n].sign].gen;
   fd('prows').innerHTML=
@@ -511,56 +488,28 @@ function render(){
 
   /* casas: moradas reais */
   const mor=(art,pl,label)=>'<p>'+art+' <b>'+label+' mora na casa '+p[pl].house+'</b>, '+HOUSE_THEME[p[pl].house-1]+', em '+SIGN[p[pl].sign].n+'.</p>';
-  fd('moradas').innerHTML=mor('O seu','Sol','Sol')+mor('Sua','Lua','Lua')+mor('O seu','Mercúrio','Mercúrio')+mor('Sua','Vênus','Vênus')+mor('O seu','Marte','Marte')+mor('O seu','Júpiter','Júpiter')+mor('O seu','Saturno','Saturno')+mor('O seu','Nodo Norte','Nodo Lunar');
+  fd('moradas').innerHTML=mor('O seu','Sol','Sol')+mor('Sua','Lua','Lua')+mor('Sua','Vênus','Vênus');
 
-  /* aspectos reais (top 5) */
-  const ax=c.aspects.slice(0,5);
+  /* aspectos reais (top 3) */
+  const ax=c.aspects.slice(0,3);
   fd('aspects').innerHTML=ax.map(a=>{
     const dd=Math.abs(p[a.a].lon-p[a.b].lon)>180?'x':'e';
-    return '<div class="asp-row"><div class="ag">'+a.type.sym+'</div><div class="aw"><b>'+a.a+' '+dd+' '+a.b+'</b><small>'+a.type.n+' · orbe '+a.orb.toFixed(1)+'°</small><span class="tease-b">'+a.type.d+'</span></div></div>';
+    return '<div class="asp-row"><div class="ag">'+a.type.sym+'</div><div class="aw"><b>'+a.a+' '+dd+' '+a.b+'</b><small>'+a.type.n+' · orbe '+a.orb.toFixed(1)+'°</small><span class="tease-b">'+a.type.d+'</span></div><span class="lk" style="align-self:center">🔒</span></div>';
   }).join('')||'<p class="cc-sub">Conversas mais raras hoje, meu bem.</p>';
+
+  bindPay();
 }
 
-/* ===== portão de WhatsApp: libera o resto do céu ===== */
-const LEADS_API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-leads';
-const WA_FIX={'55':'51 98765 4321','34':'612 345 678','351':'912 345 678','1':'415 555 2671','54':'9 11 5555 5555'};
-const waP=fd('waPais'),waN=fd('waNum'),waD=fd('waDdi');
-waP.addEventListener('change',()=>{waD.textContent='+'+waP.value;waN.placeholder=WA_FIX[waP.value]||'número completo';fd('waErr').style.display='none';waN.focus()});
-let unlocked=false;
-function unlock(titulo){
-  if(unlocked)return;unlocked=true;
-  document.querySelectorAll('.gated').forEach(el=>el.classList.remove('gated'));
-  fd('gateCard').innerHTML='<div class="cc-head"><span class="lk">✦</span> anotado!</div><h3>'+titulo+'</h3><p class="cc-sub">Agora desce sem pressa, que está tudo aberto: os planetas, as casas, as conversas... e a Dona Celeste te espera no fim.</p>';
+/* ===== pagamento ===== */
+function bindPay(){
+  document.querySelectorAll('[data-pay]').forEach(el=>{
+    el.onclick=()=>{
+      const link=el.dataset.pay==='2990'?LINK_CELESTE:LINK_COMPLETO;
+      if(!link){alert('O pagamento ainda está sendo arrumado, meu bem. Já já está pronto!');return}
+      window.location.href=link;
+    };
+  });
 }
-fd('waForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  const code=waP.value,digits=waN.value.replace(/\D/g,'');
-  const err=fd('waErr');
-  let ok,msg='';
-  if(code==='55'){
-    ok=digits.length===11&&digits[2]==='9';
-    if(!ok)msg='Celular do Brasil, meu bem: DDD mais 9 números, tipo 51 98765 4321.';
-  }else{
-    ok=digits.length>=6&&digits.length<=12;
-    if(!ok)msg='Confere o número? Completo, mas sem o +'+code+' (ele já está na frente).';
-  }
-  if(!ok){err.textContent=msg;err.style.display='block';waN.focus();return}
-  err.style.display='none';
-  const btn=fd('waGo');btn.disabled=true;btn.querySelector('.big').textContent='Abrindo as gavetas ✦';
-  const wa='+'+code+digits;
-  const payload={whatsapp:wa,birth_date:userData.dateStr,birth_time:userData.hasTime?userData.timeStr:'',
-    city:(userData.city.name+', '+userData.city.region).slice(0,120),source:'funil-v1-whatsapp',
-    page_url:location.href.split('#')[0],website:fd('website').value};
-  fetch(LEADS_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
-    .then(r=>r.json())
-    .then(d=>{
-      if(d&&d.ok===false){
-        err.textContent='Hmm, esse número não passou. Confere pra mim?';err.style.display='block';
-        btn.disabled=false;btn.querySelector('.big').textContent='Abrir o meu céu ✦';waN.focus();
-      }else unlock('Anotado, meu bem! ✦');
-    })
-    .catch(()=>unlock('Anotado, meu bem! ✦'));
-});
 
 /* ===== exportação do cartão do céu ===== */
 const GOLD='#C89F50',AMBER='#F7B567',CREAM='#E9D5BD',BRASS='#A47F5D';
@@ -645,7 +594,6 @@ if(location.hash==='#preview'){
   chart=calcChart(date,selCity.lat,selCity.lon);
   userData={dateStr:'1989-05-27',timeStr:'08:30',hasTime:true,city:selCity};
   render();r.style.display='block';
-  unlock('Modo espia, Adriana ✦');
 }
 </script>
 </body>
