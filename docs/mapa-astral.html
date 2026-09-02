@@ -98,7 +98,36 @@ body{font-family:'Georgia',serif;background:#0a0a1a;color:#e0e0f0;overflow-x:hid
   <p class="sub">Descubra todos os signos, casas e aspectos do seu nascimento</p>
   <div class="f-row">
     <label>📅 Data de nascimento</label>
-    <input type="date" id="birth-date" value="2000-01-01">
+    <div style="display:flex;gap:10px;align-items:flex-end">
+      <div style="flex:0 0 auto">
+        <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Dia</label>
+        <input type="number" id="birth-day" min="1" max="31" value="01" 
+          style="width:70px;padding:10px;background:rgba(30,30,60,.6);border:1px solid rgba(147,112,219,.2);border-radius:8px;color:#fff;font-size:16px;text-align:center">
+      </div>
+      <div style="flex:0 0 auto">
+        <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Mês</label>
+        <select id="birth-month" 
+          style="width:100px;padding:10px;background:rgba(30,30,60,.6);border:1px solid rgba(147,112,219,.2);border-radius:8px;color:#fff;font-size:16px">
+          <option value="01">Janeiro</option>
+          <option value="02">Fevereiro</option>
+          <option value="03">Março</option>
+          <option value="04">Abril</option>
+          <option value="05">Maio</option>
+          <option value="06">Junho</option>
+          <option value="07">Julho</option>
+          <option value="08">Agosto</option>
+          <option value="09">Setembro</option>
+          <option value="10">Outubro</option>
+          <option value="11">Novembro</option>
+          <option value="12">Dezembro</option>
+        </select>
+      </div>
+      <div style="flex:0 0 auto">
+        <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Ano</label>
+        <input type="number" id="birth-year" min="1900" max="2099" value="2000" 
+          style="width:90px;padding:10px;background:rgba(30,30,60,.6);border:1px solid rgba(147,112,219,.2);border-radius:8px;color:#fff;font-size:16px;text-align:center">
+      </div>
+    </div>
   </div>
   <div class="f-row">
     <label>🕐 Hora de nascimento</label>
@@ -583,9 +612,20 @@ function isRetrograde(planetName,date){
 let chartData=null;
 
 function generateChart(){
-  const dateStr=document.getElementById('birth-date').value;
+  // Read day, month, year from separate fields
+  const day=String(document.getElementById('birth-day').value).padStart(2,'0');
+  const month=document.getElementById('birth-month').value;
+  const year=document.getElementById('birth-year').value;
   const timeStr=document.getElementById('birth-time').value;
-  if(!dateStr||!timeStr){showError("Preencha data e hora");return}
+  
+  // Validate inputs
+  if(!day||!month||!year||!timeStr){showError("Preencha todos os campos de data e hora");return}
+  const dayNum=parseInt(day);
+  const yearNum=parseInt(year);
+  if(dayNum<1||dayNum>31){showError("Dia inválido (1-31)");return}
+  if(yearNum<1900||yearNum>2099){showError("Ano deve estar entre 1900 e 2099");return}
+  
+  const dateStr=`${year}-${month}-${day}`;
   if(selectedLat===null){showError("Selecione um local da lista");return}
 
   document.getElementById('loading').style.display='block';
