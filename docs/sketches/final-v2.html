@@ -166,8 +166,38 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
     <div class="divider">o começo de tudo</div>
     <h2>Como estava seu céu?</h2>
     <p class="lead">Me conta: eu calculo o seu mapa astral de verdade, planetinha por planetinha.</p>
-    <form id="form" novalidate>
-      <label for="d">Data de nascimento</label><input id="d" type="date" required>
+     <form id="form" novalidate>
+       <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:12px">
+         <div style="flex:0 0 auto">
+           <label style="display:block;font-size:12px;margin-bottom:4px">Dia</label>
+           <input id="d-day" type="number" min="1" max="31" value="01" required
+             style="width:60px;padding:8px;background:rgba(30,30,60,.6);border:1px solid rgba(147,112,219,.2);border-radius:8px;color:#fff;font-size:14px;text-align:center">
+         </div>
+         <div style="flex:0 0 auto">
+           <label style="display:block;font-size:12px;margin-bottom:4px">Mês</label>
+           <select id="d-month" required
+             style="width:90px;padding:8px;background:rgba(30,30,60,.6);border:1px solid rgba(147,112,219,.2);border-radius:8px;color:#fff;font-size:14px">
+             <option value="01">Janeiro</option>
+             <option value="02">Fevereiro</option>
+             <option value="03">Março</option>
+             <option value="04">Abril</option>
+             <option value="05">Maio</option>
+             <option value="06">Junho</option>
+             <option value="07">Julho</option>
+             <option value="08">Agosto</option>
+             <option value="09">Setembro</option>
+             <option value="10">Outubro</option>
+             <option value="11">Novembro</option>
+             <option value="12">Dezembro</option>
+           </select>
+         </div>
+         <div style="flex:0 0 auto">
+           <label style="display:block;font-size:12px;margin-bottom:4px">Ano</label>
+           <input id="d-year" type="number" min="1900" max="2099" value="2000" required
+             style="width:80px;padding:8px;background:rgba(30,30,60,.6);border:1px solid rgba(147,112,219,.2);border-radius:8px;color:#fff;font-size:14px;text-align:center">
+         </div>
+       </div>
+       <label for="d" style="display:block;margin-bottom:12px">Data de nascimento</label>
       <label for="h">Hora, se souber</label><input id="h" type="time">
       <label for="c">Onde você nasceu</label>
       <div class="ac-wrap">
@@ -487,14 +517,25 @@ ci.addEventListener('blur',()=>setTimeout(()=>cl.style.display='none',200));
 /* enviar */
 f.addEventListener('submit',e=>{
   e.preventDefault();
-  if(!fd('d').value){fd('d').focus();return}
-  if(!selCity){fd('cErr').style.display='block';ci.focus();return}
+  // Read day, month, year from separate fields
+  const day=String(fd('d-day').value).padStart(2,'0');
+  const month=fd('d-month').value;
+  const year=fd('d-year').value;
+  
+  if(!day||!month||!year){fd('d-day').focus();return}
+  const dayNum=parseInt(day);
+  const yearNum=parseInt(year);
+  if(dayNum<1||dayNum>31){alert('Dia inválido (1-31)');return}
+  if(yearNum<1900||yearNum>2099){alert('Ano deve estar entre 1900 e 2099');return}
+  
+  const dateStr=`${year}-${month}-${day}`;
+  if(!selCity){fd('cErr').style.display='block';fd('c').focus();return}
   const timeStr=fd('h').value||'12:00';
-  const date=localToUtc(fd('d').value,timeStr,selCity.tz);
+  const date=localToUtc(dateStr,timeStr,selCity.tz);
   b.disabled=true;b.textContent='Apontando o telescópio ✦';
   setTimeout(()=>{
     chart=calcChart(date,selCity.lat,selCity.lon);
-    userData={dateStr:fd('d').value,timeStr:timeStr,hasTime:!!fd('h').value,city:selCity};
+    userData={dateStr:dateStr,timeStr:timeStr,hasTime:!!fd('h').value,city:selCity};
     render();
     track('chart');
     sendChart();
@@ -629,7 +670,7 @@ document.getElementById('exFeed').addEventListener('click',()=>{track('share');d
 
 /* preview: #preview mostra o mapa da Adriana */
 if(location.hash==='#preview'){
-  fd('d').value='1989-05-27';fd('h').value='08:30';
+  fd('d-day').value='27';fd('d-month').value='05';fd('d-year').value='1989';fd('h').value='08:30';
   selCity={name:'Porto Alegre',region:'Rio Grande do Sul, Brasil',lat:-30.03283,lon:-51.23019,tz:'America/Sao_Paulo'};
   ci.value='Porto Alegre, Rio Grande do Sul, Brasil';
   document.querySelector('.hero').style.minHeight='430px';
