@@ -500,6 +500,7 @@ f.addEventListener('submit',e=>{
     chart=calcChart(date,selCity.lat,selCity.lon);
     userData={dateStr:fd('d').value,timeStr:timeStr,hasTime:!!fd('h').value,city:selCity};
     render();
+    track('chart');
     b.disabled=false;b.textContent='Apontar o telescópio';
     r.style.display='block';
     r.scrollIntoView({behavior:'smooth'});
@@ -555,13 +556,31 @@ function renderAspects(){
 }
 
 /* ===== portão de WhatsApp: libera o resto do céu ===== */
+/* telemetria anonima do funil (ADR-0007): so o passo, sem dado pessoal */
+const TRACK_API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-events';
+const PREVIEW=location.hash==='#preview';
+const VISIT='v'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+function track(ev){
+  if(PREVIEW)return;
+  try{
+    let ref='';
+    try{ref=document.referrer?new URL(document.referrer).hostname:''}catch(_){}
+    fetch(TRACK_API,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({event:ev,page:'v1',referrer:ref,visit:VISIT,website:''})}).catch(()=>{});
+  }catch(_){}
+}
+track('enter');
+
 const LEADS_API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-leads';
 const WA_FIX={'55':'51 98765 4321','34':'612 345 678','351':'912 345 678','1':'415 555 2671','54':'9 11 5555 5555'};
 const waP=fd('waPais'),waN=fd('waNum'),waD=fd('waDdi');
 waP.addEventListener('change',()=>{waD.textContent='+'+waP.value;waN.placeholder=WA_FIX[waP.value]||'número completo';fd('waErr').style.display='none';waN.focus()});
 let unlocked=false;
+let gateSent=false;
+function gateSeen(){if(!gateSent){gateSent=true;track('gate')}}
 function unlock(titulo){
   if(unlocked)return;unlocked=true;
+  track('unlock');
   document.body.classList.add('liberado');
   document.querySelectorAll('.prow .lk,.asp-row .lk').forEach(e=>e.remove());
   document.querySelectorAll('[data-gate]').forEach(e=>e.style.display='none');
@@ -599,9 +618,16 @@ fd('waForm').addEventListener('submit',e=>{
     .catch(()=>unlock('Anotado, meu bem! ✦'));
 });
 document.querySelectorAll('[data-gate]').forEach(b=>b.addEventListener('click',()=>{
+  gateSeen();
   fd('gateCard').scrollIntoView({behavior:'smooth',block:'center'});
   setTimeout(()=>waN.focus(),500);
 }));
+if('IntersectionObserver' in window){
+  const gateIO=new IntersectionObserver(es=>{
+    if(es.some(x=>x.isIntersecting)){gateSeen();gateIO.disconnect()}
+  },{threshold:.4});
+  gateIO.observe(fd('gateCard'));
+}
 
 /* ===== exportação do cartão do céu ===== */
 const GOLD='#C89F50',AMBER='#F7B567',CREAM='#E9D5BD',BRASS='#A47F5D';
@@ -672,8 +698,8 @@ async function doExport(W,H){const url=await makeCard(W,H);
   document.getElementById('exOut').style.display='block';
   document.getElementById('exImg').src=url;document.getElementById('exDl').href=url;
   document.getElementById('exOut').scrollIntoView({behavior:'smooth'})}
-document.getElementById('exStory').addEventListener('click',()=>doExport(1080,1920));
-document.getElementById('exFeed').addEventListener('click',()=>doExport(1080,1350));
+document.getElementById('exStory').addEventListener('click',()=>{track('share');doExport(1080,1920)});
+document.getElementById('exFeed').addEventListener('click',()=>{track('share');doExport(1080,1350)});
 
 /* preview: #preview mostra o mapa da Adriana */
 if(location.hash==='#preview'){

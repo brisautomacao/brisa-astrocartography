@@ -270,6 +270,21 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
    LINK_CELESTE  = produto "Interpretação com a Dona Celeste" R$ 29,90
    Enquanto estiverem vazios, os botões avisam que está quase pronto.
 ===================================================================== */
+/* telemetria anonima do funil (ADR-0007): so o passo, sem dado pessoal */
+const TRACK_API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-events';
+const PREVIEW=location.hash==='#preview';
+const VISIT='v'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+function track(ev){
+  if(PREVIEW)return;
+  try{
+    let ref='';
+    try{ref=document.referrer?new URL(document.referrer).hostname:''}catch(_){}
+    fetch(TRACK_API,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({event:ev,page:'v2',referrer:ref,visit:VISIT,website:''})}).catch(()=>{});
+  }catch(_){}
+}
+track('enter');
+
 const LINK_COMPLETO='';
 const LINK_CELESTE='';
 
@@ -458,6 +473,7 @@ f.addEventListener('submit',e=>{
     chart=calcChart(date,selCity.lat,selCity.lon);
     userData={dateStr:fd('d').value,timeStr:timeStr,hasTime:!!fd('h').value,city:selCity};
     render();
+    track('chart');
     b.disabled=false;b.textContent='Apontar o telescópio';
     r.style.display='block';
     r.scrollIntoView({behavior:'smooth'});
@@ -507,6 +523,7 @@ function render(){
 function bindPay(){
   document.querySelectorAll('[data-pay]').forEach(el=>{
     el.onclick=()=>{
+      track('pay');
       const link=el.dataset.pay==='2990'?LINK_CELESTE:LINK_COMPLETO;
       if(!link){alert('O pagamento ainda está sendo arrumado, meu bem. Já já está pronto!');return}
       window.location.href=link;
@@ -583,8 +600,8 @@ async function doExport(W,H){const url=await makeCard(W,H);
   document.getElementById('exOut').style.display='block';
   document.getElementById('exImg').src=url;document.getElementById('exDl').href=url;
   document.getElementById('exOut').scrollIntoView({behavior:'smooth'})}
-document.getElementById('exStory').addEventListener('click',()=>doExport(1080,1920));
-document.getElementById('exFeed').addEventListener('click',()=>doExport(1080,1350));
+document.getElementById('exStory').addEventListener('click',()=>{track('share');doExport(1080,1920)});
+document.getElementById('exFeed').addEventListener('click',()=>{track('share');doExport(1080,1350)});
 
 /* preview: #preview mostra o mapa da Adriana */
 if(location.hash==='#preview'){
