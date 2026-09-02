@@ -288,6 +288,25 @@ function track(ev){
 }
 track('enter');
 
+// Mapa gerado sem contato (ADR-0008): guarda nascimento e cidade mesmo se a
+// pessoa for embora sem deixar o WhatsApp. Antes disso ela sumia inteira.
+// Nao manda contato nenhum, e o mesmo id de visita da telemetria costura os
+// dois se ela voltar e deixar o numero.
+const CHARTS_API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-charts';
+let chartSent=false;
+function sendChart(){
+  if(PREVIEW||chartSent||!userData)return;
+  chartSent=true;
+  try{
+    fetch(CHARTS_API,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({birth_date:userData.dateStr,
+        birth_time:userData.hasTime?userData.timeStr:'',
+        city:(userData.city.name+', '+userData.city.region).slice(0,120),
+        visit:VISIT,source:'funil-v2-sem-contato',
+        page_url:location.href.split('#')[0],website:''})}).catch(function(){});
+  }catch(e){}
+}
+
 const LINK_COMPLETO='';
 const LINK_CELESTE='';
 
@@ -477,6 +496,7 @@ f.addEventListener('submit',e=>{
     userData={dateStr:fd('d').value,timeStr:timeStr,hasTime:!!fd('h').value,city:selCity};
     render();
     track('chart');
+    sendChart();
     b.disabled=false;b.textContent='Apontar o telescópio';
     r.style.display='block';
     r.scrollIntoView({behavior:'smooth'});

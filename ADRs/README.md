@@ -21,3 +21,4 @@ Registro de decisões de arquitetura e produto do funil de mapa astral da Brisa 
 | [0005](0005-monetizacao-stripe-pausa-whatsapp.md) | Monetização com Stripe Payment Links (R$ 9,90 / R$ 29,90), UX para público mais velho, pausa da captura de WhatsApp | Aceito (agendado: aplica-se à v2, ver ADR-0006) |
 | [0006](0006-duas-versoes-v1-aberta-whatsapp-v2-stripe.md) | Duas versões do funil: v1 aberta com portão de WhatsApp (país + número completo) e v2 monetizada com Stripe, ambas com blur/cadeados de curiosidade | Aceito |
 | [0007](0007-telemetria-anonima-funil-mapa.md) | Telemetria anônima do funil: eventos sem PII no brisadocs (POST /api/mapa-events) e aba 📊 Funil no painel | Aceito |
+| [0008](0008-mapa-gerado-sem-contato.md) | Guardar o mapa gerado (nascimento e cidade) mesmo sem contato: POST /api/mapa-charts e segunda tabela em /painel/leads | Aceito |
