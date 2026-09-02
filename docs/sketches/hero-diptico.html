@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Opção B · O Díptico ✦ Dona Celeste</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Outfit:wght@300..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#2E1E2A;--bg2:#1E1210;--plum:#4A2040;--gold:#C89F50;
+  --amber:#F7B567;--cream:#E9D5BD;--silver:#C8C9CB;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:Outfit,system-ui,sans-serif;font-size:17px;color:var(--cream);
+  background:
+    radial-gradient(85% 30% at 50% 0,rgba(247,181,103,.15),transparent 65%),
+    radial-gradient(60% 34% at 88% 88%,rgba(74,32,64,.4),transparent 70%),
+    linear-gradient(180deg,var(--bg1),var(--bg2) 62%);
+  background-attachment:fixed;
+}
+/* ===== OPÇÃO B · O DÍPTICO =====
+   Dois painéis: a foto em cima, limpa, sem nenhuma escrita;
+   o texto embaixo, no próprio painel de cor sólida.
+   No computador, ficam lado a lado. */
+.hero{display:grid;grid-template-rows:56svh auto;min-height:100svh}
+.hero-foto{position:relative;overflow:hidden}
+.hero-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 26%;filter:saturate(.95)}
+.hero-foto::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(30,18,16,.25) 0,transparent 22%,transparent 78%,rgba(46,30,42,.9) 96%,var(--bg1) 100%)}
+.sel{position:absolute;left:22px;top:20px;z-index:2;font-size:12px;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(233,213,189,.85);background:rgba(20,12,14,.4);border:1px solid rgba(200,159,80,.35);
+  border-radius:999px;padding:8px 16px;backdrop-filter:blur(4px)}
+.hero-txt{padding:44px 26px 58px;position:relative}
+.kicker{font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--amber);margin-bottom:16px}
+h1{font-family:Fraunces,serif;font-weight:330;font-style:italic;font-size:clamp(36px,9vw,54px);line-height:1.12}
+h1 em{color:var(--gold)}
+.sub{margin-top:14px;font-weight:300;font-size:17px;color:#dcc9ab;max-width:30ch;line-height:1.6}
+.cue{margin-top:28px;display:inline-flex;gap:10px;align-items:center;color:var(--gold);font-size:13px;
+  letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(200,159,80,.55);border-radius:2px;
+  padding:14px 26px;text-decoration:none;background:rgba(30,18,16,.3);transition:.25s}
+.cue:hover{background:rgba(200,159,80,.12)}
+.cue span{animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+/* desktop: lado a lado */
+@media(min-width:900px){
+  .hero{grid-template-rows:none;grid-template-columns:1fr 1fr;min-height:100svh}
+  .hero-foto{grid-row:1;grid-column:2;min-height:100svh}
+  .hero-txt{grid-row:1;grid-column:1;display:flex;flex-direction:column;justify-content:center;padding:60px 64px}
+  .sub{max-width:32ch}
+}
+/* céu */
+.tw{position:fixed;color:var(--silver);font-size:10px;opacity:.3;animation:tw 4s ease-in-out infinite;z-index:0}
+@keyframes tw{0%,100%{opacity:.08;transform:scale(.8)}50%{opacity:.6;transform:scale(1.15)}}
+/* seção 2 (só pra dar continuidade) */
+.teaser{padding:70px 26px 90px;position:relative}
+.divider{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);opacity:.8;margin-bottom:16px}
+h2{font-family:Fraunces,serif;font-weight:330;font-style:italic;font-size:clamp(28px,7vw,40px);line-height:1.2}
+.lead{margin-top:12px;font-weight:300;color:#dcc9ab}
+.sel2{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
+.sel2 div{border:1px solid rgba(200,159,80,.4);border-radius:12px;padding:18px 22px;font-weight:300;font-size:15px;color:#dcc9ab}
+.sel2 b{display:block;font-family:Fraunces,serif;font-style:italic;font-size:22px;color:var(--cream);font-weight:400;margin-bottom:4px}
+</style>
+</head>
+<body>
+<div class="tw" style="top:64%;left:12%"></div>
+<div class="tw" style="top:70%;right:10%;animation-delay:1.2s"></div>
+<div class="tw" style="top:82%;left:22%;animation-delay:2.1s"></div>
+
+<header class="hero">
+  <div class="hero-foto">
+    <div class="sel">Opção B · o díptico</div>
+    <img src="assets/hero.webp" alt="Dona Celeste em sua sala de astrologia à luz de velas">
+  </div>
+  <div class="hero-txt">
+    <div class="kicker">Mapa Astral com Dona Celeste</div>
+    <h1>Que bom que você chegou.<br>Eu estava <em>te esperando.</em></h1>
+    <p class="sub">O céu inteiro guarda histórias. Me conta onde e quando você nasceu, que eu acho a sua.</p>
+    <a class="cue" href="#comeco">Ver o meu céu <span>✦</span></a>
+  </div>
+</header>
+
+<section class="teaser" id="comeco">
+  <div class="divider">o começo de tudo</div>
+  <h2>Meu bem, vamos entrar<br>no seu portal do céu?</h2>
+  <p class="lead">Um universo inteiro gira sobre você desde que nasceu. Vem ver o seu.</p>
+  <div class="sel2">
+    <div><b>27</b>dia</div>
+    <div><b>Setembro</b>mês</div>
+    <div><b>1989</b>ano</div>
+  </div>
+</section>
+</body>
+</html>
