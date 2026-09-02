@@ -6,7 +6,7 @@
 <title>Mapa Astral com Dona Celeste ✦ O seu céu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Outfit:wght@300..600&family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Outfit:wght@300..600&display=swap" rel="stylesheet">
 <script src="../astronomy.min.js"></script>
 <style>
 :root{
@@ -26,10 +26,7 @@ background:
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;filter:saturate(.92)}
 .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(185deg,rgba(30,18,16,.5) 0,rgba(30,18,16,.15) 26%,rgba(34,21,28,.8) 72%,var(--bg1) 97%)}
 .hero-txt{position:relative;z-index:1;padding:0 26px 12vh}
-.kicker{font-family:'Great Vibes',cursive;font-size:clamp(36px,8.5vw,54px);line-height:1.22;letter-spacing:0;text-transform:none;color:var(--gold);margin:2px 0 10px}
-@supports ((-webkit-background-clip:text) or (background-clip:text)){
-.kicker{background:linear-gradient(105deg,#F7B567 0%,#C89F50 45%,#F1D9A8 70%,#C89F50 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-}
+.kicker{font-size:13px;letter-spacing:.34em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
 h1{font-family:Fraunces,serif;font-weight:330;font-style:italic;font-size:clamp(36px,9vw,54px);line-height:1.12}
 h1 em{color:var(--gold)}
 .sub{margin-top:14px;font-weight:300;font-size:17px;color:#dcc9ab;max-width:30ch;line-height:1.6}
@@ -120,9 +117,13 @@ input[type=date],input[type=time]{color-scheme:dark}
 .prow .who small i{font-style:normal;color:#dcc9ab}
 .prow .tease{grid-column:2;text-align:left;min-width:0}
 .prow .tease i{display:block;font-style:italic;font-size:13.5px;color:#9c8465;white-space:normal;line-height:1.5}
-.prow .tease b{display:block;font:300 15px/1.75 Outfit;color:var(--cream);filter:blur(5px);user-select:none;margin-top:5px}
-body.liberado .prow .tease b{filter:none;user-select:auto}
-.prow .lk{color:rgba(200,159,80,.8);font-size:14px;grid-column:2;justify-self:start;margin-top:7px}
+.prow .tease b{display:block;font:300 15px/1.75 Outfit;color:var(--cream);margin-top:5px}
+/* o comeco da leitura fica legivel e so o resto embaca: a pessoa precisa
+   provar do texto pra querer o resto */
+.prow .tease .turvo{filter:blur(5px);user-select:none}
+body.liberado .prow .tease .turvo{filter:none;user-select:auto}
+.prow .tease .turvo,.prow .lk{cursor:pointer}
+.prow .lk{color:rgba(200,159,80,.9);font:400 12.5px Outfit;letter-spacing:.12em;text-transform:lowercase;grid-column:2;justify-self:start;margin-top:8px;border-bottom:1px solid rgba(200,159,80,.35);padding-bottom:2px}
 /* casas */
 .moradas{margin-top:16px;display:grid;gap:10px}
 .moradas p{font:300 14.5px Outfit;color:#cbb694;line-height:1.6}
@@ -137,7 +138,7 @@ body.liberado .prow .tease b{filter:none;user-select:auto}
 .asp-row .aw{min-width:0;flex:1}
 .asp-row .aw b{display:block;font-family:Fraunces,serif;font-weight:550;font-size:16px}
 .asp-row .aw small{font:300 12.5px Outfit;color:#b7a184;display:block;margin-top:2px}
-.asp-row .aw .tease-b{display:block;font:300 15px/1.75 Outfit;color:var(--cream);filter:blur(5px);user-select:none;margin-top:6px}
+.asp-row .aw .tease-b{cursor:pointer;display:block;font:300 15px/1.75 Outfit;color:var(--cream);filter:blur(5px);user-select:none;margin-top:6px}
 body.liberado .asp-row .aw .tease-b{filter:none;user-select:auto}
 /* portão de WhatsApp (v1): país + número completo */
 .gated{display:none}
@@ -153,6 +154,27 @@ select:focus{border-color:var(--amber)}
 #exImg{width:100%;display:block;border:1px solid rgba(200,159,80,.35);border-radius:6px;margin-bottom:14px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
 footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunces,serif;font-style:italic;font-size:15px}
 @media (max-width:420px){.prow .tease i{display:none}}
+
+/* ===== ficha do formulario =====
+   Era um empilhado de rotulo + linha. Virou ficha: cada campo numerado, com
+   uma linha embaixo dizendo por que aquilo importa (a hora, principalmente,
+   que e onde a pessoa desiste), e um selo de confianca no fim. */
+.ficha{margin-top:26px;padding:26px 22px 22px;border:1px solid rgba(200,159,80,.28);
+  border-radius:6px;background:linear-gradient(180deg,rgba(46,30,42,.55),rgba(30,18,16,.35));
+  box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.campo{display:grid;grid-template-columns:34px 1fr;gap:0 14px;align-items:start;
+  padding-bottom:20px;margin-bottom:20px;border-bottom:1px dashed rgba(200,159,80,.2)}
+.campo:nth-of-type(3){border-bottom:0;margin-bottom:6px;padding-bottom:4px}
+.passo{width:30px;height:30px;border-radius:50%;border:1px solid rgba(200,159,80,.45);
+  display:flex;align-items:center;justify-content:center;margin-top:1px;
+  font:400 14px Fraunces,serif;color:var(--gold);background:rgba(247,181,103,.06)}
+.campo-txt{min-width:0}
+.ficha label{margin-top:0;font-size:11.5px;letter-spacing:.16em;line-height:1.5}
+.ajuda{display:block;font:300 12.5px/1.55 Outfit;color:#9c8465;margin-top:7px;font-style:italic}
+.selo{text-align:center;font:300 12.5px Outfit;letter-spacing:.06em;color:#9c8465;margin-top:14px}
+.ficha .btn{margin-top:26px;background:linear-gradient(160deg,#F7B567,#C89F50);
+  border-color:transparent;color:#2A1A14;font-weight:600}
+.ficha .btn:hover{filter:brightness(1.06)}
 </style>
 </head>
 <body>
@@ -165,7 +187,7 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
 <header class="hero">
   <img src="assets/hero.webp" alt="Dona Celeste em sua sala de astrologia à luz de velas">
   <div class="hero-txt">
-    <div class="kicker">Mapa Astral<br>com Dona Celeste</div>
+    <div class="kicker">Mapa Astral com Dona Celeste</div>
     <h1>Óh, meu bem...<br>deixa eu ver <em>o seu céu.</em></h1>
     <p class="sub">O céu inteiro guarda histórias. A sua está esperando. Me conta onde e quando você nasceu.</p>
     <a class="cue" href="#comeco">Ver o meu céu <span>✦</span></a>
@@ -175,24 +197,45 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
 <div class="col">
   <section id="comeco">
     <div class="divider">o começo de tudo</div>
-    <h2>Como estava seu céu?</h2>
-    <p class="lead">Me conta: eu calculo o seu mapa astral de verdade, planetinha por planetinha.</p>
-    <form id="form" novalidate>
-      <label for="d">Data de nascimento</label><input id="d" type="date" required>
-      <label for="h">Hora, se souber</label><input id="h" type="time">
-      <label for="c">Onde você nasceu</label>
-      <div class="ac-wrap">
-        <input id="c" type="text" placeholder="escreva e escolha na lista" autocomplete="off" required>
-        <div id="acList" style="display:none" role="listbox"></div>
+    <h2>Entra no seu<br>portal do céu.</h2>
+    <p class="lead">Um universo inteiro gira sobre você desde que nasceu. Vem ver o seu.</p>
+    <form id="form" class="ficha" novalidate>
+      <div class="campo">
+        <span class="passo">1</span>
+        <div class="campo-txt">
+          <label for="d">Data de nascimento</label>
+          <input id="d" type="date" required>
+          <span class="ajuda">o dia em que o céu parou para te esperar</span>
+        </div>
       </div>
-      <span class="err" id="cErr">Escolha a sua cidade na lista que aparece embaixo, pra eu achar o céu certo.</span>
+      <div class="campo">
+        <span class="passo">2</span>
+        <div class="campo-txt">
+          <label for="h">Hora, se você souber</label>
+          <input id="h" type="time">
+          <span class="ajuda">é a hora que revela o seu Ascendente. Sem ela eu leio assim mesmo, meu bem.</span>
+        </div>
+      </div>
+      <div class="campo">
+        <span class="passo">3</span>
+        <div class="campo-txt">
+          <label for="c">Onde você nasceu</label>
+          <div class="ac-wrap">
+            <input id="c" type="text" placeholder="escreva e escolha na lista" autocomplete="off" required>
+            <div id="acList" style="display:none" role="listbox"></div>
+          </div>
+          <span class="ajuda">escreva e toque na cidade certa na lista</span>
+          <span class="err" id="cErr">Escolha a sua cidade na lista que aparece embaixo, pra eu achar o céu certo.</span>
+        </div>
+      </div>
       <button class="btn" id="go" type="submit">Apontar o telescópio</button>
+      <p class="selo">✦ de graça &middot; fica pronto na hora &middot; sem cadastro</p>
     </form>
   </section>
 
   <section id="resultado">
     <div class="divider">a sua essência</div>
-    <h2>O essencial sai agora.<br>O resto é conversa.</h2>
+    <h2>Foi este o céu<br>que te recebeu, meu bem.</h2>
     <p class="meta-line" id="metaLine"></p>
     <div class="versos" id="versos"></div>
 
@@ -200,6 +243,13 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
       <div id="wheelBox"></div>
       <figcaption>o seu céu inteiro, calculado agora, em linha dourada</figcaption>
     </figure>
+
+    <div class="cadeado-card" id="cardPlanetas">
+      <div class="cc-head"><span class="lk">✦</span> os outros moradores do céu</div>
+      <h3>Os outros oito planetas</h3>
+      <p class="cc-sub">Cada um mora num canto do seu céu e conta um segredo diferente. Estes aqui embaixo são os seus, de verdade.</p>
+      <div id="prows"></div>
+    </div>
 
     <button class="pay" type="button" data-gate>
       <span class="big">✦ Abrir o meu céu</span>
@@ -223,7 +273,7 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
     <div class="cadeado-card" id="gateCard">
       <div class="cc-head"><span class="lk">✦</span> o resto do seu céu</div>
       <h3>Quer abrir tudo, meu bem?</h3>
-      <p class="cc-sub">Me deixa o seu WhatsApp que eu abro cada gaveta deste céu: os planetas, as casas e as conversas entre eles. Depois eu ainda te mando a leitura completa, contada do meu jeito.</p>
+      <p class="cc-sub">Me deixa o seu WhatsApp que eu abro cada gaveta deste céu: os planetas, as casas e as conversas entre eles. E depois, se você quiser, eu ainda posso te mandar a leitura completa, contada do meu jeito.</p>
       <form id="waForm" novalidate>
         <label for="waPais">País do seu WhatsApp</label>
         <select id="waPais" autocomplete="country">
@@ -261,17 +311,6 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
       </form>
     </div>
 
-    <div class="cadeado-card" id="cardPlanetas">
-      <div class="cc-head"><span class="lk">✦</span> os outros moradores do céu</div>
-      <h3>Os outros oito planetas</h3>
-      <p class="cc-sub">Cada um mora num canto do seu céu e conta um segredo diferente. Estes aqui embaixo são os seus, de verdade.</p>
-      <div id="prows"></div>
-      <button class="pay" type="button" data-gate>
-        <span class="big">🔒 Abrir tudo isso também</span>
-        <span class="small">de graça, só com o seu WhatsApp</span>
-      </button>
-    </div>
-
     <div class="cadeado-card" id="cardCasas">
       <div class="cc-head"><span class="lk">✦</span> doze gavetas, uma vida inteira</div>
       <h3>As 12 casas da sua vida</h3>
@@ -283,7 +322,7 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
         <span>espiritualidade</span><span>comunicação</span><span>lar</span><span>propósito</span>
       </div>
       <button class="pay" type="button" data-gate>
-        <span class="big">🔒 Abrir as doze gavetas</span>
+        <span class="big">✦ Abrir as doze gavetas</span>
         <span class="small">o seu WhatsApp abre todas, de graça</span>
       </button>
     </div>
@@ -294,7 +333,7 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
       <p class="cc-sub">Aqueles riscos dourados na carta? Cada um é uma conversa entre dois planetas. Estas são as conversas que mais se ouvem no seu céu.</p>
       <div id="aspects"></div>
       <button class="pay" type="button" data-gate>
-        <span class="big">🔒 Ouvir as conversas inteiras</span>
+        <span class="big">✦ Ouvir as conversas inteiras</span>
         <span class="small">de graça, com o seu WhatsApp</span>
       </button>
     </div>
@@ -513,6 +552,82 @@ f.addEventListener('submit',e=>{
 
 function fmtDate(ds){const[y,m,d]=ds.split('-');return d+'/'+m+'/'+y}
 
+/* ===== iscas pessoais dos planetas =====
+   Formato pedido pela Adriana: "Seu Mercurio e em Gemeos. Voce e aquela
+   pessoa que..." e o blur comeca no meio da frase, na melhor hora.
+   Cada dominio tem uma abertura fixa e doze continuacoes, uma por signo, na
+   ordem de SIGN (Aries -> Peixes). Texto isolado de proposito: da pra o
+   roteirista reescrever tudo aqui sem encostar em codigo. */
+const ISCA={
+  mente:{abre:'Você é aquela pessoa que ',
+    f:['fala antes de pensar e acerta assim mesmo, na coragem',
+       'demora para falar, mas quando fala ninguém discute',
+       'pensa em voz alta e aprende três coisas ao mesmo tempo',
+       'guarda cada palavra que te disseram, até as antigas',
+       'conta história com o corpo inteiro e prende todo mundo',
+       'repara no detalhe que passou por todo mundo',
+       'pesa os dois lados antes de dar a sua opinião',
+       'não pergunta por perguntar: quer saber o que está por baixo',
+       'fala o que pensa e depois vê no que deu',
+       'só abre a boca quando tem coisa útil para dizer',
+       'pensa na frente e explica de um jeito que ninguém tinha visto',
+       'entende pelo sentimento antes de entender pela razão']},
+  amor:{abre:'No amor, você é daquelas que ',
+    f:['chega chegando e não sabe fingir desinteresse',
+       'demora para entregar o coração, mas quando entrega é para ficar',
+       'precisa de conversa: sem assunto não tem paixão',
+       'cuida como quem faz ninho e sente tudo em dobro',
+       'ama grande, com plateia, e quer ser escolhida todo dia',
+       'demonstra fazendo, não falando, e repara em tudo',
+       'quer parceria de verdade, com beleza e paz junto',
+       'não sabe amar pela metade e nem quer aprender',
+       'precisa de liberdade e de alguém que ria junto',
+       'constrói devagar e leva a sério o que promete',
+       'ama do seu jeito, sem seguir manual de ninguém',
+       'ama com entrega total e sonha o outro inteiro']},
+  acao:{abre:'Quando você resolve agir, ',
+    f:['vai na frente e resolve antes de os outros combinarem',
+       'vai devagar, mas não tem quem te tire do lugar',
+       'faz três coisas ao mesmo tempo e ainda dão certo',
+       'protege os seus primeiro, e aí não tem quem segure',
+       'faz com brilho, porque fazer escondido não serve',
+       'organiza tudo antes e não deixa ponta solta',
+       'evita briga, mas quando decide não volta atrás',
+       'vai com tudo, calada, e ninguém vê chegando',
+       'parte para cima da ideia nova com fé de sobra',
+       'não para até terminar, custe o tempo que custar',
+       'faz do seu jeito, mesmo que o mundo ache estranho',
+       'age pelo pressentimento, e o pressentimento costuma acertar']},
+  sorte:{abre:'A vida costuma te abrir porta quando ',
+    f:['você toma a frente sem pedir licença',
+       'você insiste com calma no que já é seu',
+       'você conversa com quem nem imaginava',
+       'você cuida de alguém sem esperar nada em troca',
+       'você aparece e deixa que te vejam de verdade',
+       'você faz bem feito o trabalho que ninguém quis',
+       'você junta as pessoas certas na mesma mesa',
+       'você encara o que estava evitando',
+       'você diz sim para o que é maior que você',
+       'você assume uma responsabilidade que ninguém pediu',
+       'você faz diferente de todo mundo',
+       'você confia no que sentiu antes de entender']},
+  licao:{abre:'A sua lição mais dura chega quando ',
+    f:['a pressa cobra o preço dela',
+       'segurar demais custa mais caro do que soltar',
+       'a palavra sai antes da hora',
+       'você cuida de todo mundo e esquece de você',
+       'esperar aplauso pesa mais do que o próprio trabalho',
+       'a exigência com você mesma passa do ponto',
+       'agradar todo mundo sai caro demais',
+       'o controle aperta justamente o que você mais ama',
+       'prometer é mais fácil do que cumprir',
+       'a cobrança antiga fala mais alto do que você',
+       'ficar de fora vira jeito de não se envolver',
+       'fugir do assunto custa mais do que encarar']}
+};
+const ISCA_DOM={'Mercúrio':'mente','Vênus':'amor','Marte':'acao',
+  'Júpiter':'sorte','Saturno':'licao'};
+
 function render(){
   const c=chart,p=c.planets;
   fd('metaLine').innerHTML='calculado para <b>'+fmtDate(userData.dateStr)+(userData.hasTime?', às '+userData.timeStr:'')+'</b> em <b>'+userData.city.name+'</b>'+(userData.hasTime?'':' · sem a hora, li o céu do meio-dia: o Ascendente pode variar');
@@ -524,17 +639,30 @@ function render(){
   fd('wheelBox').innerHTML='';fd('wheelBox').appendChild(drawWheel(c));
 
   /* planetas: dados reais, texto embaixo (legível no celular) */
-  const pr=(glyph,who,sub,tease,full)=>'<div class="prow"><div class="pg">'+glyph+'</div><div class="who"><b>'+who+'</b><small>'+sub+'</small></div><div class="tease"><i>'+tease+'</i><b>'+full+'</b></div><span class="lk">🔒</span></div>';
+  /* mostra o comeco da leitura de verdade e embaca o resto: a frase generica
+     de antes nao dizia nada sobre a pessoa, e no celular nem aparecia */
+  /* corta no meio da frase, umas poucas palavras depois da isca comecar:
+     e o ponto em que da vontade de ler o resto */
+  const corta=t=>{const p1=t.indexOf('. ');
+    const n=Math.min(t.length,(p1>0?p1+2:0)+34);
+    if(t.length<=n+12)return[t,''];
+    let i=t.lastIndexOf(' ',n);if(i<20)i=n;return[t.slice(0,i),t.slice(i)]};
+  const pr=(glyph,who,sub,full)=>{const[abre,resto]=corta(full);
+    return '<div class="prow"><div class="pg">'+glyph+'</div><div class="who"><b>'+who+'</b><small>'+sub+'</small></div><div class="tease"><b>'+abre+'<span class="turvo">'+resto+'</span></b></div><span class="lk">✦ toque para abrir</span></div>';};
   const sg=n=>SIGN[p[n].sign].n+(p[n].retro?' ℞':'')+' · casa '+p[n].house;
-  const gen=n=>SIGN[p[n].sign].gen;
+  /* "Seu Mercurio e em Gemeos. Voce e aquela pessoa que..." — comeca falando
+     da pessoa, nao do signo. Sem isca escrita ainda, cai no texto do signo. */
+  const gen=n=>{const d=ISCA[ISCA_DOM[n]];const sn=SIGN[p[n].sign].n;
+    if(!d)return SIGN[p[n].sign].gen;
+    return 'Seu '+n+' é em '+sn+'. '+d.abre+d.f[p[n].sign];};
   fd('prows').innerHTML=
-    pr('☿','Mercúrio','como você pensa e fala · <i>'+sg('Mercúrio')+'</i>','a palavra certa na hora certa...',gen('Mercúrio'))+
-    pr('♀','Vênus','como você ama · <i>'+sg('Vênus')+'</i>','o amor pede beleza e calma...',gen('Vênus'))+
-    pr('♂','Marte','como você age · <i>'+sg('Marte')+'</i>','força que espera a hora certa...',gen('Marte'))+
-    pr('♃','Júpiter','onde a vida te favorece · <i>'+sg('Júpiter')+'</i>','porteira que abre sozinha...',gen('Júpiter'))+
-    pr('♄','Saturno','as lições que não fogem · <i>'+sg('Saturno')+'</i>','o professor exigente...',gen('Saturno'))+
-    pr('♆','Urano, Netuno, Plutão','as camadas mais fundas · <i>'+SIGN[p.Urano.sign].n+', '+SIGN[p.Netuno.sign].n+' e '+SIGN[p.Plutão.sign].n+'</i>','o que se move por baixo...','mudança súbita ('+SIGN[p.Urano.sign].n+'), o sonho que avisa ('+SIGN[p.Netuno.sign].n+'), o poder que renasce ('+SIGN[p.Plutão.sign].n+')')+
-    pr('☊','Nodo Lunar','para onde a alma pede pra ir · <i>'+sg('Nodo Norte')+'</i>','a bússola da carta...','o caminho de crescimento pede coragem de soltar o que já foi');
+    pr('☿','Mercúrio','como você pensa e fala · <i>'+sg('Mercúrio')+'</i>',gen('Mercúrio'))+
+    pr('♀','Vênus','como você ama · <i>'+sg('Vênus')+'</i>',gen('Vênus'))+
+    pr('♂','Marte','como você age · <i>'+sg('Marte')+'</i>',gen('Marte'))+
+    pr('♃','Júpiter','onde a vida te favorece · <i>'+sg('Júpiter')+'</i>',gen('Júpiter'))+
+    pr('♄','Saturno','as lições que não fogem · <i>'+sg('Saturno')+'</i>',gen('Saturno'))+
+    pr('♆','Urano, Netuno, Plutão','as camadas mais fundas · <i>'+SIGN[p.Urano.sign].n+', '+SIGN[p.Netuno.sign].n+' e '+SIGN[p.Plutão.sign].n+'</i>','No fundo de você trabalham três forças: a mudança que chega de repente em '+SIGN[p.Urano.sign].n+', o sonho que avisa antes da hora em '+SIGN[p.Netuno.sign].n+' e o poder que renasce em '+SIGN[p.Plutão.sign].n+'.')+
+    pr('☊','Nodo Lunar','para onde a alma pede pra ir · <i>'+sg('Nodo Norte')+'</i>','A sua alma veio aprender a soltar o que já foi e caminhar para o lado de '+SIGN[p['Nodo Norte'].sign].n+', mesmo quando dá medo.');
 
   /* casas e aspectos: 3 à mostra antes do portão, tudo depois de liberar */
   renderMoradas();
@@ -554,7 +682,7 @@ function renderAspects(){
   const ax=c.aspects.slice(0,unlocked?5:3);
   fd('aspects').innerHTML=ax.map(a=>{
     const dd=Math.abs(p[a.a].lon-p[a.b].lon)>180?'x':'e';
-    const lk=unlocked?'':'<span class="lk" style="align-self:center">🔒</span>';
+    const lk=unlocked?'':'<span class="lk" style="align-self:center">✦</span>';
     return '<div class="asp-row"><div class="ag">'+a.type.sym+'</div><div class="aw"><b>'+a.a+' '+dd+' '+a.b+'</b><small>'+a.type.n+' · orbe '+a.orb.toFixed(1)+'°</small><span class="tease-b">'+a.type.d+'</span></div>'+lk+'</div>';
   }).join('')||'<p class="cc-sub">Conversas mais raras hoje, meu bem.</p>';
 }
@@ -640,6 +768,17 @@ fd('waForm').addEventListener('submit',e=>{
     })
     .catch(()=>unlock('Anotado, meu bem! ✦'));
 });
+// Tocar no borrao ou no cadeado leva pro portao: quem tenta ler o texto
+// embacado esta pedindo pra abrir, e antes nao acontecia nada.
+document.addEventListener('click',e=>{
+  if(document.body.classList.contains('liberado'))return;
+  if(e.target.closest('button,a,input,select,label,form'))return;
+  if(!e.target.closest('.turvo,.lk,.tease-b'))return;
+  gateSeen();
+  fd('gateCard').scrollIntoView({behavior:'smooth',block:'center'});
+  const wa=fd('waNum'); if(wa)setTimeout(()=>wa.focus({preventScroll:true}),650);
+});
+
 document.querySelectorAll('[data-gate]').forEach(b=>b.addEventListener('click',()=>{
   gateSeen();
   fd('gateCard').scrollIntoView({behavior:'smooth',block:'center'});
@@ -670,22 +809,41 @@ async function makeCard(W,H){
   x.strokeStyle='#C8C9CB';x.globalAlpha=.5;x.beginPath();x.moveTo(W*.06,H*.2);x.lineTo(W*.3,H*.26);x.stroke();x.globalAlpha=1;
   x.fillStyle=AMBER;x.font=(FE?'500 28px':'500 30px')+' Outfit';x.fillText(sp('O MEU CÉU'),W/2,FE?130:150);
   x.fillStyle='rgba(233,213,189,.85)';x.font='300 '+(FE?24:26)+'px Outfit';x.fillText(sp('as três chaves, lidas por Dona Celeste'),W/2,FE?176:200);
+  // A leitura de verdade vai no cartao: antes ia so o rotulo generico
+  // ("o que faz o seu coracao brilhar"), igual pra todo mundo. O que faz a
+  // pessoa postar e ver escrito o que aquilo significa pra ela.
   const TRI=[
-    {g:'☉',k:'Sol',s:SIGN[c.planets.Sol.sign].n,d:'o que faz o seu coração brilhar'},
-    {g:'☾',k:'Lua',s:SIGN[c.planets.Lua.sign].n,d:'o jeito de sentir e de cuidar'},
-    {g:'↑',k:'Ascendente',s:SIGN[c.ascSign].n,d:'a porta por onde o mundo te encontra'}];
-  TRI.forEach((t,i)=>{const y=(FE?295:310)+i*(FE?120:160);x.font='300 '+(FE?48:58)+'px serif';x.fillStyle=AMBER;x.fillText(t.g,W*.14,y);
-    x.textAlign='left';let fs=FE?54:64;
+    {g:'☉',k:'Sol',s:SIGN[c.planets.Sol.sign].n,d:SIGN[c.planets.Sol.sign].sol},
+    {g:'☾',k:'Lua',s:SIGN[c.planets.Lua.sign].n,d:SIGN[c.planets.Lua.sign].lua},
+    {g:'↑',k:'Ascendente',s:SIGN[c.ascSign].n,d:SIGN[c.ascSign].asc}];
+  const quebra=(txt,maxW,max)=>{const ws=String(txt||'').split(' ');const ls=[];let cur='';
+    for(const w of ws){const t=cur?cur+' '+w:w;
+      if(x.measureText(t).width>maxW&&cur){ls.push(cur);cur=w;if(ls.length===max){cur='';break}}else cur=t}
+    if(ls.length<max&&cur)ls.push(cur);
+    if(ls.length===max&&cur){let u=ls[max-1];
+      while(x.measureText(u+'…').width>maxW&&u.length>4)u=u.slice(0,-1);
+      ls[max-1]=u.replace(/[ ,.;]$/,'')+'…'}
+    return ls};
+  const MAXL=FE?2:3, LH=FE?40:46, TXT=FE?27:30;
+  const colX=W*.2, colW=W-colX-(FE?48:60);
+  let cur=FE?270:320;
+  TRI.forEach(t=>{
+    x.font='300 '+(FE?48:58)+'px serif';x.fillStyle=AMBER;x.textAlign='center';
+    x.fillText(t.g,W*.11,cur);
+    x.textAlign='left';let fs=FE?50:62;
     const pre=t.k+' em ';
     x.font='italic 330 '+fs+'px Fraunces';
     let w=x.measureText(pre).width;const w2=x.measureText(t.s).width;
-    const maxW=W-70-W*.2;
-    if(w+w2>maxW){fs=Math.max(FE?40:48,Math.floor(fs*maxW/(w+w2)));x.font='italic 330 '+fs+'px Fraunces';w=x.measureText(pre).width}
-    x.fillStyle=CREAM;x.fillText(pre,W*.2,y);
-    x.fillStyle=GOLD;x.fillText(t.s,W*.2+w,y);
-    x.font='300 '+(FE?28:31)+'px Outfit';x.fillStyle='#c9b394';x.fillText(t.d,W*.2,y+(FE?52:60));
+    if(w+w2>colW){fs=Math.max(FE?38:46,Math.floor(fs*colW/(w+w2)));
+      x.font='italic 330 '+fs+'px Fraunces';w=x.measureText(pre).width}
+    x.fillStyle=CREAM;x.fillText(pre,colX,cur);
+    x.fillStyle=GOLD;x.fillText(t.s,colX+w,cur);
+    x.font='300 '+TXT+'px Outfit';x.fillStyle='#c9b394';
+    quebra(t.d,colW,MAXL).forEach((ln,j)=>x.fillText(ln,colX,cur+(FE?46:54)+j*LH));
+    cur+=(FE?46:54)+MAXL*LH+(FE?34:44);
     x.textAlign='center'});
-  const cy=FE?895:1080,R=FE?210:280;
+  // a roda desce conforme o texto ocupou, em vez de posicao fixa
+  const R=FE?170:225, cy=cur+R+(FE?24:34);
   x.strokeStyle=GOLD;x.globalAlpha=.6;x.setLineDash([3,8]);x.lineWidth=2.4;x.beginPath();x.arc(W/2,cy,R,0,7);x.stroke();
   x.setLineDash([]);x.globalAlpha=.5;x.beginPath();x.arc(W/2,cy,R*.84,0,7);x.stroke();x.globalAlpha=1;
   for(let i=0;i<12;i++){const lon=c.asc+i*30;const[tx,ty]=cardPos(lon+15,c.asc,W,cy,R+(FE?30:34));
@@ -700,8 +858,9 @@ async function makeCard(W,H){
     x.fillStyle=AMBER;x.beginPath();x.arc(px,py,(FE?5:7)+(n==='Sol'?3:0),0,7);x.fill();
     if(!FE){x.fillStyle=BRASS;x.font='500 17px Outfit';x.fillText(sp(ABREV[n]),px,py-16)}});
   x.fillStyle='#dcc9ab';x.font='italic 330 '+(FE?34:40)+'px Fraunces';
-  if(FE){x.fillText('e isso é só o começo ✨',W/2,1205)}
-  const chi=FE?1290:1560;
+  const pe=cy+R+(FE?52:70);
+  if(FE){x.fillText('e isso é só o começo ✨',W/2,pe)}
+  const chi=Math.min(FE?pe+62:pe+46,H-(FE?44:60));
   x.fillStyle=CREAM;x.font='500 '+(FE?30:34)+'px Outfit';
   const cta='Faça seu mapa em ';const cw=x.measureText(cta).width;
   const hnd='@brisaastral.ai';const hw=x.measureText(hnd).width;
