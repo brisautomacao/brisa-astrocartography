@@ -274,6 +274,10 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
 const TRACK_API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-events';
 const PREVIEW=location.hash==='#preview';
 const VISIT='v'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+/* link rastreado por pessoa (ADR-0002): quem chegou pelo /r/<token> do direct
+   traz ?t= na URL. So repassamos pro brisadocs decidir o que fazer com ele —
+   os eventos de telemetria continuam anonimos, sem token nenhum (ADR-0007). */
+const TOKEN=new URLSearchParams(location.search).get('t')||'';
 function track(ev){
   if(PREVIEW)return;
   try{
@@ -299,7 +303,7 @@ function sendChart(){
       body:JSON.stringify({birth_date:userData.dateStr,
         birth_time:userData.hasTime?userData.timeStr:'',
         city:(userData.city.name+', '+userData.city.region).slice(0,120),
-        visit:VISIT,source:'funil-v2-sem-contato',
+        visit:VISIT,source:'funil-v2-sem-contato',token:TOKEN,
         page_url:location.href.split('#')[0],website:''})}).catch(function(){});
   }catch(e){}
 }
