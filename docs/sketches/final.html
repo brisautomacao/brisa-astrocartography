@@ -53,7 +53,17 @@ label{display:block;font-size:13px;letter-spacing:.2em;text-transform:uppercase;
 input{width:100%;background:transparent;border:none;border-bottom:1.2px solid rgba(200,159,80,.4);color:var(--cream);font:400 21px Fraunces,serif;padding:10px 2px;outline:none;transition:border-color .25s}
 input::placeholder{color:#6b564a;font-style:italic}
 input:focus{border-color:var(--amber)}
-input[type=date],input[type=time]{color-scheme:dark}
+input[type=time]{color-scheme:dark}
+/* data em tres campos: dia/mes/ano (o nativo confunde DD/MM com MM/DD e cansa quem tem 50+) */
+.dt-row{display:flex;gap:14px;align-items:flex-end}
+.dt-dia,.dt-ano{flex:0 0 62px}
+.dt-mes{flex:1 1 0;min-width:0}
+.dt-sub{display:block;font:400 10.5px Outfit;letter-spacing:.18em;text-transform:lowercase;color:#9c8465;margin-bottom:1px}
+.dt input{text-align:center;padding:10px 0}
+.dt input::-webkit-outer-spin-button,.dt input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.dt input[type=number]{-moz-appearance:textfield}
+.dt select{width:100%;background:transparent;border:none;border-bottom:1.2px solid rgba(200,159,80,.4);border-radius:0;color:var(--cream);font:400 21px Fraunces,serif;padding:10px 2px;appearance:none;-webkit-appearance:none}
+.dt select:focus{border-color:var(--amber)}
 .btn{margin-top:36px;width:100%;cursor:pointer;background:transparent;border:1.3px solid var(--gold);color:var(--gold);font:500 15.5px Outfit;letter-spacing:.2em;text-transform:uppercase;padding:18px;border-radius:2px;transition:.25s}
 .btn:hover{background:rgba(200,159,80,.12);box-shadow:0 0 26px rgba(200,159,80,.18)}
 /* autocomplete de cidades */
@@ -200,43 +210,31 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
     <h2>Meu bem, vamos entrar<br>no seu portal do céu?</h2>
     <p class="lead">Um universo inteiro gira sobre você desde que nasceu. Vem ver o seu.</p>
     <form id="form" class="ficha" novalidate>
-       <div class="campo">
-         <span class="passo">1</span>
-         <div class="campo-txt">
-           <label>Data de nascimento</label>
-           <div style="display:flex;gap:8px;align-items:flex-end">
-             <div style="flex:0 0 auto">
-               <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Dia</label>
-               <input id="d-day" type="number" min="1" max="31" value="01" required
-                 style="width:60px;padding:8px;background:rgba(30,30,60,.6);border:1px solid rgba(147,112,219,.2);border-radius:8px;color:#fff;font-size:14px;text-align:center">
-             </div>
-             <div style="flex:0 0 auto">
-               <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Mês</label>
-               <select id="d-month" required
-                 style="width:90px;padding:8px;background:rgba(30,30,60,.6);border:1px solid rgba(147,112,219,.2);border-radius:8px;color:#fff;font-size:14px">
-                 <option value="01">Janeiro</option>
-                 <option value="02">Fevereiro</option>
-                 <option value="03">Março</option>
-                 <option value="04">Abril</option>
-                 <option value="05">Maio</option>
-                 <option value="06">Junho</option>
-                 <option value="07">Julho</option>
-                 <option value="08">Agosto</option>
-                 <option value="09">Setembro</option>
-                 <option value="10">Outubro</option>
-                 <option value="11">Novembro</option>
-                 <option value="12">Dezembro</option>
-               </select>
-             </div>
-             <div style="flex:0 0 auto">
-               <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">Ano</label>
-               <input id="d-year" type="number" min="1900" max="2099" value="2000" required
-                 style="width:80px;padding:8px;background:rgba(30,30,60,.6);border:1px solid rgba(147,112,219,.2);border-radius:8px;color:#fff;font-size:14px;text-align:center">
-             </div>
-           </div>
-           <span class="ajuda">o dia em que o céu parou para te esperar</span>
-         </div>
-       </div>
+      <div class="campo">
+        <span class="passo">1</span>
+        <div class="campo-txt">
+          <label for="dA">Data de nascimento</label>
+          <div class="dt-row">
+            <div class="dt-dia"><span class="dt-sub">dia</span><input id="dA" type="number" inputmode="numeric" min="1" max="31" placeholder="27" required></div>
+            <div class="dt-mes"><span class="dt-sub">mês</span><select id="dM" required>
+              <option value="01">Janeiro</option>
+              <option value="02">Fevereiro</option>
+              <option value="03">Março</option>
+              <option value="04">Abril</option>
+              <option value="05">Maio</option>
+              <option value="06">Junho</option>
+              <option value="07">Julho</option>
+              <option value="08">Agosto</option>
+              <option value="09">Setembro</option>
+              <option value="10">Outubro</option>
+              <option value="11">Novembro</option>
+              <option value="12">Dezembro</option>
+            </select></div>
+            <div class="dt-ano"><span class="dt-sub">ano</span><input id="dY" type="number" inputmode="numeric" min="1900" max="2099" placeholder="1989" required></div>
+          </div>
+          <span class="ajuda">o dia em que o céu parou para te esperar</span>
+        </div>
+      </div>
       <div class="campo">
         <span class="passo">2</span>
         <div class="campo-txt">
@@ -559,28 +557,30 @@ ci.addEventListener('keydown',e=>{
 });
 ci.addEventListener('blur',()=>setTimeout(()=>cl.style.display='none',200));
 
+/* data em tres campos -> ISO YYYY-MM-DD; null se incompleta ou invalida */
+function dataISO(){
+  const dd=fd('dA').value.trim(),yy=fd('dY').value.trim();
+  if(!dd||!yy)return null;
+  const d=+dd,y=+yy,mm=fd('dM').value;
+  if(!Number.isInteger(d)||!Number.isInteger(y))return null;
+  if(y<1900||y>2099||d<1||d>31)return null;
+  const t=new Date(y,+mm-1,d);
+  if(t.getFullYear()!==y||t.getMonth()!==+mm-1||t.getDate()!==d)return null;
+  return `${y}-${mm}-${String(d).padStart(2,'0')}`;
+}
+
 /* enviar */
 f.addEventListener('submit',e=>{
   e.preventDefault();
-  // Read day, month, year from separate fields
-  const day=String(fd('d-day').value).padStart(2,'0');
-  const month=fd('d-month').value;
-  const year=fd('d-year').value;
-  
-  if(!day||!month||!year){fd('d-day').focus();return}
-  const dayNum=parseInt(day);
-  const yearNum=parseInt(year);
-  if(dayNum<1||dayNum>31){alert('Dia inválido (1-31)');return}
-  if(yearNum<1900||yearNum>2099){alert('Ano deve estar entre 1900 e 2099');return}
-  
-  const dateStr=`${year}-${month}-${day}`;
-  if(!selCity){fd('cErr').style.display='block';fd('c').focus();return}
+  const dStr=dataISO();
+  if(!dStr){(!fd('dA').value.trim()?fd('dA'):fd('dY')).focus();return}
+  if(!selCity){fd('cErr').style.display='block';ci.focus();return}
   const timeStr=fd('h').value||'12:00';
-  const date=localToUtc(dateStr,timeStr,selCity.tz);
+  const date=localToUtc(dStr,timeStr,selCity.tz);
   b.disabled=true;b.textContent='Apontando o telescópio ✦';
   setTimeout(()=>{
     chart=calcChart(date,selCity.lat,selCity.lon);
-    userData={dateStr:dateStr,timeStr:timeStr,hasTime:!!fd('h').value,city:selCity};
+    userData={dateStr:dStr,timeStr:timeStr,hasTime:!!fd('h').value,city:selCity};
     render();
     track('chart');
     sendChart();
@@ -960,7 +960,7 @@ document.getElementById('exFeed').addEventListener('click',()=>{track('share');d
 
 /* preview: #preview mostra o mapa da Adriana */
 if(location.hash==='#preview'){
-  fd('d-day').value='27';fd('d-month').value='05';fd('d-year').value='1989';fd('h').value='08:30';
+  fd('dA').value='27';fd('dM').value='05';fd('dY').value='1989';fd('h').value='08:30';
   selCity={name:'Porto Alegre',region:'Rio Grande do Sul, Brasil',lat:-30.03283,lon:-51.23019,tz:'America/Sao_Paulo'};
   ci.value='Porto Alegre, Rio Grande do Sul, Brasil';
   document.querySelector('.hero').style.minHeight='430px';
