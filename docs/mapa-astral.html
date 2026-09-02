@@ -885,6 +885,9 @@ function renderChart(){
 // Barra de progresso + chamada. A conta e real: quantos pedacos do mapa
 // dela estao abertos e quantos ficaram no cadeado.
 function montaCuriosidade(abertos,bloqueados,p,d){
+  // "Novo Mapa" nao recarrega a pagina: sem limpar, o segundo mapa ganhava
+  // uma segunda barra e uma segunda chamada, com percentuais diferentes.
+  document.querySelectorAll('.progress-wrap,.cta-wrap').forEach(function(e){e.remove();});
   const total=abertos+bloqueados;
   const pct=Math.round(abertos/total*100);
 
