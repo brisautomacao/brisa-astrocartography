@@ -23,8 +23,11 @@ e aprovados em 03/09/2026, e ela pediu a fila de um carrossel por signo.
    com brilho âmbar, ouro velho, pergaminho; Fraunces/Outfit/Great Vibes;
    retratos circulares da Celeste (`dona_celeste_master.png`) com margem
    superior folgada para a foto aparecer sempre.
-3. **Estrutura (máx 10 páginas)**: capa (só o nome do signo, ex. "Libra") +
-   mapa do dia + 1 página por beat + convite ("Comenta MAPA").
+3. **Estrutura (máx 10 páginas)**: capa (a PRIMEIRA frase bombástica do
+   roteiro, verbatim, com o nome do signo em âmbar) + mapa do dia + 1 página
+   por beat (a partir do 2º) + convite ("Comenta MAPA"). A copy é SEMPRE
+   gerada primeiro pelo agente de research e aplicada verbatim nos templates
+   (única exceção: correção factual); a entrega traz o texto antes das fotos.
 4. **Mapa do dia, título "A foto do céu hoje!"**: roda zodiacal no formato
    EXATO do `drawWheel` da landing: anel externo tracejado (dasharray 1 6),
    anel interno, ticks de 30°, glifos serif no aro, pontos dourados no raio 110
