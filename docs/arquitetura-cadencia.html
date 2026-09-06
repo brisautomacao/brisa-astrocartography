@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Os cadernos do funil · Dona Celeste</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#241722;
+    --plum-deep:#1A1018;
+    --eggplant:#4A2040;
+    --eggplant-soft:#3A1A33;
+    --gold:#C89F50;
+    --gold-soft:#E3C98B;
+    --parchment:#F2E8D5;
+    --parchment-dim:#C9BCA4;
+    --line:rgba(200,159,80,.28);
+    --ok:#9CBF8B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--plum);
+    background-image:radial-gradient(120% 46% at 50% 0%, rgba(200,159,80,.10) 0%, rgba(36,23,34,0) 62%);
+    color:var(--parchment);
+    font-family:'Outfit',system-ui,sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 72px}
+  header{padding:64px 0 40px;text-align:center}
+  .kicker{
+    font-size:12px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--gold);font-weight:500;
+  }
+  h1{
+    font-family:'Fraunces',Georgia,serif;font-weight:600;
+    font-size:clamp(34px,8vw,46px);line-height:1.12;
+    margin:14px 0 12px;text-wrap:balance;
+  }
+  h1 em{font-style:italic;color:var(--gold-soft)}
+  .sub{color:var(--parchment-dim);font-size:17px;max-width:46ch;margin:0 auto}
+  .stamp{
+    display:inline-block;margin-top:22px;padding:7px 18px;
+    border:1px solid var(--line);border-radius:999px;
+    font-size:12.5px;color:var(--parchment-dim);letter-spacing:.06em;
+  }
+  section{margin-top:56px}
+  .sec-kicker{
+    font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--gold);font-weight:500;margin-bottom:10px;
+  }
+  h2{
+    font-family:'Fraunces',Georgia,serif;font-weight:600;
+    font-size:clamp(24px,5.6vw,30px);line-height:1.2;margin-bottom:8px;
+  }
+  .lead{color:var(--parchment-dim);font-size:16px;margin-bottom:24px;text-wrap:pretty}
+
+  /* ponte */
+  .bridge{
+    display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;
+  }
+  .bridge .side{
+    background:var(--eggplant-soft);border:1px solid var(--line);
+    border-radius:14px;padding:18px 16px;
+  }
+  .bridge .dir{
+    align-self:center;font-family:'Fraunces',serif;font-size:26px;color:var(--gold);
+  }
+  .bridge h3{font-family:'Fraunces',serif;font-size:17px;font-weight:600;margin-bottom:6px}
+  .bridge p{font-size:14px;color:var(--parchment-dim);line-height:1.6}
+
+  /* cadernos */
+  .livros{display:grid;gap:14px}
+  .livro{
+    background:var(--eggplant-soft);border:1px solid var(--line);
+    border-radius:16px;padding:22px 20px;position:relative;
+  }
+  .livro .num{
+    position:absolute;top:18px;right:20px;
+    font-family:'Fraunces',serif;font-size:15px;color:var(--gold);
+    border:1px solid var(--line);border-radius:999px;width:34px;height:34px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .livro h3{font-family:'Fraunces',serif;font-size:20px;font-weight:600;margin-bottom:4px}
+  .livro .pergunta{font-size:13.5px;color:var(--gold-soft);font-style:italic;font-family:'Fraunces',serif;margin-bottom:10px}
+  .livro p{font-size:15px;color:var(--parchment-dim)}
+  .livro .guarda{
+    margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);
+    font-size:13.5px;color:var(--parchment-dim);
+  }
+  .livro .guarda b{color:var(--parchment);font-weight:500}
+
+  /* jornada */
+  .jornada{position:relative;padding-left:34px}
+  .jornada::before{
+    content:"";position:absolute;left:11px;top:8px;bottom:8px;width:2px;
+    background:linear-gradient(var(--gold), rgba(200,159,80,.15));
+  }
+  .passo{position:relative;padding:0 0 26px}
+  .passo:last-child{padding-bottom:0}
+  .passo::before{
+    content:"";position:absolute;left:-29px;top:7px;width:12px;height:12px;
+    border-radius:50%;background:var(--plum);border:2px solid var(--gold);
+  }
+  .passo .degrau{
+    font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--gold);font-weight:600;
+  }
+  .passo h3{font-family:'Fraunces',serif;font-size:18.5px;font-weight:600;margin:3px 0 4px}
+  .passo p{font-size:14.5px;color:var(--parchment-dim)}
+  .passo .pegada{
+    display:inline-block;margin-top:8px;padding:4px 12px;border-radius:999px;
+    background:rgba(200,159,80,.10);border:1px solid var(--line);
+    font-size:12.5px;color:var(--gold-soft);
+  }
+  .passo .pegada b{font-weight:600}
+
+  /* fio */
+  .fio{
+    text-align:center;background:var(--eggplant);border:1px solid var(--line);
+    border-radius:18px;padding:34px 26px;
+  }
+  .fio .chave{font-family:'Fraunces',serif;font-size:40px;color:var(--gold);line-height:1}
+  .fio h3{font-family:'Fraunces',serif;font-size:21px;font-weight:600;margin:10px 0 8px}
+  .fio p{font-size:15px;color:var(--parchment-dim);max-width:44ch;margin:0 auto}
+
+  /* travas */
+  .travas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .trava{
+    background:var(--eggplant-soft);border:1px solid var(--line);
+    border-radius:14px;padding:16px;
+  }
+  .trava .icone{font-size:20px}
+  .trava h3{font-family:'Fraunces',serif;font-size:15.5px;font-weight:600;margin:6px 0 2px}
+  .trava p{font-size:13px;color:var(--parchment-dim);line-height:1.55}
+
+  /* hoje */
+  .hoje{background:var(--plum-deep);border:1px solid var(--line);border-radius:18px;padding:26px 24px}
+  .hoje h3{font-family:'Fraunces',serif;font-size:20px;font-weight:600;margin-bottom:14px}
+  .hoje .linha{
+    display:flex;justify-content:space-between;gap:12px;
+    padding:9px 0;border-bottom:1px dashed rgba(200,159,80,.16);font-size:14.5px;
+  }
+  .hoje .linha:last-of-type{border-bottom:none}
+  .hoje .linha span:last-child{color:var(--gold-soft);font-weight:500;white-space:nowrap}
+  .hoje .nota{
+    margin-top:14px;padding-top:14px;border-top:1px solid var(--line);
+    font-size:13.5px;color:var(--ok);
+  }
+  footer{
+    margin-top:56px;text-align:center;color:var(--parchment-dim);
+    font-size:12.5px;letter-spacing:.08em;
+  }
+  footer .assin{
+    font-family:'Fraunces',serif;font-style:italic;color:var(--gold);
+    font-size:15px;letter-spacing:0;display:block;margin-top:6px;
+  }
+  @media (max-width:560px){
+    .bridge{grid-template-columns:1fr}
+    .bridge .dir{transform:rotate(90deg);padding:2px 0}
+    .travas{grid-template-columns:1fr}
+    header{padding-top:48px}
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .livro,.passo,.trava,.fio,.hoje{animation:surgir .7s ease both}
+    .passo:nth-child(2){animation-delay:.06s}
+    .passo:nth-child(3){animation-delay:.12s}
+    .passo:nth-child(4){animation-delay:.18s}
+    .passo:nth-child(5){animation-delay:.24s}
+    .passo:nth-child(6){animation-delay:.3s}
+    @keyframes surgir{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Dona Celeste · Brisa Astral</div>
+    <h1>Os cadernos <em>do funil</em></h1>
+    <p class="sub">Como os dados guardam a jornada de cada pessoa, do primeiro comentário até o céu aberto.</p>
+    <span class="stamp">Atualizado em 06 de setembro de 2026</span>
+  </header>
+
+  <section>
+    <div class="sec-kicker">A ponte</div>
+    <h2>Instagram entra, Instagram sai</h2>
+    <p class="lead">Tudo passa por uma ponte vigiada dia e noite: o que as pessoas comentam e escrevem entra; as respostas da vó saem.</p>
+    <div class="bridge">
+      <div class="side">
+        <h3>Entra</h3>
+        <p>Comentários nos vídeos · mensagens no direct · toques nos chips · cliques no link</p>
+      </div>
+      <div class="dir">✦</div>
+      <div class="side">
+        <h3>Sai</h3>
+        <p>Respostas públicas · presents no direct · comentários de instiga · o card do dia</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">Os cadernos</div>
+    <h2>Quatro cadernos, quatro perguntas</h2>
+    <p class="lead">Cada caderno responde uma pergunta. Juntos, eles contam a história inteira de qualquer pessoa em segundos.</p>
+    <div class="livros">
+      <div class="livro">
+        <span class="num">I</span>
+        <h3>O caderno das pessoas</h3>
+        <div class="pergunta">"Em que nível ela está?"</div>
+        <p>O card de cada pessoa no quadro, com a linha do tempo da jornada anotada passo a passo. Nunca anda pra trás.</p>
+        <div class="guarda"><b>Guarda:</b> nome, @, estágio, linha do tempo, o sol, a lua e o ascendente no card</div>
+      </div>
+      <div class="livro">
+        <span class="num">II</span>
+        <h3>O caderno dos mapas</h3>
+        <div class="pergunta">"O céu dela já ficou pronto?"</div>
+        <p>Quem destravou o mapa completo deixa aqui o WhatsApp, a data de nascimento e a cidade. É daqui que a vó tira o céu de cada uma.</p>
+        <div class="guarda"><b>Guarda:</b> WhatsApp, nascimento, cidade, mapa gerado</div>
+      </div>
+      <div class="livro">
+        <span class="num">III</span>
+        <h3>O caderno dos cliques</h3>
+        <div class="pergunta">"Ela abriu o link que recebeu?"</div>
+        <p>Cada pessoa ganha um link único, nunca um link igual pra todas. Quando toca, fica registrado quando e quantas vezes.</p>
+        <div class="guarda"><b>Guarda:</b> o link de cada uma, cliques, datas, contagem</div>
+      </div>
+      <div class="livro">
+        <span class="num">IV</span>
+        <h3>O diário da cadência</h3>
+        <div class="pergunta">"O que já mandamos pra ela?"</div>
+        <p>O caderno mais novo: anota todo toque que a gente deu, em qual grupo, em que dia. É ele que impede repetição e cobra de volta quem esfriou.</p>
+        <div class="guarda"><b>Guarda:</b> cada envio, grupo da pessoa, datas, o "não quero mais receber"</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">A jornada</div>
+    <h2>Um dia na vida da Maria</h2>
+    <p class="lead">Um exemplo real de como as pegadas se espalham pelos cadernos.</p>
+    <div class="jornada">
+      <div class="passo">
+        <div class="degrau">Passo 1</div>
+        <h3>Maria comenta MAPA no reel</h3>
+        <p>O vigia escuta na hora e a resposta da vó já sai.</p>
+        <span class="pegada">Pegada: <b>nasce o card dela</b>, no caderno das pessoas</span>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 2</div>
+        <h3>O presente chega no direct</h3>
+        <p>Uma mensagem com um chip esperando o toque dela.</p>
+        <span class="pegada">Pegada: <b>presente enviado</b>, anotado no diário</span>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 3</div>
+        <h3>Ela toca no chip</h3>
+        <p>O toque é uma mensagem dela: abre a janela de 24 horas.</p>
+        <span class="pegada">Pegada: <b>janela aberta</b>, e sai o link único dela</span>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 4</div>
+        <h3>Ela abre o link e gera o mapa</h3>
+        <p>O clique fica anotado e o céu dela é calculado.</p>
+        <span class="pegada">Pegada: <b>clique no caderno dos cliques</b>, card sobe pra "gerou"</span>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 5</div>
+        <h3>Ela destrava com o WhatsApp</h3>
+        <p>O céu completo fica pronto, com sol, lua e ascendente.</p>
+        <span class="pegada">Pegada: <b>caderno dos mapas</b>, card sobe pra "destravou"</span>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 6</div>
+        <h3>A vó continua falando com ela</h3>
+        <p>O diário da cadência sabe o que já foi mandado e qual o próximo passo do dia.</p>
+        <span class="pegada">Pegada: <b>cada toque novo anotado</b>, sem repetir nunca</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">O fio</div>
+    <div class="fio">
+      <div class="chave">🗝️</div>
+      <h3>Uma chave costura os quatro cadernos</h3>
+      <p>O perfil do Instagram da pessoa aparece nos quatro cadernos. Quando ela destrava, o WhatsApp entra na mesma ficha. Por isso qualquer pergunta tem resposta em segundos: "cadê a Fulana?" tem nível, data e próximo passo.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">As travas</div>
+    <h2>Nada sai sem freio</h2>
+    <p class="lead">Quatro fechaduras embutidas nos cadernos, sempre ativas.</p>
+    <div class="travas">
+      <div class="trava">
+        <div class="icone">🕰️</div>
+        <h3>Silêncio na noite</h3>
+        <p>Nenhuma mensagem das 21h às 09h, horário daqui.</p>
+      </div>
+      <div class="trava">
+        <div class="icone">1️⃣</div>
+        <h3>Um toque por dia</h3>
+        <p>Cada pessoa recebe no máximo 1 mensagem por dia e 3 na semana.</p>
+      </div>
+      <div class="trava">
+        <div class="icone">🚫</div>
+        <h3>Recado é sagrado</h3>
+        <p>Quem pede "não quero mais receber" sai de tudo na hora, pra sempre.</p>
+      </div>
+      <div class="trava">
+        <div class="icone">🔁</div>
+        <h3>Nunca repete</h3>
+        <p>Todo envio fica anotado: a mesma pessoa nunca recebe igual duas vezes.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">Como está hoje</div>
+    <div class="hoje">
+      <h3>Piloto de 06 de setembro</h3>
+      <div class="linha"><span>Pediu o mapa e nunca recebeu o link</span><span>72 tocados</span></div>
+      <div class="linha"><span>Link parado no direct</span><span>36 tocados</span></div>
+      <div class="linha"><span>Começou o mapa e parou no meio</span><span>8 tocados</span></div>
+      <div class="linha"><span>Comentou e ninguém tinha ajudado</span><span>38 tocados</span></div>
+      <div class="linha"><span>Total de comentários enviados</span><span>154</span></div>
+      <div class="linha"><span>Falhas</span><span>0</span></div>
+      <div class="linha"><span>Repetições</span><span>0</span></div>
+      <div class="nota">✓ Todas com card no quadro e envio anotado no diário. Quem responder, sobe o degrau sozinha.</div>
+    </div>
+  </section>
+
+  <footer>
+    FEITO COM CAFÉ E ASTROS · SETEMBRO DE 2026
+    <span class="assin">Que os astros te acompanhem ✨</span>
+  </footer>
+
+</div>
+</body>
+</html>
