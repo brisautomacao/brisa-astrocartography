@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>A arquitetura por dentro · Dona Celeste</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#241722;
+    --plum-deep:#1A1018;
+    --eggplant:#4A2040;
+    --eggplant-soft:#3A1A33;
+    --gold:#C89F50;
+    --gold-soft:#E3C98B;
+    --parchment:#F2E8D5;
+    --parchment-dim:#C9BCA4;
+    --line:rgba(200,159,80,.28);
+    --ok:#9CBF8B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--plum);
+    background-image:radial-gradient(120% 46% at 50% 0%, rgba(200,159,80,.10) 0%, rgba(36,23,34,0) 62%);
+    color:var(--parchment);
+    font-family:'Outfit',system-ui,sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 72px}
+  header{padding:64px 0 40px;text-align:center}
+  .kicker{
+    font-size:12px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--gold);font-weight:500;
+  }
+  h1{
+    font-family:'Fraunces',Georgia,serif;font-weight:600;
+    font-size:clamp(34px,8vw,46px);line-height:1.12;
+    margin:14px 0 12px;text-wrap:balance;
+  }
+  h1 em{font-style:italic;color:var(--gold-soft)}
+  .sub{color:var(--parchment-dim);font-size:17px;max-width:46ch;margin:0 auto}
+  .stamp{
+    display:inline-block;margin-top:22px;padding:7px 18px;
+    border:1px solid var(--line);border-radius:999px;
+    font-size:12.5px;color:var(--parchment-dim);letter-spacing:.06em;
+  }
+  section{margin-top:56px}
+  .sec-kicker{
+    font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--gold);font-weight:500;margin-bottom:10px;
+  }
+  h2{
+    font-family:'Fraunces',Georgia,serif;font-weight:600;
+    font-size:clamp(24px,5.6vw,30px);line-height:1.2;margin-bottom:8px;
+  }
+  .lead{color:var(--parchment-dim);font-size:16px;margin-bottom:24px;text-wrap:pretty}
+  a{color:var(--gold-soft)}
+  .mono{
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    font-size:.86em;color:var(--gold-soft);
+  }
+
+  /* fundacao */
+  .fatos{display:grid;gap:12px}
+  .fato{
+    background:var(--eggplant-soft);border:1px solid var(--line);
+    border-radius:14px;padding:18px 20px;
+  }
+  .fato h3{font-family:'Fraunces',serif;font-size:17px;font-weight:600;margin-bottom:4px}
+  .fato p{font-size:14.5px;color:var(--parchment-dim)}
+
+  /* modulos */
+  .mods{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .mod{
+    background:var(--eggplant-soft);border:1px solid var(--line);
+    border-radius:14px;padding:16px;
+  }
+  .mod .nome{
+    display:block;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    font-size:12.5px;color:var(--gold);word-break:break-word;
+    padding:4px 10px;border:1px solid var(--line);border-radius:999px;
+    background:rgba(200,159,80,.08);width:fit-content;max-width:100%;margin-bottom:10px;
+  }
+  .mod p{font-size:13.5px;color:var(--parchment-dim);line-height:1.6}
+
+  /* fluxos */
+  .fluxo-titulo{font-family:'Fraunces',serif;font-size:19px;font-weight:600;margin:30px 0 14px}
+  .fluxo-titulo:first-of-type{margin-top:0}
+  .jornada{position:relative;padding-left:34px;margin-bottom:10px}
+  .jornada::before{
+    content:"";position:absolute;left:11px;top:8px;bottom:8px;width:2px;
+    background:linear-gradient(var(--gold), rgba(200,159,80,.15));
+  }
+  .passo{position:relative;padding:0 0 24px}
+  .passo:last-child{padding-bottom:0}
+  .passo::before{
+    content:"";position:absolute;left:-29px;top:7px;width:12px;height:12px;
+    border-radius:50%;background:var(--plum);border:2px solid var(--gold);
+  }
+  .passo .degrau{
+    font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--gold);font-weight:600;
+  }
+  .passo h3{font-family:'Fraunces',serif;font-size:17.5px;font-weight:600;margin:3px 0 4px}
+  .passo p{font-size:14.5px;color:var(--parchment-dim)}
+  .passo .pegada{
+    display:inline-block;margin-top:8px;padding:4px 12px;border-radius:999px;
+    background:rgba(200,159,80,.10);border:1px solid var(--line);
+    font-size:12.5px;color:var(--gold-soft);max-width:100%;
+  }
+  .passo .pegada b{font-weight:600}
+
+  /* tabela de dados */
+  .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table.datos{width:100%;border-collapse:collapse;min-width:520px}
+  table.datos th{
+    text-align:left;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--gold);font-weight:600;padding:8px 10px;
+    border-bottom:1px solid var(--line);
+  }
+  table.datos td{
+    padding:10px;border-bottom:1px dashed rgba(200,159,80,.16);
+    font-size:13.5px;color:var(--parchment-dim);vertical-align:top;
+  }
+  table.datos td.arq{
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    font-size:12px;color:var(--gold-soft);white-space:nowrap;
+  }
+
+  /* ddl */
+  pre.ddl{
+    background:var(--plum-deep);border:1px solid var(--line);border-radius:14px;
+    padding:18px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    font-size:12.5px;line-height:1.7;color:var(--parchment);
+  }
+  pre.ddl .k{color:var(--gold)}
+  pre.ddl .c{color:var(--parchment-dim)}
+  .ddl-nota{font-size:13px;color:var(--parchment-dim);margin-top:12px}
+
+  /* janelas */
+  .janelas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .janela{
+    background:var(--eggplant-soft);border:1px solid var(--line);
+    border-radius:14px;padding:16px;
+  }
+  .janela h3{font-family:'Fraunces',serif;font-size:15.5px;font-weight:600;margin-bottom:4px}
+  .janela p{font-size:13px;color:var(--parchment-dim);line-height:1.55}
+  .janela .erro{display:block;margin-top:8px;font-size:12px;color:var(--gold)}
+
+  /* blindagens */
+  .casos{display:grid;gap:12px}
+  .caso{
+    background:var(--eggplant-soft);border:1px solid var(--line);
+    border-left:3px solid var(--gold);border-radius:14px;padding:18px 20px;
+  }
+  .caso h3{font-family:'Fraunces',serif;font-size:17px;font-weight:600}
+  .caso .oque{font-size:14px;color:var(--parchment-dim);margin:8px 0}
+  .caso .defesa{font-size:13.5px;color:var(--ok)}
+  .caso .defesa b{font-weight:600;letter-spacing:.04em}
+
+  /* travas */
+  .pilulas{display:flex;flex-wrap:wrap;gap:8px}
+  .pilula{
+    display:inline-block;padding:8px 15px;border:1px solid var(--line);
+    border-radius:999px;font-size:13.5px;
+    background:rgba(200,159,80,.08);color:var(--parchment);
+  }
+  .pilula.regra{
+    background:var(--gold);color:var(--plum-deep);font-weight:500;
+    border-color:var(--gold);
+  }
+
+  footer{
+    margin-top:56px;text-align:center;color:var(--parchment-dim);
+    font-size:12.5px;letter-spacing:.08em;
+  }
+  footer .assin{
+    font-family:'Fraunces',serif;font-style:italic;color:var(--gold);
+    font-size:15px;letter-spacing:0;display:block;margin-top:6px;
+  }
+  footer .fontes{display:block;margin-top:14px;font-size:11.5px}
+  footer .outra{display:block;margin-top:14px;font-size:13px;letter-spacing:0}
+
+  @media (max-width:560px){
+    .mods,.janelas{grid-template-columns:1fr}
+    header{padding-top:48px}
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .fato,.mod,.passo,.janela,.caso{animation:surgir .7s ease both}
+    @keyframes surgir{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Dona Celeste · Brisa Astral · versão técnica</div>
+    <h1>A arquitetura <em>por dentro</em></h1>
+    <p class="sub">Os módulos, os bancos, os fluxos e as blindagens do funil, pelos nomes de verdade do código.</p>
+    <span class="stamp">Atualizado em 06 de setembro de 2026 · complementa a página <a href="arquitetura-cadencia.html">Os cadernos do funil</a></span>
+  </header>
+
+  <section>
+    <div class="sec-kicker">A fundação</div>
+    <h2>Um servidor, um processo, um volume</h2>
+    <p class="lead">Por baixo do visual da Dona Celeste existe uma aplicação Python modesta e muito vigiada. Três fatos explicam todo o resto.</p>
+    <div class="fatos">
+      <div class="fato">
+        <h3>Onde roda</h3>
+        <p>Um pod chamado <span class="mono">brisadocs</span>, namespace <span class="mono">brisaapps</span>, no cluster K3s de um servidor Hetzner (46.225.43.58). Uma única instância, de propósito: nunca há duas filas de envio disputando a mesma pessoa. A porta de entrada é HTTPS, com certificado gerenciado: <span class="mono">brisadocs.46-225-43-58.sslip.io</span>.</p>
+      </div>
+      <div class="fato">
+        <h3>Como a atualização chega</h3>
+        <p>Push no branch main → GitHub Actions monta a imagem → <span class="mono">ghcr.io/brisautomacao/brisadocs</span> → ArgoCD sincroniza o pod. Ninguém sobe código na mão em produção.</p>
+      </div>
+      <div class="fato">
+        <h3>Onde vive a memória</h3>
+        <p>Volume persistente <span class="mono">/data</span>: JSONs de configuração e bancos SQLite em modo WAL. O pod pode reiniciar que nada se perde. Cópia de segurança diária às 04:00 UTC, e aos domingos uma cópia sai do servidor.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">Os módulos</div>
+    <h2>Pelos nomes de verdade</h2>
+    <p class="lead">Cada item abaixo é um arquivo vivo no código: um porteiro, um escrevente ou um guarda.</p>
+    <div class="mods">
+      <div class="mod">
+        <span class="nome">instagram_webhook.py</span>
+        <p>A porta de entrada. Recebe comentário, mensagem do direct e toque de chip. Grava o comentário no diário (Fase 0), entrega o presente por private reply e decide quem responde: a IA ou atendimento humano.</p>
+      </div>
+      <div class="mod">
+        <span class="nome">instagram_sender.py</span>
+        <p>A porta de saída. Envios no direct, respostas privadas e chips de resposta. Todo envio guarda o próprio identificador, para o eco da mensagem nunca ser confundido com fala da pessoa.</p>
+      </div>
+      <div class="mod">
+        <span class="nome">tenant_store.py</span>
+        <p>O cadastro geral. Contas, leads, regras por conta e o quadro kanban com a escada: entrou → gerou → destravou → clicou_pagar → ganho. A escada nunca anda para trás.</p>
+      </div>
+      <div class="mod">
+        <span class="nome">funil_db.py</span>
+        <p>O diário de eventos (<span class="mono">funil.db</span>). A tabela de eventos só cresce: comentou, dm_gift, dm_card, toque_chip, resposta, click, chart, unlock, pay, opt_out. Falha aqui nunca derruba envio (fail-open).</p>
+      </div>
+      <div class="mod">
+        <span class="nome">cadencia_repository.py</span>
+        <p>O caderno novo da cadência (<span class="mono">cadencia.db</span>, ADR-0004 Fase 0). Anota todo comentário e todo toque que a gente deu, e é dele que saem os limites: 1 por dia, 3 em 7 dias.</p>
+      </div>
+      <div class="mod">
+        <span class="nome">mapa_events.db · tracked_links.db · mapa_leads.db</span>
+        <p>A telemetria e os mapas: presentes e cards contados, link único por pessoa com os cliques, e de quem destravou o nascimento, a tríade ☉ ☾ ↑ e o WhatsApp.</p>
+      </div>
+      <div class="mod">
+        <span class="nome">Console · /painel</span>
+        <p>Seu painel: o quadro com a linha do tempo de cada pessoa, conversa por lead, tick da cadência em dry-run e broadcast que agrupa tudo em 1 mensagem por pessoa. <a href="https://brisadocs.46-225-43-58.sslip.io/painel">brisadocs.46-225-43-58.sslip.io/painel</a></p>
+      </div>
+      <div class="mod">
+        <span class="nome">Crons do Hermes</span>
+        <p>Os ponteiros do relógio: iscas de segunda às 07h (pausadas desde 06/09), cartão diário às 08:30 UTC, backup às 04:00 UTC, e o vigia de 10 minutos que só reporta, nunca envia.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">Os fluxos</div>
+    <h2>Três jornadas, de ponta a ponta</h2>
+    <p class="lead">O mesmo caminho que a página dos cadernos conta com histórias, aqui está com os pontos de gravação marcados.</p>
+
+    <h3 class="fluxo-titulo">A · Do comentário ao presente</h3>
+    <div class="jornada">
+      <div class="passo">
+        <div class="degrau">Passo 1</div>
+        <h3>Ela comenta MAPA no vídeo</h3>
+        <p>A Meta entrega o evento no webhook em segundos.</p>
+        <span class="pegada">Grava em: <b>cadencia.db · comentarios</b> (durável desde 06/09) + card nasce em entrou</span>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 2</div>
+        <h3>Resposta pública e presente no privado</h3>
+        <p>A conta responde no comentário e manda o presente por private reply: 1 por comentário, vale 7 dias.</p>
+        <span class="pegada">Grava em: <b>dm_gift</b> no mapa_events.db + histórico do card</span>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 3</div>
+        <h3>O eco fica marcado</h3>
+        <p>O identificador do envio é guardado para o Instagram não confundir a própria mensagem com fala dela.</p>
+        <span class="pegada">Defesa: <b>_remember_our_mid</b> (o bug das 238 pessoas nasceu da falta disso)</span>
+      </div>
+    </div>
+
+    <h3 class="fluxo-titulo">B · Do chip ao céu aberto</h3>
+    <div class="jornada">
+      <div class="passo">
+        <div class="degrau">Passo 1</div>
+        <h3>Ela toca o chip no direct</h3>
+        <p>O toque vale como mensagem dela: abre a janela de 24 horas. É o opt-in diário do desenho inteiro.</p>
+        <span class="pegada">Grava em: <b>toque_chip</b> no funil.db + inbound no inbox</span>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 2</div>
+        <h3>O portão, só aqui</h3>
+        <p>A pergunta "ela segue?" acontece no toque do chip. No comentário, nunca mais: a Graph nega essa consulta com erro 230 para quem só comentou.</p>
+        <span class="pegada">Se ainda não segue: <b>fila pendentes_seguir</b> reconfere a cada minuto, sai em 24h</span>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 3</div>
+        <h3>Card com link único</h3>
+        <p>O card da regra sai pelo direct com o link rastreado dela: um token próprio, nunca um link igual pra todas.</p>
+        <span class="pegada">Grava em: <b>dm_card</b> + tracked_links.db</span>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 4</div>
+        <h3>Clique, mapa, destrave</h3>
+        <p>O clique sobe o card para gerou. O céu é calculado no navegador e guarda a tríade ☉ ☾ ↑ no card. O WhatsApp destrava o mapa completo.</p>
+        <span class="pegada">Grava em: <b>click, chart, unlock</b> + mapa_leads.db</span>
+      </div>
+    </div>
+
+    <h3 class="fluxo-titulo">C · O piloto de 06/09, por dentro</h3>
+    <div class="jornada">
+      <div class="passo">
+        <div class="degrau">Passo 1</div>
+        <h3>Coleta na fonte</h3>
+        <p>17 vídeos dos últimos 7 dias, 644 comentários baixados direto da Graph API, com autorização de leitura da própria conta.</p>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 2</div>
+        <h3>Cruzamento interno</h3>
+        <p>166 pessoas analisadas contra a telemetria, o inbox e o kanban. 154 elegíveis, em 4 grupos: pediu e não recebeu (72), link parado no direct (36), começou e parou (8), comentou sem ajuda (38).</p>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 3</div>
+        <h3>Textos em ciclo embaralhado</h3>
+        <p>12 variantes em 4 grupos: "Bom dia" na abertura, link da bio como caminho de volta, e nada de texto igual em série (cara de robô não).</p>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 4</div>
+        <h3>Publicação blindada</h3>
+        <p>Retry de 3 tentativas com 4 segundos entre envios, lançador independente dentro do pod e estado gravado em /data para sobreviver a reinício.</p>
+      </div>
+      <div class="passo">
+        <div class="degrau">Passo 5</div>
+        <h3>Tudo anotado</h3>
+        <p>Cada envio registrado pelo par comentário + pessoa no cadencia.db e no kanban. Resultado: 154 postados, 0 falha, 0 repetição.</p>
+        <span class="pegada">Grava em: <b>cadencia_outbound</b> + kanban (instiga_publica)</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">O armazenamento</div>
+    <h2>Onde cada dado vive</h2>
+    <p class="lead">Tudo em /data, no volume persistente. Nenhum dado importante vive só em log de máquina.</p>
+    <div class="tbl-scroll">
+      <table class="datos">
+        <tr><th>Arquivo</th><th>O que guarda</th><th>Quem escreve</th></tr>
+        <tr><td class="arq">/data/funil.db</td><td>Pessoas, eventos (só cresce), estado de cadência, feedback, campanhas</td><td>funil_db.py</td></tr>
+        <tr><td class="arq">/data/cadencia.db</td><td>Comentários duráveis, envios da cadência, feedback dos chips</td><td>cadencia_repository.py</td></tr>
+        <tr><td class="arq">/data/mapa_events.db</td><td>Telemetria: dm_gift, dm_card, click, chart, unlock</td><td>mapa_event_repository</td></tr>
+        <tr><td class="arq">/data/mapa_leads.db</td><td>Leads e mapas: nascimento, tríade, WhatsApp</td><td>mapa_lead_repository</td></tr>
+        <tr><td class="arq">/data/tracked_links.db</td><td>Token único por pessoa, cliques, datas</td><td>serviço de links rastreados</td></tr>
+        <tr><td class="arq">/data/tenant*.json</td><td>Contas, leads do painel, kanban, regras, fila de "precisa seguir"</td><td>tenant_store.py</td></tr>
+        <tr><td class="arq">/data/inbox/ig_*.json</td><td>Última mensagem recebida por pessoa (o sinal da janela de 24h)</td><td>instagram_webhook.py</td></tr>
+        <tr><td class="arq">/data/prova_postado_estado.json</td><td>O que o piloto de comentários já postou</td><td>prova_runner.py</td></tr>
+        <tr><td class="arq">/data/backups/</td><td>Cópia diária às 04:00 UTC, ficam 7; domingo uma cópia sai do servidor</td><td>cron funil-backup</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">O contrato</div>
+    <h2>O caderno novo, campo a campo</h2>
+    <p class="lead">As quatro tabelas que entraram no ar em 06/09. Idempotentes: o schema se recria sozinho a cada conexão, e reenvio de webhook não duplica linha.</p>
+<pre class="ddl"><span class="c">cadencia.db · ADR-0004 · fase 0</span>
+
+<span class="k">comentarios</span> (
+  comment_id   PRIMARY KEY,      <span class="c">idempotente</span>
+  account_id, from_user, post_id,
+  texto, created_at
+)
+
+<span class="k">cadencia_estado</span> (
+  account_id + person_id  PRIMARY KEY,
+  etapa, ultimo_outbound,
+  opt_out, opt_out_em,           <span class="c">o "não quero mais"</span>
+  atualizado_em
+)
+
+<span class="k">cadencia_outbound</span> (
+  id  PRIMARY KEY,
+  account_id, person_id,
+  canal, etapa, criado_em        <span class="c">base dos limites</span>
+)
+
+<span class="k">feedback_chips</span> (
+  id  PRIMARY KEY,
+  account_id, person_id,
+  pergunta, valor, dia_mad, created_at
+)</pre>
+    <p class="ddl-nota">Os limites saem daqui: 1 toque por pessoa por dia e 3 em 7 dias são contagens sobre <span class="mono">cadencia_outbound</span>. O <span class="mono">opt_out</span> é permanente e imediato. E <span class="mono">from_user</span> é o mesmo perfil que costura os outros cadernos.</p>
+  </section>
+
+  <section>
+    <div class="sec-kicker">As regras da Meta</div>
+    <h2>As janelas que mandam no desenho</h2>
+    <p class="lead">Medidas na prática, não suposição. Cada canal tem uma regra, e o desenho respeita todas.</p>
+    <div class="janelas">
+      <div class="janela">
+        <h3>Comentário público</h3>
+        <p>Sem janela, repetível, ilimitado. O único canal sempre aberto: é por ele que a cadência alcança quem o direct não deixa.</p>
+      </div>
+      <div class="janela">
+        <h3>Private reply</h3>
+        <p>1 por comentário, na vida. Vale 7 dias. Insistir devolve erro da Graph.</p>
+        <span class="erro">erro 2534025 quando o slot já foi usado</span>
+      </div>
+      <div class="janela">
+        <h3>Direct</h3>
+        <p>Janela de 24h contando da última mensagem DELA. Toque no chip reabre. Janela fechada: o bot espera, nunca insiste.</p>
+      </div>
+      <div class="janela">
+        <h3>WhatsApp</h3>
+        <p>Só 1 template aprovado hoje. Mensagem fria para quem nunca escreveu é recusada.</p>
+        <span class="erro">erro 131047 fora da janela</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">As blindagens</div>
+    <h2>O que já quebrou, e como ficou blindado</h2>
+    <p class="lead">Cada caso abaixo aconteceu de verdade. O conserto virou regra permanente.</p>
+    <div class="casos">
+      <div class="caso">
+        <h3>O presente que nunca chegou</h3>
+        <p class="oque">Antes de 03/09, o comentário consultava "ela segue?" na Graph. Para quem só comentou, a resposta é o erro 230, e a fila ficava esperando um sinal de follow que a Meta nunca manda. 52 dos 89 pedidos antigos morreram assim.</p>
+        <p class="defesa"><b>DEFESA:</b> portão de seguidor só no toque do chip. Comentário não consulta nada.</p>
+      </div>
+      <div class="caso">
+        <h3>O pico de 05/09</h3>
+        <p class="oque">263 comentários num dia só. Sob volume, a Graph recusa envios, e sem nova tentativa o que se perdeu estava perdido.</p>
+        <p class="defesa"><b>DEFESA:</b> retry de 3 tentativas com pausa, e todo resultado anotado, inclusive a falha.</p>
+      </div>
+      <div class="caso">
+        <h3>A falha invisível</h3>
+        <p class="oque">Só sucesso virava registro. Quando um envio quebrava, não deixava rastro nem no kanban: a pergunta "cadê o presente dela?" não tinha resposta.</p>
+        <p class="defesa"><b>DEFESA:</b> cadencia.db registra comentário e envio; o card ganha linha do tempo completa.</p>
+      </div>
+      <div class="caso">
+        <h3>O bot que ignorava 238 pessoas</h3>
+        <p class="oque">O eco do próprio private reply ligava o modo "humano assumiu" no lead, e o bot ficava mudo para aquela pessoa até um comando manual.</p>
+        <p class="defesa"><b>DEFESA:</b> todo envio guarda o próprio identificador. Limpeza dos 238 casos feita em 06/09.</p>
+      </div>
+      <div class="caso">
+        <h3>A janela que mentia</h3>
+        <p class="oque">O inbox local não enxergava o toque de chip: contava 4 janelas abertas num dia em que a Graph atestava 10.</p>
+        <p class="defesa"><b>DEFESA:</b> a Graph é a fonte da verdade. Antes de qualquer lote, varredura própria atesta as janelas abertas.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">Os freios</div>
+    <h2>Nada sai sem travas</h2>
+    <p class="lead">Obrigatórias no ADR-0004, ativas em todo envio.</p>
+    <div class="pilulas">
+      <span class="pilula">1 toque por pessoa por dia</span>
+      <span class="pilula">3 em 7 dias, depois para</span>
+      <span class="pilula">silêncio das 21h às 09h, hora de Madri</span>
+      <span class="pilula">opt-out permanente e imediato</span>
+      <span class="pilula">a escada nunca regride</span>
+      <span class="pilula">erro de cadência nunca derruba envio</span>
+      <span class="pilula">dry-run antes de ligar qualquer automação</span>
+      <span class="pilula regra">nenhuma mensagem sem o seu ok</span>
+    </div>
+  </section>
+
+  <footer>
+    FEITO COM CAFÉ E ASTROS · SETEMBRO DE 2026
+    <span class="assin">Que os astros te acompanhem ✨</span>
+    <span class="fontes">Fontes: ADR-0004 (esquentar leads) · cadencia_repository.py · piloto de comentários de 06/09/2026</span>
+    <span class="outra">Prefere a versão com contação de história? <a href="arquitetura-cadencia.html">Os cadernos do funil</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
