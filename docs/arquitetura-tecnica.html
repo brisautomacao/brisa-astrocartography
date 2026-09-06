@@ -190,6 +190,16 @@
 
   @media (max-width:560px){
     .mods,.janelas{grid-template-columns:1fr}
+    table.datos{min-width:0}
+    table.datos tr{display:block;padding:12px 0;border-bottom:1px dashed rgba(200,159,80,.16)}
+    table.datos tr:first-child{display:none}
+    table.datos td{display:block;border-bottom:none;padding:2px 0}
+    table.datos td.arq{white-space:normal;word-break:break-all}
+    table.datos td[data-label]::before{
+      content:attr(data-label) ": ";
+      color:var(--gold);font-size:10.5px;letter-spacing:.16em;
+      text-transform:uppercase;font-weight:600;
+    }
     header{padding-top:48px}
   }
   @media (prefers-reduced-motion: no-preference){
@@ -361,15 +371,15 @@
     <div class="tbl-scroll">
       <table class="datos">
         <tr><th>Arquivo</th><th>O que guarda</th><th>Quem escreve</th></tr>
-        <tr><td class="arq">/data/funil.db</td><td>Pessoas, eventos (só cresce), estado de cadência, feedback, campanhas</td><td>funil_db.py</td></tr>
-        <tr><td class="arq">/data/cadencia.db</td><td>Comentários duráveis, envios da cadência, feedback dos chips</td><td>cadencia_repository.py</td></tr>
-        <tr><td class="arq">/data/mapa_events.db</td><td>Telemetria: dm_gift, dm_card, click, chart, unlock</td><td>mapa_event_repository</td></tr>
-        <tr><td class="arq">/data/mapa_leads.db</td><td>Leads e mapas: nascimento, tríade, WhatsApp</td><td>mapa_lead_repository</td></tr>
-        <tr><td class="arq">/data/tracked_links.db</td><td>Token único por pessoa, cliques, datas</td><td>serviço de links rastreados</td></tr>
-        <tr><td class="arq">/data/tenant*.json</td><td>Contas, leads do painel, kanban, regras, fila de "precisa seguir"</td><td>tenant_store.py</td></tr>
-        <tr><td class="arq">/data/inbox/ig_*.json</td><td>Última mensagem recebida por pessoa (o sinal da janela de 24h)</td><td>instagram_webhook.py</td></tr>
-        <tr><td class="arq">/data/prova_postado_estado.json</td><td>O que o piloto de comentários já postou</td><td>prova_runner.py</td></tr>
-        <tr><td class="arq">/data/backups/</td><td>Cópia diária às 04:00 UTC, ficam 7; domingo uma cópia sai do servidor</td><td>cron funil-backup</td></tr>
+        <tr><td class="arq">/data/funil.db</td><td data-label="Guarda">Pessoas, eventos (só cresce), estado de cadência, feedback, campanhas</td><td data-label="Escreve">funil_db.py</td></tr>
+        <tr><td class="arq">/data/cadencia.db</td><td data-label="Guarda">Comentários duráveis, envios da cadência, feedback dos chips</td><td data-label="Escreve">cadencia_repository.py</td></tr>
+        <tr><td class="arq">/data/mapa_events.db</td><td data-label="Guarda">Telemetria: dm_gift, dm_card, click, chart, unlock</td><td data-label="Escreve">mapa_event_repository</td></tr>
+        <tr><td class="arq">/data/mapa_leads.db</td><td data-label="Guarda">Leads e mapas: nascimento, tríade, WhatsApp</td><td data-label="Escreve">mapa_lead_repository</td></tr>
+        <tr><td class="arq">/data/tracked_links.db</td><td data-label="Guarda">Token único por pessoa, cliques, datas</td><td data-label="Escreve">serviço de links rastreados</td></tr>
+        <tr><td class="arq">/data/tenant*.json</td><td data-label="Guarda">Contas, leads do painel, kanban, regras, fila de "precisa seguir"</td><td data-label="Escreve">tenant_store.py</td></tr>
+        <tr><td class="arq">/data/inbox/ig_*.json</td><td data-label="Guarda">Última mensagem recebida por pessoa (o sinal da janela de 24h)</td><td data-label="Escreve">instagram_webhook.py</td></tr>
+        <tr><td class="arq">/data/prova_postado_estado.json</td><td data-label="Guarda">O que o piloto de comentários já postou</td><td data-label="Escreve">prova_runner.py</td></tr>
+        <tr><td class="arq">/data/backups/</td><td data-label="Guarda">Cópia diária às 04:00 UTC, ficam 7; domingo uma cópia sai do servidor</td><td data-label="Escreve">cron funil-backup</td></tr>
       </table>
     </div>
   </section>
@@ -381,30 +391,32 @@
 <pre class="ddl"><span class="c">cadencia.db · ADR-0004 · fase 0</span>
 
 <span class="k">comentarios</span> (
-  comment_id   PRIMARY KEY,      <span class="c">idempotente</span>
-  account_id, from_user, post_id,
-  texto, created_at
+  comment_id  PRIMARY KEY,
+  account_id, from_user,
+  post_id, texto, created_at
 )
 
 <span class="k">cadencia_estado</span> (
-  account_id + person_id  PRIMARY KEY,
+  account_id + person_id
+    PRIMARY KEY,
   etapa, ultimo_outbound,
-  opt_out, opt_out_em,           <span class="c">o "não quero mais"</span>
+  opt_out, opt_out_em,
   atualizado_em
 )
 
 <span class="k">cadencia_outbound</span> (
   id  PRIMARY KEY,
   account_id, person_id,
-  canal, etapa, criado_em        <span class="c">base dos limites</span>
+  canal, etapa, criado_em
 )
 
 <span class="k">feedback_chips</span> (
   id  PRIMARY KEY,
   account_id, person_id,
-  pergunta, valor, dia_mad, created_at
+  pergunta, valor, dia_mad,
+  created_at
 )</pre>
-    <p class="ddl-nota">Os limites saem daqui: 1 toque por pessoa por dia e 3 em 7 dias são contagens sobre <span class="mono">cadencia_outbound</span>. O <span class="mono">opt_out</span> é permanente e imediato. E <span class="mono">from_user</span> é o mesmo perfil que costura os outros cadernos.</p>
+    <p class="ddl-nota">Traduzindo: <span class="mono">comentarios</span> é idempotente (reenvio de webhook não duplica linha). <span class="mono">opt_out</span> é o "não quero mais", permanente e imediato. E os limites de 1 por dia e 3 em 7 dias são contagens sobre <span class="mono">cadencia_outbound</span>. O <span class="mono">from_user</span> é o mesmo perfil que costura os outros cadernos.</p>
   </section>
 
   <section>
