@@ -117,7 +117,7 @@
   .passo .pegada{
     display:inline-block;margin-top:8px;padding:4px 12px;border-radius:999px;
     background:rgba(200,159,80,.10);border:1px solid var(--line);
-    font-size:12.5px;color:var(--gold-soft);
+    font-size:12.5px;color:var(--gold-soft);max-width:100%;
   }
   .passo .pegada b{font-weight:600}
 
@@ -144,11 +144,12 @@
   .hoje{background:var(--plum-deep);border:1px solid var(--line);border-radius:18px;padding:26px 24px}
   .hoje h3{font-family:'Fraunces',serif;font-size:20px;font-weight:600;margin-bottom:14px}
   .hoje .linha{
-    display:flex;justify-content:space-between;gap:12px;
+    display:flex;justify-content:space-between;gap:6px 12px;flex-wrap:wrap;
     padding:9px 0;border-bottom:1px dashed rgba(200,159,80,.16);font-size:14.5px;
   }
+  .hoje .linha span:first-child{flex:1 1 auto;min-width:0}
   .hoje .linha:last-of-type{border-bottom:none}
-  .hoje .linha span:last-child{color:var(--gold-soft);font-weight:500;white-space:nowrap}
+  .hoje .linha span:last-child{color:var(--gold-soft);font-weight:500;white-space:nowrap;flex:0 0 auto}
   .hoje .nota{
     margin-top:14px;padding-top:14px;border-top:1px solid var(--line);
     font-size:13.5px;color:var(--ok);
