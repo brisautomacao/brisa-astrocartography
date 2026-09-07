@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1023">
+<title>Console Brisa · Maquete Mobile</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1023; --bg2:#0a0b1a; --card:#1b1d3a; --card2:#22254c; --line:#2b2e57;
+  --txt:#e8eaf6; --dim:#8a91b4; --grad:linear-gradient(45deg,#D470A2,#B86BB5,#5B9BD5);
+  --ok:#3ddc84; --warn:#ffc65c; --bad:#ff6b8a;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--bg2);color:var(--txt);
+  font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  display:grid;place-items:center;min-height:100dvh}
+#phone{position:relative;width:min(430px,100vw);height:100dvh;background:var(--bg);
+  overflow:hidden;display:flex;flex-direction:column}
+@media(min-width:520px){#phone{border-radius:24px;height:min(880px,94dvh);
+  box-shadow:0 20px 80px rgba(0,0,0,.6),0 0 0 1px #26295a}}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+input,textarea,select{font:inherit;color:var(--txt);background:#141633;border:1px solid #33365e;
+  border-radius:12px;padding:12px 14px;width:100%;outline:none}
+input:focus,textarea:focus{border-color:#B86BB5}
+a{color:inherit;text-decoration:none}
+
+/* ---- header ---- */
+#hdr{flex:0 0 auto;display:flex;align-items:center;gap:6px;padding:10px 12px;
+  padding-top:calc(10px + env(safe-area-inset-top));
+  background:linear-gradient(180deg,#191b3d,#14162f);border-bottom:1px solid var(--line);z-index:20}
+#hdr .ttl{flex:1;min-width:0}
+#hdr .ttl b{display:block;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#hdr .ttl small{color:var(--dim);font-size:11.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icobtn{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:var(--dim);flex:0 0 auto}
+.icobtn:active{background:#26295a}
+#backBtn{display:none}
+body[data-depth="1"] #backBtn{display:flex}
+
+/* ---- screen ---- */
+#screen{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:14px 14px 20px;
+  padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+body.chatmode #screen{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+body.chatmode #tabbar{display:none}
+.ribbon{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--dim);
+  background:#141633;border:1px dashed #33365e;border-radius:12px;padding:8px 12px;margin-bottom:14px}
+.ribbon i{color:#B86BB5}
+
+/* ---- tabbar ---- */
+#tabbar{flex:0 0 auto;display:flex;background:#14162f;border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom);z-index:20}
+#tabbar button{flex:1;padding:8px 0 9px;display:flex;flex-direction:column;align-items:center;gap:2px;
+  color:var(--dim);font-size:10.5px;font-weight:600}
+#tabbar button i{font-size:21px}
+#tabbar button.on{color:#fff}
+#tabbar button.on i{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+/* ---- components ---- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.card h3{font-size:15px;margin-bottom:4px}
+.dim{color:var(--dim)} .small{font-size:12.5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;
+  padding:10px 18px;border-radius:14px;font-weight:600;font-size:14px;border:1px solid var(--line);background:#22254c}
+.btn:active{filter:brightness(1.25)}
+.btn.grad{background:var(--grad);border:none}
+.btn.block{width:100%}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:999px;
+  background:#141633;border:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--dim);min-height:38px}
+.pill.on{background:var(--grad);color:#fff;border-color:transparent}
+.pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.pills::-webkit-scrollbar{display:none}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.stat b{font-size:22px;display:block}
+.stat small{color:var(--dim);font-size:12px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.dot.ok{background:var(--ok)} .dot.off{background:#2a2d55;border:1px dashed #555}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;
+  padding:3px 9px;border-radius:999px;background:#141633;border:1px solid var(--line);color:var(--dim)}
+.badge.ok{color:var(--ok);border-color:#1d4a33}
+.badge.warn{color:var(--warn);border-color:#4d3d1d}
+.badge.grad{background:var(--grad);color:#fff;border-color:transparent}
+.switch{position:relative;width:52px;height:30px;flex:0 0 auto}
+.switch input{display:none}
+.switch span{position:absolute;inset:0;background:#33365e;border-radius:999px;transition:.2s}
+.switch span::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.switch input:checked + span{background:#2b6b4b}
+.switch input:checked + span::after{left:25px}
+
+/* ---- list rows ---- */
+.row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
+  border-radius:16px;padding:12px 14px;margin-bottom:9px}
+.row:active{background:#1e2145}
+.row .av{width:42px;height:42px;border-radius:50%;background:var(--grad);display:flex;align-items:center;
+  justify-content:center;font-weight:700;font-size:16px;flex:0 0 auto}
+.row .mid{flex:1;min-width:0}
+.row .mid b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .mid small{color:var(--dim);font-size:12px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .side{text-align:right;flex:0 0 auto}
+.row .side small{color:var(--dim);font-size:10.5px;display:block}
+.unread{width:9px;height:9px;border-radius:50%;background:var(--grad);display:inline-block;margin-top:4px}
+
+/* ---- chat ---- */
+.chips2{display:flex;gap:8px;overflow-x:auto;padding:8px 14px 4px;scrollbar-width:none}
+.chips2::-webkit-scrollbar{display:none}
+.chips2 button{flex:0 0 auto;padding:9px 14px;border-radius:999px;background:#1e2145;border:1px solid var(--line);
+  font-size:12.5px;font-weight:600;color:#cfd6ff;min-height:38px}
+.thread{display:flex;flex-direction:column;gap:2px}
+.msg{max-width:78%;padding:9px 13px;border-radius:18px;margin-bottom:6px;font-size:14px;white-space:pre-wrap}
+.msg.in{background:var(--card2);align-self:flex-start;border-bottom-left-radius:6px}
+.msg.out{background:linear-gradient(45deg,#2f5d43,#2b6b4b);align-self:flex-end;border-bottom-right-radius:6px}
+.msg small{display:block;color:rgba(255,255,255,.55);font-size:10px;margin-top:3px}
+.typing{align-self:flex-start;background:var(--card2);border-radius:18px;padding:12px 16px;display:flex;gap:5px}
+.typing i{width:7px;height:7px;border-radius:50%;background:var(--dim);animation:bl 1s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes bl{50%{opacity:.3}}
+#composer{position:absolute;left:0;right:0;bottom:0;display:flex;gap:8px;align-items:flex-end;
+  padding:10px 12px;padding-bottom:calc(10px + env(safe-area-inset-bottom));
+  background:#14162f;border-top:1px solid var(--line)}
+#composer textarea{flex:1;resize:none;max-height:110px;border-radius:18px;padding:11px 15px}
+#composer .send{width:46px;height:46px;border-radius:50%;background:var(--grad);display:flex;
+  align-items:center;justify-content:center;font-size:18px;flex:0 0 auto}
+.simbtn{margin:2px auto 10px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim);
+  border:1px dashed var(--line);border-radius:999px;padding:7px 14px;min-height:34px}
+
+/* ---- kanban ---- */
+.kb{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 8px;scrollbar-width:none}
+.kb::-webkit-scrollbar{display:none}
+.kcol{flex:0 0 84%;max-width:300px;scroll-snap-align:center;background:#171935;border:1px solid var(--line);
+  border-radius:16px;padding:12px}
+.kcol h4{font-size:13px;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.kcol h4 .n{background:var(--grad);color:#fff;border-radius:999px;font-size:11px;padding:1px 8px}
+.lc{background:var(--card2);border-radius:13px;padding:11px 13px;margin-bottom:8px;min-height:52px}
+.lc:active{background:#282c5c}
+.lc b{display:block;font-size:13.5px}
+.lc small{color:var(--dim);font-size:11.5px;display:block}
+.lc .tri{font-size:11px;color:#cfd6ff;margin-top:3px}
+
+/* ---- sheet ---- */
+#backdrop{position:absolute;inset:0;background:rgba(5,6,18,.6);z-index:30;display:none}
+#sheet{position:absolute;left:0;right:0;bottom:0;z-index:31;background:#1b1d3a;border-radius:22px 22px 0 0;
+  border-top:1px solid var(--line);padding:10px 16px calc(18px + env(safe-area-inset-bottom));
+  transform:translateY(100%);transition:transform .22s ease;max-height:80%;overflow-y:auto;display:none}
+#sheet.up{transform:translateY(0)}
+#sheet .grab{width:44px;height:5px;border-radius:99px;background:#33365e;margin:4px auto 14px}
+#sheet h3{font-size:17px;margin-bottom:2px}
+
+/* ---- timeline ---- */
+.tl{position:relative;padding-left:26px}
+.tl::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tle{position:relative;margin-bottom:14px}
+.tle::before{content:"";position:absolute;left:-21px;top:5px;width:10px;height:10px;border-radius:50%;
+  background:var(--grad)}
+.tle b{font-size:13.5px;display:block}
+.tle small{color:var(--dim);font-size:11.5px}
+
+/* ---- forms ---- */
+.frow{margin-bottom:16px}
+.frow label{display:block;font-size:12.5px;font-weight:700;color:var(--dim);margin-bottom:7px;text-transform:uppercase;letter-spacing:.4px}
+textarea{min-height:110px;line-height:1.5}
+#savebar{position:absolute;left:0;right:0;bottom:0;display:none;gap:10px;align-items:center;
+  padding:12px 14px;padding-bottom:calc(12px + env(safe-area-inset-bottom));
+  background:linear-gradient(0deg,#14162f 70%,rgba(20,22,47,0));z-index:15}
+body.formmode #savebar{display:flex}
+body.formmode #tabbar{display:none}
+body.formmode #screen{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
+
+/* ---- toast + info ---- */
+#toast{position:absolute;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);
+  background:#26295a;color:#fff;padding:11px 20px;border-radius:999px;font-size:13.5px;font-weight:600;
+  opacity:0;transition:.25s;z-index:60;pointer-events:none;white-space:nowrap;border:1px solid #3a3e77}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#info{position:absolute;inset:0;background:rgba(5,6,18,.7);z-index:50;display:none;align-items:flex-end}
+#info .box{background:#1b1d3a;border-radius:22px 22px 0 0;border-top:1px solid var(--line);width:100%;
+  padding:18px 18px calc(24px + env(safe-area-inset-bottom));max-height:85%;overflow-y:auto}
+#info h3{font-size:17px;margin-bottom:12px}
+#info li{margin:0 0 10px 18px;font-size:13.5px;color:#cfd6ff}
+#info li b{color:#fff}
+</style>
+</head>
+<body data-depth="0">
+<div id="phone">
+  <header id="hdr">
+    <button class="icobtn" id="backBtn" onclick="voltar()"><i class="bi bi-arrow-left"></i></button>
+    <div class="ttl"><b id="hTtl">Console Brisa</b><small id="hSub">maquete · dados fictícios</small></div>
+    <button class="icobtn" onclick="abrirInfo()"><i class="bi bi-question-circle"></i></button>
+  </header>
+
+  <main id="screen"></main>
+
+  <div id="composer" style="display:none">
+    <button class="icobtn" style="width:46px;height:46px" onclick="toast('Anexar imagem (na maquete)')"><i class="bi bi-image"></i></button>
+    <textarea id="msgTexto" rows="1" placeholder="Mensagem, /atalho ou modelo…"></textarea>
+    <button class="send" onclick="enviarMsg()"><i class="bi bi-send-fill"></i></button>
+  </div>
+
+  <div id="savebar">
+    <button class="btn block grad" onclick="toast('Salvo com carinho ✨');voltar()">Salvar</button>
+  </div>
+
+  <nav id="tabbar">
+    <button data-t="inicio" onclick="go('#/inicio')"><i class="bi bi-house-door"></i>Início</button>
+    <button data-t="conversas" onclick="go('#/conversas')"><i class="bi bi-inbox"></i>Conversas</button>
+    <button data-t="kanban" onclick="go('#/kanban')"><i class="bi bi-kanban"></i>Kanban</button>
+    <button data-t="conteudo" onclick="go('#/conteudo')"><i class="bi bi-magic"></i>Conteúdo</button>
+    <button data-t="ajustes" onclick="go('#/ajustes')"><i class="bi bi-gear"></i>Ajustes</button>
+  </nav>
+
+  <div id="backdrop" onclick="voltar()"></div>
+  <div id="sheet"></div>
+
+  <div id="info" onclick="if(event.target===this)this.style.display='none'">
+    <div class="box">
+      <h3>✨ O que muda nesta maquete</h3>
+      <ul>
+        <li><b>Voltar em todo lugar:</b> seta no topo e o botão voltar do celular funciona dentro do painel, sem perder o lugar.</li>
+        <li><b>Menu no pé da tela:</b> 5 lugares fixos, sempre ao alcance do polegar.</li>
+        <li><b>Toques grandes:</b> botões de 44px ou mais, nada de mira fina.</li>
+        <li><b>Folhas de baixo:</b> fichas de lead e detalhes sobem de baixo e fecham com o voltar.</li>
+        <li><b>Kanban tocável:</b> mover lead por botões; arrastar continua no computador.</li>
+        <li><b>Conversa em tela cheia:</b> campo de texto sempre visível, teclado não cobre nada.</li>
+        <li><b>Salvar sempre visível:</b> nos formulários, o botão fica fixo no pé.</li>
+        <li><b>Sem refatoração:</b> mesmas telas, mesmos dados, mesmo motor do painel de hoje. É a casca por cima, entra aos pedaços.</li>
+      </ul>
+      <button class="btn block" onclick="document.getElementById('info').style.display='none'">Entendi</button>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+</div>
+
+<script>
+/* ================= dados fictícios ================= */
+const TRIADE_MARINA = {sol:"Virgem", lua:"Touro", asc:"Sagitário"};
+const CONVERSAS = [
+ {id:"marina", nome:"Marina Prado", user:"@marinaprado", hora:"14:32", naoLido:true, janela:true, takeover:false,
+  preview:"Pelotas! Nasceu 7h da manhã ✨",
+  msgs:[
+   {d:"in", t:"Oi! Vi o reel dos astros de hoje ✨", h:"14:20"},
+   {d:"out", t:"Oi, meu amor! Chegou na hora boa: o dia está prometendo movimento no seu céu. ✨ Quer que eu prepare o seu mapa? 🙏", h:"14:21"},
+   {d:"in", t:"Quero! Nasci dia 03/07/1996", h:"14:29"},
+   {d:"out", t:"Que presente, meu bem! Me falta só um detalhe: a hora e a cidade do nascimento. Tem no seu documento? 🙏", h:"14:30"},
+   {d:"in", t:"Pelotas! Nasceu 7h da manhã ✨", h:"14:32"}
+  ]},
+ {id:"julia", nome:"Júlia Nunes", user:"@julianunes", hora:"13:58", naoLido:false, janela:true, takeover:false,
+  preview:"Recebi o mapa, obrigada 🙏", msgs:[
+   {d:"in", t:"Recebi o mapa, obrigada 🙏", h:"13:58"},
+   {d:"out", t:"Fico feliz que chegou, meu bem! Qualquer dúvida sobre o céu, estou por aqui. ✨", h:"13:59"}
+  ]},
+ {id:"cami", nome:"Cami Souza", user:"@camisouza", hora:"11:47", naoLido:false, janela:true, takeover:true,
+  preview:"(você assumiu a conversa)", msgs:[
+   {d:"in", t:"Posso pagar no cartão?", h:"11:40"},
+   {d:"out", t:"Pode sim, minha querida! O link aceita cartão e Pix. Vou te mandar de novo aqui. 🙏", h:"11:47"}
+  ]},
+ {id:"rafa", nome:"Rafa Lima", user:"@rafalima", hora:"12:10", naoLido:true, janela:false, takeover:false,
+  preview:"Comenta mapa de novo aqui e vá até…", msgs:[
+   {d:"out", t:"Acho que você não recebeu minha mensagem, me desculpa! Comenta mapa de novo aqui e vá até suas mensagens, viu? 🙏", h:"12:10"}
+  ]},
+ {id:"pedro", nome:"Pedro Alves", user:"@pedroalves", hora:"ontem", naoLido:false, janela:false, takeover:false,
+  preview:"Boa noite! Que astros regem hoje?", msgs:[
+   {d:"in", t:"Boa noite! Que astros regem hoje?", h:"21:14"}
+  ]}
+];
+const RESP_LEAD = [
+ "Oi Dona Celeste! Me conta mais? ✨",
+ "Perfeito, obrigada! 🙏",
+ "Não entendi direito, pode explicar de outro jeito?",
+ "Quero! Como faço? ✨"
+];
+const ETAPAS = [
+ {id:"entrou", nome:"Entrou"},
+ {id:"gerou", nome:"Gerou"},
+ {id:"destravou", nome:"Destravou"},
+ {id:"clicou_pagar", nome:"Clicou pagar"},
+ {id:"ganho", nome:"Ganho"}
+];
+const LEADS = [
+ {id:"l1", nome:"Marina Prado", user:"@marinaprado", est:"entrou", janela:"aberta", tri:TRIADE_MARINA},
+ {id:"l2", nome:"Pedro Alves", user:"@pedroalves", est:"entrou", janela:"fechada", tri:null},
+ {id:"l3", nome:"Lu Martins", user:"@lumartins", est:"entrou", janela:"aberta", tri:{sol:"Leão",lua:"Peixes",asc:null}},
+ {id:"l4", nome:"Júlia Nunes", user:"@julianunes", est:"gerou", janela:"aberta", tri:{sol:"Libra",lua:"Escorpião",asc:"Capricórnio"}},
+ {id:"l5", nome:"Rafa Lima", user:"@rafalima", est:"gerou", janela:"fechada", tri:null},
+ {id:"l6", nome:"Duda Rocha", user:"@dudarocha", est:"gerou", janela:"aberta", tri:null},
+ {id:"l7", nome:"Théo Martins", user:"@theomartins", est:"gerou", janela:"fechada", tri:{sol:"Áries",lua:"Câncer",asc:null}},
+ {id:"l8", nome:"Cami Souza", user:"@camisouza", est:"destravou", janela:"aberta", tri:{sol:"Gêmeos",lua:"Virgem",asc:"Peixes"}},
+ {id:"l9", nome:"Nina Duarte", user:"@ninaduarte", est:"destravou", janela:"fechada", tri:null},
+ {id:"l10", nome:"Bel Trindade", user:"@beltrindade", est:"clicou_pagar", janela:"aberta", tri:{sol:"Aquário",lua:"Leão",asc:"Touro"}},
+ {id:"l11", nome:"Ana Paula", user:"@anapaula", est:"ganho", janela:"aberta", tri:{sol:"Câncer",lua:"Peixes",asc:"Virgem"}},
+ {id:"l12", nome:"Sara Mota", user:"@saramota", est:"ganho", janela:"fechada", tri:null}
+];
+const NOME_ETAPA = Object.fromEntries(ETAPAS.map(e=>[e.id,e.nome]));
+const CONTEUDOS = [
+ {t:"Reel: os astros desta semana", st:"publicado", q:"há 2 dias"},
+ {t:"Carrossel: o que é a tríade", st:"roteiro_pronto", q:"hoje"},
+ {t:"Reel: Lua nova no seu signo", st:"rascunho", q:"ontem"}
+];
+
+/* ================= base ================= */
+const $ = s => document.querySelector(s);
+const go = h => { location.hash = h; };
+const voltar = () => history.back();
+const toast = t => { const n=$("#toast"); n.textContent=t; n.classList.add("show");
+  clearTimeout(n._t); n._t=setTimeout(()=>n.classList.remove("show"),1900); };
+function abrirInfo(){ $("#info").style.display="flex"; }
+function janelaTxt(e){ return e==="aberta" ? "janela 24h aberta" : "janela fechada"; }
+function triTxt(t){ if(!t) return null;
+  let s = "☉ " + t.sol + " · ☾ " + t.lua; if(t.asc) s += " · ↑ " + t.asc; return s; }
+
+/* ================= router ================= */
+const TELAS = {
+ "inicio":   {t:"Console Brisa", s:"Brisa Astral · @brisaastral.ai"},
+ "conversas":{t:"Conversas", s:"Direct do Instagram"},
+ "conversa": {t:"", s:""},
+ "kanban":   {t:"Kanban", s:"funil da isca · arraste no PC, toque no celular"},
+ "linha":    {t:"Linha do tempo", s:"jornada completa da lead"},
+ "conteudo": {t:"Conteúdo", s:"reels e carrosséis"},
+ "ajustes":  {t:"Ajustes", s:"cérebro da Celeste e credenciais"},
+ "ajuste":   {t:"", s:""}
+};
+window.addEventListener("hashchange", render);
+function parseHash(){
+  const h = (location.hash || "#/inicio").replace(/^#\//,"").split("/");
+  return {nome: h[0] || "inicio", arg: h[1] || null};
+}
+function render(){
+  const {nome, arg} = parseHash();
+  document.body.classList.toggle("chatmode", nome==="conversa");
+  document.body.classList.toggle("formmode", nome==="ajuste");
+  document.body.dataset.depth = (location.hash && location.hash !== "#/inicio") ? "1" : "0";
+  $("#composer").style.display = nome==="conversa" ? "flex" : "none";
+  const meta = TELAS[nome] || TELAS.inicio;
+  let sub = meta.s;
+  if(nome==="conversa"){ const c = CONVERSAS.find(x=>x.id===arg);
+    $("#hTtl").textContent = c ? c.nome : "Conversa";
+    sub = c ? c.user + " · " + janelaTxt(c.janela) : ""; }
+  else if(nome==="ajustes" && arg){ $("#hTtl").textContent = arg==="ceu" ? "Céu por chat" : "Agente";
+    sub = arg==="ceu" ? "memória, chips e regras do céu" : "persona, tom e regras"; }
+  else $("#hTtl").textContent = meta.t;
+  $("#hSub").textContent = sub;
+  document.querySelectorAll("#tabbar button").forEach(b=>{
+    b.classList.toggle("on", b.dataset.t===nome || (nome==="conversa"&&b.dataset.t==="conversas")); });
+  const r = {inicio:telaInicio, conversas:telaConversas, conversa:telaConversa,
+             kanban:telaKanban, linha:telaLinha, conteudo:telaConteudo,
+             ajustes:telaAjustes, ajuste:telaAjuste}[nome] || telaInicio;
+  $("#screen").innerHTML = (nome==="ajustes" && arg) ? telaAjuste(arg) : r(arg);
+  fecharSheet();
+  if(nome==="conversa"){ const th=$(".thread"); if(th) th.scrollTop = th.scrollHeight;
+    const t=$("#msgTexto"); if(t && window.matchMedia("(min-width:520px)").matches===false) t.blur(); }
+  else $("#screen").scrollTop = 0;
+}
+
+/* ================= telas ================= */
+function telaInicio(){
+  return `
+  <div class="ribbon"><i class="bi bi-stars"></i> maquete para você avaliar · nada aqui toca no painel real</div>
+  <div class="card" style="display:flex;align-items:center;gap:12px">
+    <div style="width:46px;height:46px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:22px"><i class="bi bi-instagram"></i></div>
+    <div style="flex:1"><b>Brisa Astral</b><div class="small dim">@brisaastral.ai · Instagram</div></div>
+    <label class="switch"><input type="checkbox" checked onchange="toast(this.checked?'Bot ativo ✨':'Bot desligado ⚠️')"><span></span></label>
+  </div>
+  <div class="statgrid">
+    <div class="stat" onclick="go('#/conversas')"><b>3</b><small>aguardando você</small></div>
+    <div class="stat" onclick="go('#/conversas')"><b>7</b><small>janelas 24h abertas</small></div>
+    <div class="stat"><b>48</b><small>comentários hoje</small></div>
+    <div class="stat" onclick="go('#/kanban')"><b>12</b><small>mapas prontos</small></div>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <i class="bi bi-sunrise" style="color:#ffc65c"></i><h3 style="margin:0">Bom dia dos Astros</h3>
+      <span class="badge ok" style="margin-left:auto">no ar</span></div>
+    <div class="small dim">Saiu hoje 10:30 · 31 cartões · 0 falhas · saudação pela hora de Madrid</div>
+  </div>
+  <div class="pills" style="margin-bottom:14px">
+    <button class="pill on" onclick="go('#/conversas')"><i class="bi bi-inbox"></i> Ver pendentes</button>
+    <button class="pill" onclick="go('#/kanban')"><i class="bi bi-kanban"></i> Kanban</button>
+    <button class="pill" onclick="toast('3 leads com a janela fechada: hora de esquentar 🔥')"><i class="bi bi-fire"></i> Esquentar (3)</button>
+    <button class="pill" onclick="go('#/conteudo')"><i class="bi bi-magic"></i> Novo conteúdo</button>
+  </div>
+  <div class="card">
+    <h3>✨ Novidade desta maquete</h3>
+    <p class="small dim">O botão voltar do seu celular agora navega dentro do painel. E o menu mora no pé da tela, onde o dedo alcança.</p>
+    <button class="btn block" onclick="abrirInfo()">Ver tudo o que mudou</button>
+  </div>`;
+}
+
+function telaConversas(){
+  return `
+  <div class="pills" style="margin-bottom:12px">
+    <button class="pill on">Todas</button>
+    <button class="pill">Janela aberta</button>
+    <button class="pill">Aguardando você</button>
+    <button class="pill">Takeover</button>
+  </div>
+  ${CONVERSAS.map(c=>`
+  <div class="row" onclick="go('#/conversa/${c.id}')">
+    <div class="av">${c.nome[0]}</div>
+    <div class="mid"><b>${c.nome} ${c.takeover?'<span class="badge warn" style="margin-left:4px">você</span>':''}</b>
+      <small>${c.preview}</small></div>
+    <div class="side"><small>${c.hora}</small>
+      <span class="dot ${c.janela?'ok':'off'}" title="${janelaTxt(c.janela)}"></span>
+      ${c.naoLido?'<span class="unread"></span>':''}</div>
+  </div>`).join("")}
+  <p class="small dim" style="text-align:center;margin-top:14px">● janela 24h aberta · ○ fechada (comentar de novo abre)</p>`;
+}
+
+let RESP_I = 0;
+function telaConversa(id){
+  const c = CONVERSAS.find(x=>x.id===id) || CONVERSAS[0];
+  return `
+  <div class="thread">
+    ${c.msgs.map(m=>`<div class="msg ${m.d}">${m.t}<small>${m.h}${m.d==="out"?" · Celeste/você":""}</small></div>`).join("")}
+  </div>
+  <div class="simbtn" onclick="simularLead('${c.id}')"><i class="bi bi-arrow-down-left-circle"></i> simular resposta da lead (maquete)</div>
+  <div class="chips2" id="chipRow">
+    <button onclick="usarChip('Quero o mapa')">Quero o mapa</button>
+    <button onclick="usarChip('Já tenho mapa')">Já tenho mapa</button>
+    <button onclick="usarChip('Outra coisa')">Outra coisa</button>
+  </div>`;
+}
+function usarChip(t){ const ta=$("#msgTexto"); ta.value=t; ta.focus(); }
+function enviarMsg(){
+  const ta=$("#msgTexto"); const t=ta.value.trim(); if(!t) return;
+  const {arg}=parseHash(); const c=CONVERSAS.find(x=>x.id===arg); if(!c) return;
+  const h=new Date().toTimeString().slice(0,5);
+  c.msgs.push({d:"out",t:t,h:h}); c.preview=t; c.hora=h; ta.value="";
+  render(); const th=$(".thread"); if(th) th.scrollTop=th.scrollHeight;
+  toast("Enviado (na maquete nada sai de verdade)");
+}
+function simularLead(id){
+  const c = CONVERSAS.find(x=>x.id===id); if(!c) return;
+  const h=new Date().toTimeString().slice(0,5);
+  const th=$(".thread"); if(th){ const d=document.createElement("div"); d.className="typing";
+    d.innerHTML="<i></i><i></i><i></i>"; th.appendChild(d); th.scrollTop=th.scrollHeight; }
+  setTimeout(()=>{ c.msgs.push({d:"in", t:RESP_LEAD[RESP_I++ % RESP_LEAD.length], h:h});
+    c.hora=h; c.naoLido=false; render(); }, 900);
+}
+
+function triDot(e){ return `<span class="dot ${e==='aberta'?'ok':'off'}"></span>`; }
+function telaKanban(){
+  return `
+  <div class="pills" style="margin-bottom:12px">
+    <button class="pill"><i class="bi bi-search"></i> buscar nome ou @</button>
+    <button class="pill" onclick="toast('3 leads com a janela fechada 🔥')"><i class="bi bi-fire"></i> Esquentar (3)</button>
+    <button class="pill" onclick="toast('Na maquete: disparo para uma etapa')"><i class="bi bi-megaphone"></i> Disparar</button>
+  </div>
+  <div class="kb">${ETAPAS.map(e=>{
+    const ls = LEADS.filter(l=>l.est===e.id);
+    return `<div class="kcol"><h4>${e.nome} <span class="n">${ls.length}</span></h4>
+      ${ls.map(l=>`
+      <div class="lc" onclick="go('#/kanban/card/${l.id}')">
+        <b>${l.nome}</b>
+        <small>${l.user}</small>
+        ${triTxt(l.tri)?`<div class="tri">${triTxt(l.tri)}</div>`:""}
+        <div style="display:flex;gap:6px;align-items:center;margin-top:5px">${triDot(l.janela)}
+          <span class="small dim">${janelaTxt(l.janela)}</span></div>
+      </div>`).join("") || '<div class="small dim">vazio</div>'}
+    </div>`;}).join("")}</div>
+  <p class="small dim" style="text-align:center">toque no card: abre a ficha · setas movem de etapa</p>`;
+}
+let SHEET_LEAD = null;
+function telaKanbanCard(id){
+  const l = LEADS.find(x=>x.id===id); if(!l) return;
+  SHEET_LEAD = id;
+  const i = ETAPAS.findIndex(e=>e.id===l.est);
+  const conv = {l1:"marina", l4:"julia", l5:"rafa", l8:"cami", l2:"pedro"}[id] || "marina";
+  $("#backdrop").style.display="block";
+  const sh=$("#sheet");
+  sh.style.display="block"; requestAnimationFrame(()=>sh.classList.add("up"));
+  sh.innerHTML = `
+    <div class="grab"></div>
+    <h3>${l.nome} <span class="badge grad" style="margin-left:6px">${NOME_ETAPA[l.est]}</span></h3>
+    <div class="small dim" style="margin-bottom:12px">${l.user} · ${janelaTxt(l.janela)}</div>
+    ${triTxt(l.tri)?`<div class="card" style="padding:12px"><b class="small">Tríade</b>
+      <div class="small dim">Sol ${l.tri.sol} · Lua ${l.tri.lua}${l.tri.asc?" · Ascendente "+l.tri.asc:""}</div></div>`:""}
+    <div class="btnrow" style="margin-bottom:10px">
+      <button class="btn" style="flex:1" onclick="go('#/conversa/${conv}')"><i class="bi bi-chat-dots"></i> Conversa</button>
+      <button class="btn" style="flex:1" onclick="go('#/linha/${l.id}')"><i class="bi bi-clock-history"></i> Jornada</button>
+    </div>
+    <div class="btnrow">
+      <button class="btn" style="flex:0 0 52px;${i===0?"opacity:.3":""}" ${i===0?"disabled":""} onclick="mover('${l.id}',-1)"><i class="bi bi-arrow-left"></i></button>
+      <button class="btn" style="flex:1" onclick="toast('Na maquete: editar ficha da lead')"><i class="bi bi-pencil"></i> Ficha</button>
+      <button class="btn" style="flex:0 0 52px;${i===ETAPAS.length-1?"opacity:.3":""}" ${i===ETAPAS.length-1?"disabled":""} onclick="mover('${l.id}',1)"><i class="bi bi-arrow-right"></i></button>
+    </div>
+    <p class="small dim" style="margin-top:10px;text-align:center">arrastar entre colunas continua valendo no computador</p>`;
+}
+function mover(id, dir){
+  const l = LEADS.find(x=>x.id===id);
+  const i = ETAPAS.findIndex(e=>e.id===l.est);
+  const j = Math.min(ETAPAS.length-1, Math.max(0, i+dir));
+  if(j===i) return;
+  l.est = ETAPAS[j].id;
+  toast(l.nome + " foi para " + ETAPAS[j].nome);
+  render();
+}
+function fecharSheet(){
+  $("#backdrop").style.display="none";
+  const sh=$("#sheet"); sh.classList.remove("up"); sh.style.display="none"; SHEET_LEAD=null;
+}
+
+function telaLinha(id){
+  const l = LEADS.find(x=>x.id===id) || LEADS[7];
+  const evs = [
+   {t:"Comentou no reel 'mapa'", q:"ontem 21:14"},
+   {t:"Recebeu o presente no direct", q:"ontem 21:15"},
+   {t:"Destravou o WhatsApp", q:"ontem 21:40"},
+   {t:"Mapa astral pronto 🔮", q:"hoje 09:02"},
+   {t:"Clicou no link do pagamento", q:"hoje 09:20"}
+  ];
+  return `
+  <div class="ribbon"><i class="bi bi-person-circle"></i> ${l.nome} · ${l.user}</div>
+  <div class="card"><div class="tl">
+    ${evs.map(e=>`<div class="tle"><b>${e.t}</b><small>${e.q}</small></div>`).join("")}
+  </div></div>
+  <button class="btn block" onclick="go('#/kanban')">Voltar ao kanban</button>`;
+}
+
+function telaConteudo(){
+  return `
+  <div class="card" style="display:flex;align-items:center;gap:12px">
+    <i class="bi bi-palette" style="font-size:20px;color:#B86BB5"></i>
+    <div style="flex:1"><b class="small">Brand Kit do Canva</b><div class="small dim">BK7223…conectado</div></div>
+    <button class="btn" style="min-height:38px;padding:6px 14px" onclick="toast('Na maquete: editar Brand Kit')">Editar</button>
+  </div>
+  ${CONTEUDOS.map(c=>{
+    const lbl = {publicado:["ok","Publicado"], roteiro_pronto:["warn","Roteiro pronto"], rascunho:["","Rascunho"]}[c.st];
+    return `<div class="row">
+      <div style="font-size:22px"><i class="bi bi-film"></i></div>
+      <div class="mid"><b>${c.t}</b><small>${c.q}</small></div>
+      <span class="badge ${lbl[0]}">${lbl[1]}</span>
+    </div>`;}).join("")}
+  <button class="btn block grad" onclick="toast('Na maquete: criar novo conteúdo')"><i class="bi bi-plus-lg"></i> Criar conteúdo</button>`;
+}
+
+function telaAjustes(){
+  const itens = [
+   ["agente","robot","Agente","persona, tom, objetivo e regras"],
+   ["ceu","stars","Céu por chat","memória, chips e degraus"],
+   ["produtos","box-seam","Produtos","o que a Celeste pode oferecer"],
+   ["mensagens","chat-square-text","Mensagens","modelos do dia e atalhos"],
+   ["comentarios","chat-quote","Comentários","regras de resposta pública"],
+   ["conhecimento","journal-text","Conhecimento","base que a Celeste estuda"],
+   ["credenciais","key","Credenciais","tokens e chaves da conta"]
+  ];
+  return `
+  <div class="ribbon"><i class="bi bi-info-circle"></i> nesta maquete, Agente e Céu por chat estão montados</div>
+  ${itens.map(i=>`
+  <div class="row" onclick="go('#/ajustes/${i[0]}')">
+    <div class="icobtn" style="background:#141633;border:1px solid var(--line);border-radius:13px"><i class="bi bi-${i[1]}"></i></div>
+    <div class="mid"><b>${i[2]}</b><small>${i[3]}</small></div>
+    <i class="bi bi-chevron-right dim"></i>
+  </div>`).join("")}`;
+}
+function telaAjuste(sec){
+  if(sec==="ceu"){
+    return `
+    <div class="card" style="display:flex;align-items:center;gap:12px">
+      <div style="flex:1"><b>Céu por chat</b><div class="small dim">mapa, tríade e chips no direct</div></div>
+      <label class="switch"><input type="checkbox" checked onchange="toast(this.checked?'Ativado ✨':'Desligado')"><span></span></label>
+    </div>
+    <div class="frow"><label>Memória da conversa (mensagens)</label>
+      <input type="number" value="20"></div>
+    <div class="frow"><label>Chip: sem mapa</label>
+      <input value="Quero o mapa"></div>
+    <div class="frow"><label>Chip: sem a hora de nascimento</label>
+      <input value="Não sei a hora"></div>
+    <div class="frow"><label>Chip: céu completo</label>
+      <input value="Já tenho o mapa"></div>
+    <p class="small dim">Chips são os botões que a lead vê na última mensagem da Celeste.</p>`;
+  }
+  return `
+  <div class="card" style="display:flex;align-items:center;gap:12px">
+    <div style="flex:1"><b>Bot ativo</b><div class="small dim">a Celeste responde no direct</div></div>
+    <label class="switch"><input type="checkbox" checked onchange="toast(this.checked?'Bot ativo ✨':'Bot desligado ⚠️')"><span></span></label>
+  </div>
+  <div class="frow"><label>Persona</label>
+    <textarea>Você é a Dona Celeste, avó mineira, sábia e acolhedora. Fala de astrologia com carinho, chama as pessoas de meu amor e conduz cada conversa para o mapa astral. Usa ✨ e 🙏 com moderação.</textarea></div>
+  <div class="frow"><label>Tom</label>
+    <div class="pills"><button class="pill on">Aconchegante</button><button class="pill">Direto</button><button class="pill">Divertido</button></div></div>
+  <div class="frow"><label>Objetivo</label>
+    <input value="Conduzir a pessoa a fazer o mapa astral"></div>
+  <div class="frow"><label>Regras de negócio</label>
+    <textarea>Sempre que faltar a hora do nascimento, perguntar se nasceu de manhã ou de noite.
+Nunca cravar preço no chat: o valor mora no link.
+Comentário público: até 2 frases e convite para o direct.
+Nada sai para lead sem autorização expressa.</textarea></div>`;
+}
+
+/* rota com ficha aberta (#/kanban/card/:id) */
+const _render = render;
+render = function(){
+  const partes = location.hash.replace(/^#\//,"").split("/");
+  _render();
+  if(partes[0]==="kanban" && partes[1]==="card" && partes[2]){
+    telaKanbanCard(partes[2]);
+  }
+};
+
+if(!location.hash) location.replace("#/inicio"); else render();
+
+</script>
+</body>
+</html>
