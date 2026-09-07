@@ -180,6 +180,29 @@ body.formmode #screen{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
 #info h3{font-size:17px;margin-bottom:12px}
 #info li{margin:0 0 10px 18px;font-size:13.5px;color:#cfd6ff}
 #info li b{color:#fff}
+
+/* ---- treino + feedback ---- */
+.tres{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:10px}
+.tres.ok2{border-color:#1d4a33}
+.tres.ruim{border-color:#4a1d2c;opacity:.8}
+.tres .rtxt{font-size:14px;margin-bottom:6px}
+.tres .rnote{font-size:11.5px;color:var(--dim);margin-bottom:9px}
+.enviada{display:inline-flex;gap:5px;font-size:10.5px;font-weight:700;color:var(--ok);
+  border:1px solid #1d4a33;border-radius:999px;padding:3px 9px;margin-bottom:8px}
+.fbb{display:flex;gap:8px}
+.fbb button{flex:1;min-height:40px;border-radius:12px;background:#141633;border:1px solid var(--line);
+  font-size:12px;font-weight:700;color:var(--dim)}
+.fbb button.on-ok{background:#173626;color:var(--ok);border-color:#1d4a33}
+.fbb button.on-edit{background:#332617;color:var(--warn);border-color:#4d3d1d}
+.fbb button.on-bad{background:#331720;color:var(--bad);border-color:#4a1d2c}
+.fbopen{display:none;margin-top:10px}
+.fbopen.up{display:block}
+.fbopen textarea{min-height:64px;margin-top:8px}
+.fbopen .enviar{width:100%;margin-top:8px}
+.fbopen .pill{min-height:32px;padding:5px 12px}
+.mfb{display:flex;gap:6px;justify-content:flex-end;margin:-2px 0 9px}
+.mfb button{min-width:40px;height:30px;border-radius:999px;background:#141633;border:1px solid var(--line);
+  color:var(--dim);font-size:12.5px}
 </style>
 </head>
 <body data-depth="0">
@@ -224,6 +247,7 @@ body.formmode #screen{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
         <li><b>Kanban tocável:</b> mover lead por botões; arrastar continua no computador.</li>
         <li><b>Conversa em tela cheia:</b> campo de texto sempre visível, teclado não cobre nada.</li>
         <li><b>Salvar sempre visível:</b> nos formulários, o botão fica fixo no pé.</li>
+        <li><b>Treino da Celeste:</b> em cada resposta, caixa de melhoria com nota e opção Outro.</li>
         <li><b>Sem refatoração:</b> mesmas telas, mesmos dados, mesmo motor do painel de hoje. É a casca por cima, entra aos pedaços.</li>
       </ul>
       <button class="btn block" onclick="document.getElementById('info').style.display='none'">Entendi</button>
@@ -313,6 +337,7 @@ function triTxt(t){ if(!t) return null;
 /* ================= router ================= */
 const TELAS = {
  "inicio":   {t:"Console Brisa", s:"Brisa Astral · @brisaastral.ai"},
+ "treino":   {t:"Treino da Celeste", s:"sua nota ensina o cérebro dela"},
  "conversas":{t:"Conversas", s:"Direct do Instagram"},
  "conversa": {t:"", s:""},
  "kanban":   {t:"Kanban", s:"funil da isca · arraste no PC, toque no celular"},
@@ -342,15 +367,17 @@ function render(){
   else $("#hTtl").textContent = meta.t;
   $("#hSub").textContent = sub;
   document.querySelectorAll("#tabbar button").forEach(b=>{
-    b.classList.toggle("on", b.dataset.t===nome || (nome==="conversa"&&b.dataset.t==="conversas")); });
-  const r = {inicio:telaInicio, conversas:telaConversas, conversa:telaConversa,
+    b.classList.toggle("on", b.dataset.t===nome
+      || (nome==="conversa"&&b.dataset.t==="conversas")
+      || (nome==="treino"&&b.dataset.t==="inicio")); });
+  const r = {inicio:telaInicio, treino:telaTreino, conversas:telaConversas, conversa:telaConversa,
              kanban:telaKanban, linha:telaLinha, conteudo:telaConteudo,
              ajustes:telaAjustes, ajuste:telaAjuste}[nome] || telaInicio;
   $("#screen").innerHTML = (nome==="ajustes" && arg) ? telaAjuste(arg) : r(arg);
   fecharSheet();
   if(nome==="conversa"){ const th=$(".thread"); if(th) th.scrollTop = th.scrollHeight;
     const t=$("#msgTexto"); if(t && window.matchMedia("(min-width:520px)").matches===false) t.blur(); }
-  else $("#screen").scrollTop = 0;
+  else if(nome!=="treino") $("#screen").scrollTop = 0;
 }
 
 /* ================= telas ================= */
@@ -361,6 +388,12 @@ function telaInicio(){
     <div style="width:46px;height:46px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:22px"><i class="bi bi-instagram"></i></div>
     <div style="flex:1"><b>Brisa Astral</b><div class="small dim">@brisaastral.ai · Instagram</div></div>
     <label class="switch"><input type="checkbox" checked onchange="toast(this.checked?'Bot ativo ✨':'Bot desligado ⚠️')"><span></span></label>
+  </div>
+  <div class="card" style="display:flex;align-items:center;gap:12px;border-color:#5a3d6b">
+    <i class="bi bi-mortarboard" style="font-size:22px;color:#D470A2"></i>
+    <div style="flex:1"><b class="small">Treino da Celeste</b>
+      <div class="small dim">3 respostas por pergunta: você nota e corrige</div></div>
+    <button class="btn grad" style="min-height:40px;padding:6px 16px" onclick="go('#/treino')">Abrir</button>
   </div>
   <div class="statgrid">
     <div class="stat" onclick="go('#/conversas')"><b>3</b><small>aguardando você</small></div>
@@ -412,7 +445,12 @@ function telaConversa(id){
   const c = CONVERSAS.find(x=>x.id===id) || CONVERSAS[0];
   return `
   <div class="thread">
-    ${c.msgs.map(m=>`<div class="msg ${m.d}">${m.t}<small>${m.h}${m.d==="out"?" · Celeste/você":""}</small></div>`).join("")}
+    ${c.msgs.map((m,mi)=>`<div class="msg ${m.d}">${m.t}<small>${m.h}${m.d==="out"?" · Celeste/você":""}</small></div>
+    ${m.d==="out"?`<div class="mfb">
+      <button onclick="fbMsg('${c.id}',${mi},'👍')">👍</button>
+      <button onclick="fbMsg('${c.id}',${mi},'✏️')">✏️</button>
+      <button onclick="fbMsg('${c.id}',${mi},'👎')">👎</button>
+    </div>`:""}`).join("")}
   </div>
   <div class="simbtn" onclick="simularLead('${c.id}')"><i class="bi bi-arrow-down-left-circle"></i> simular resposta da lead (maquete)</div>
   <div class="chips2" id="chipRow">
@@ -467,10 +505,8 @@ function telaKanbanCard(id){
   SHEET_LEAD = id;
   const i = ETAPAS.findIndex(e=>e.id===l.est);
   const conv = {l1:"marina", l4:"julia", l5:"rafa", l8:"cami", l2:"pedro"}[id] || "marina";
-  $("#backdrop").style.display="block";
-  const sh=$("#sheet");
-  sh.style.display="block"; requestAnimationFrame(()=>sh.classList.add("up"));
-  sh.innerHTML = `
+  $("#backdrop").onclick = voltar;
+  openSheet(`
     <div class="grab"></div>
     <h3>${l.nome} <span class="badge grad" style="margin-left:6px">${NOME_ETAPA[l.est]}</span></h3>
     <div class="small dim" style="margin-bottom:12px">${l.user} · ${janelaTxt(l.janela)}</div>
@@ -485,7 +521,7 @@ function telaKanbanCard(id){
       <button class="btn" style="flex:1" onclick="toast('Na maquete: editar ficha da lead')"><i class="bi bi-pencil"></i> Ficha</button>
       <button class="btn" style="flex:0 0 52px;${i===ETAPAS.length-1?"opacity:.3":""}" ${i===ETAPAS.length-1?"disabled":""} onclick="mover('${l.id}',1)"><i class="bi bi-arrow-right"></i></button>
     </div>
-    <p class="small dim" style="margin-top:10px;text-align:center">arrastar entre colunas continua valendo no computador</p>`;
+    <p class="small dim" style="margin-top:10px;text-align:center">arrastar entre colunas continua valendo no computador</p>`);
 }
 function mover(id, dir){
   const l = LEADS.find(x=>x.id===id);
@@ -587,6 +623,118 @@ function telaAjuste(sec){
 Nunca cravar preço no chat: o valor mora no link.
 Comentário público: até 2 frases e convite para o direct.
 Nada sai para lead sem autorização expressa.</textarea></div>`;
+}
+
+/* ================= treino da Celeste ================= */
+const TREINO = [
+ {id:"t1", pergunta:"Oi! Quanto custa o mapa?", canal:"DM", respostas:[
+  {id:"t1a", t:"Oi, meu amor! ✨ O valor certinho está no link do mapa que te mando, lá tem tudo explicado. Quer que eu prepare o seu? 🙏",
+   nota:"favorita da casa: curta, o preço mora no link (nunca desatualiza) e conduz pro mapa"},
+  {id:"t1b", t:"O mapa custa R$ XX. Quer?",
+   nota:"crava preço no chat (envelhece mal) e o tom fica seco, sem o carinho da Celeste"},
+  {id:"t1c", t:"Ah meu bem, o céu não tem preço! Cada mapa eu faço uma por uma, com calma e carinho. ✨",
+   nota:"tom lindo, mas não responde a pergunta e não chama pro link: usar como tempero"}]},
+ {id:"t2", pergunta:"Não sei a hora que nasci, e agora?", canal:"DM", respostas:[
+  {id:"t2a", t:"Não faz mal nenhum, meu bem! ✨ Faço o mapa com o dia, que já revela o seu Sol. E me conta: nasceu de manhã ou de noite? 🙏",
+   nota:"acolhe, segue o fluxo e colhe a pista de manhã ou noite"},
+  {id:"t2b", t:"Sem a hora o mapa fica incompleto. Consegue buscar?",
+   nota:"soa cobrança e para a lead no meio: essa postura está proibida"},
+  {id:"t2c", t:"Relaxa que resolvo! ✨ Manda só o dia e a cidade, e se um dia achar a hora na certidão, me avisa que afino o céu de novo. 🙏",
+   nota:"pede dia e cidade e deixa a porta aberta pra refinar depois"}]},
+ {id:"t3", pergunta:"Mapa pra mim 🙏", canal:"Comentário", respostas:[
+  {id:"t3a", t:"Recebi seu pedido, meu amor! 🙏 Me chama no direct que o céu já está sendo preparado. ✨",
+   nota:"perfeita pro canal: 2 frases e convite pro direct"},
+  {id:"t3b", t:"Já te mandei mensagem no privado! ✨",
+   nota:"arriscada: se cair na pasta de solicitações, o comentário prometeu o que não chegou"},
+  {id:"t3c", t:"Comenta MAPA aqui e vá até suas mensagens, viu? 🙏",
+   nota:"é a frase de recuperação (pra quem disse que não recebeu), não a primeira resposta"}]}
+];
+let TREINO_SEL = 0;
+const TREINO_FB = {};
+function telaTreino(){
+  const T = TREINO[TREINO_SEL];
+  return `
+  <div class="ribbon"><i class="bi bi-mortarboard"></i> sua nota vira aprendizado salvo · nada sai pro Instagram daqui</div>
+  <div class="pills" style="margin-bottom:12px">
+    ${TREINO.map((t,i)=>`<button class="pill ${i===TREINO_SEL?"on":""}" onclick="treinoSel(${i})">Pergunta ${i+1}</button>`).join("")}
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <i class="bi bi-person-circle" style="color:#5B9BD5"></i>
+      <b class="small">A lead pergunta</b>
+      <span class="badge ${T.canal==="DM"?"ok":""}" style="margin-left:auto">${T.canal}</span>
+    </div>
+    <div style="font-size:15px">"${T.pergunta}"</div>
+  </div>
+  ${T.respostas.map(r=>tresHtml(r)).join("")}
+  <p class="small dim" style="text-align:center;margin:8px 0 0">uma nota por resposta · no Melhorar e no Não usar, o Outro aceita a sua versão escrita</p>`;
+}
+function tresHtml(r){
+  const fb = TREINO_FB[r.id] || {};
+  const cls = fb.st==="ok" ? " ok2" : fb.st==="ruim" ? " ruim" : "";
+  return `
+  <div class="tres${cls}">
+    <div class="rtxt">${r.t}</div>
+    <div class="rnote">${r.nota}</div>
+    ${fb.out?'<span class="enviada">✓ melhoria enviada pra memória dela</span>':""}
+    <div class="fbb">
+      <button class="${fb.st==="ok"?"on-ok":""}" onclick="treinoNota('${r.id}','ok')">✅ Assim mesmo</button>
+      <button class="${fb.st==="melhorar"?"on-edit":""}" onclick="treinoNota('${r.id}','melhorar')">✏️ Melhorar</button>
+      <button class="${fb.st==="ruim"?"on-bad":""}" onclick="treinoNota('${r.id}','ruim')">👎 Não usar</button>
+    </div>
+    <div class="fbopen${fb.open?" up":""}">
+      <div class="pills">
+        <button class="pill" onclick="this.classList.toggle('on')">Tom</button>
+        <button class="pill" onclick="this.classList.toggle('on')">Informação</button>
+        <button class="pill" onclick="this.classList.toggle('on')">Comprida</button>
+        <button class="pill on" onclick="this.classList.toggle('on')">Outro ✍️</button>
+      </div>
+      <textarea placeholder="Escreva livre: a versão certa ou o que mudar"></textarea>
+      <button class="btn grad enviar" onclick="treinoEnviar('${r.id}')">Enviar melhoria</button>
+    </div>
+  </div>`;
+}
+function treinoSel(i){ TREINO_SEL=i; render(); }
+function treinoNota(rid, st){
+  const fb = TREINO_FB[rid] || (TREINO_FB[rid]={});
+  fb.st=st; fb.open=(st!=="ok"); if(st==="ok") fb.out=false;
+  toast(st==="ok" ? "Anotado: essa é a boa ✨" : "Me conta o que mudar 👇");
+  render();
+}
+function treinoEnviar(rid){
+  const fb = TREINO_FB[rid] || (TREINO_FB[rid]={});
+  fb.out=true; fb.open=false; fb.st=fb.st||"melhorar";
+  toast("Melhoria salva: a Celeste aprende na próxima ✨");
+  render();
+}
+
+/* folha genérica (kanban + feedback no chat) */
+function openSheet(html){
+  $("#backdrop").style.display="block";
+  const sh=$("#sheet");
+  sh.style.display="block"; requestAnimationFrame(()=>sh.classList.add("up"));
+  sh.innerHTML=html;
+}
+const FB_ICON = {"👍":"Assim mesmo","✏️":"Melhorar","👎":"Não usar"};
+function fbMsg(cid, mi, icon){
+  const c = CONVERSAS.find(x=>x.id===cid); const m = c.msgs[mi];
+  $("#backdrop").onclick = fecharSheet;
+  openSheet(`
+    <div class="grab"></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <h3 style="margin:0">${FB_ICON[icon]}</h3>
+      <button class="icobtn" style="width:38px;height:38px;margin-left:auto" onclick="fecharSheet()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="card" style="padding:12px"><div class="small dim">resposta da Celeste</div>
+      <div style="font-size:14px">${m.t}</div></div>
+    <div class="pills" style="margin-bottom:4px">
+      <button class="pill" onclick="this.classList.toggle('on')">Tom</button>
+      <button class="pill" onclick="this.classList.toggle('on')">Informação</button>
+      <button class="pill" onclick="this.classList.toggle('on')">Comprida</button>
+      <button class="pill on" onclick="this.classList.toggle('on')">Outro ✍️</button>
+    </div>
+    <textarea placeholder="Escreva livre: a versão certa ou o que mudar"></textarea>
+    <button class="btn grad block" style="margin-top:10px" onclick="fecharSheet();toast('Melhoria salva: a Celeste aprende ✨')">Enviar melhoria</button>`);
 }
 
 /* rota com ficha aberta (#/kanban/card/:id) */
