@@ -278,9 +278,10 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
             <button type="button" class="chip" data-g="f">minha filha</button>
             <button type="button" class="chip" data-g="m">meu filho</button>
           </div>
-          <label for="insta" style="margin-top:16px;display:block">Você veio pelo Instagram? Qual é o seu @?</label>
-          <input id="insta" type="text" maxlength="60" placeholder="ex.: @seuinstagram, ou só o seu nome" autocomplete="off">
-          <span class="ajuda">opcional: é assim que a gente sabe que foi você, mesmo chegando pelo link da bio</span>
+          <label for="insta" style="margin-top:16px;display:block">Qual é o seu @ do Instagram?</label>
+          <input id="insta" type="text" maxlength="60" placeholder="@seuinstagram" autocomplete="off" required>
+          <span class="ajuda">é assim que a Dona Celeste sabe que o céu é seu, mesmo quando você chega pelo link da bio</span>
+          <span class="err" id="instaErr">Me escreve o seu @ do Instagram, meu bem, que é assim que eu sei que o céu é seu.</span>
         </div>
       </div>
       <button class="btn" id="go" type="submit">Apontar o telescópio</button>
@@ -613,6 +614,11 @@ f.addEventListener('submit',e=>{
   const dStr=dataISO();
   if(!dStr){(!fd('dA').value.trim()?fd('dA'):fd('dY')).focus();return}
   if(!selCity){fd('cErr').style.display='block';ci.focus();return}
+  /* @ obrigatório (Adriana 09/09): é a chave que casa o mapa com o
+     direct. Guarda sem o @ na frente, que o casamento normaliza igual. */
+  const instaVal=fd('insta').value.trim().replace(/^@+/,'').trim();
+  if(!instaVal){fd('instaErr').style.display='block';fd('insta').focus();return}
+  fd('instaErr').style.display='none';
   const timeStr=fd('h').value||'12:00';
   const date=localToUtc(dStr,timeStr,selCity.tz);
   b.disabled=true;b.textContent='Apontando o telescópio ✦';
@@ -620,7 +626,7 @@ f.addEventListener('submit',e=>{
     chart=calcChart(date,selCity.lat,selCity.lon);
     userData={dateStr:dStr,timeStr:timeStr,hasTime:!!fd('h').value,city:selCity,
       chamado:fd('chamado').value.trim().slice(0,40),genero:selGenero,
-      insta:fd('insta').value.trim().slice(0,60)};
+      insta:instaVal.slice(0,60)};
     render();
     track('chart');
     sendChart();
@@ -629,6 +635,8 @@ f.addEventListener('submit',e=>{
     r.scrollIntoView({behavior:'smooth'});
   },600);
 });
+
+fd('insta').addEventListener('input',()=>fd('instaErr').style.display='none');
 
 function fmtDate(ds){const[y,m,d]=ds.split('-');return d+'/'+m+'/'+y}
 
