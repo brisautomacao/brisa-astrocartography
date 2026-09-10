@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O cérebro da Celeste · Brisa Astral</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400;1,600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#241722; --plum-deep:#1A1018; --eggplant:#4A2040; --eggplant-soft:#3A1A33;
+    --gold:#C89F50; --gold-soft:#E3C98B; --parchment:#F2E8D5; --parchment-dim:#C9BCA4;
+    --line:rgba(200,159,80,.28); --ok:#9CBF8B; --bad:#D98A7E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--plum);
+    background-image:radial-gradient(120% 46% at 50% 0%, rgba(200,159,80,.10) 0%, rgba(36,23,34,0) 62%);
+    color:var(--parchment); font-family:'Outfit',system-ui,sans-serif; font-weight:300;
+    line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 22px 72px}
+  header{padding:64px 0 40px;text-align:center}
+  .kicker{font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);font-weight:500}
+  h1{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:clamp(34px,8vw,46px);line-height:1.12;margin:14px 0 12px;text-wrap:balance}
+  h1 em{font-style:italic;color:var(--gold-soft)}
+  .sub{color:var(--parchment-dim);font-size:17px;max-width:48ch;margin:0 auto}
+  .stamp{display:inline-block;margin-top:22px;padding:7px 18px;border:1px solid var(--line);border-radius:999px;font-size:12.5px;color:var(--parchment-dim);letter-spacing:.06em}
+  section{margin-top:56px}
+  .sec-kicker{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:10px}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(24px,5.6vw,30px);line-height:1.2;margin-bottom:8px}
+  .lead{color:var(--parchment-dim);font-size:16px;margin-bottom:24px;text-wrap:pretty}
+
+  .golden{
+    background:linear-gradient(160deg, rgba(200,159,80,.14), rgba(74,32,64,.35));
+    border:1px solid var(--line); border-radius:18px; padding:26px 24px;
+  }
+  .golden h3{font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:var(--gold-soft);margin-bottom:8px}
+  .golden p{color:var(--parchment);font-size:15.5px}
+  .golden ul{margin:14px 0 0;padding-left:0;list-style:none}
+  .golden li{padding-left:26px;position:relative;margin-bottom:8px;font-size:15px;color:var(--parchment-dim)}
+  .golden li::before{content:"✦";position:absolute;left:0;color:var(--gold)}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .stat{background:var(--eggplant-soft);border:1px solid var(--line);border-radius:14px;padding:16px 14px;text-align:center}
+  .stat b{display:block;font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--gold-soft);line-height:1.1}
+  .stat span{font-size:12.5px;color:var(--parchment-dim);display:block;margin-top:6px;line-height:1.45}
+  @media(max-width:620px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+  .case{background:var(--eggplant-soft);border:1px solid var(--line);border-radius:18px;padding:24px 22px;margin-bottom:26px}
+  .case h3{font-family:'Fraunces',serif;font-size:19px;font-weight:600;margin-bottom:4px}
+  .case .ctx{font-size:13.5px;color:var(--parchment-dim);margin-bottom:16px}
+  .bubble{border-radius:14px;padding:14px 16px;font-size:14.5px;line-height:1.65;margin-bottom:10px;position:relative}
+  .bubble .who{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px;font-weight:500}
+  .antes{background:rgba(217,138,126,.08);border:1px solid rgba(217,138,126,.30)}
+  .antes .who{color:var(--bad)}
+  .depois{background:rgba(156,191,139,.07);border:1px solid rgba(156,191,139,.32)}
+  .depois .who{color:var(--ok)}
+  .lead-in{background:rgba(0,0,0,.22);border:1px solid rgba(242,232,213,.14)}
+  .lead-in .who{color:var(--parchment-dim)}
+  .tag-fail{display:inline-block;margin-top:4px;font-size:12px;color:var(--bad);border:1px dashed rgba(217,138,126,.4);border-radius:8px;padding:2px 10px}
+  .facts{margin-top:14px;background:rgba(0,0,0,.18);border:1px dashed var(--line);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--parchment-dim)}
+  .facts b{color:var(--gold-soft);font-weight:500}
+  .facts code{font-family:ui-monospace,monospace;font-size:12px;color:var(--parchment)}
+  .checks{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
+  .checks span{font-size:12px;border:1px solid rgba(156,191,139,.4);color:var(--ok);border-radius:999px;padding:3px 12px}
+
+  .menu-group{margin-bottom:26px}
+  .menu-group h3{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:var(--gold-soft);margin-bottom:10px;letter-spacing:.02em}
+  .prod{display:grid;grid-template-columns:1fr auto;gap:4px 12px;background:var(--eggplant-soft);border:1px solid var(--line);border-radius:14px;padding:15px 17px;margin-bottom:10px}
+  .prod .nome{font-weight:500;font-size:15.5px}
+  .prod .preco{font-family:'Fraunces',serif;color:var(--gold-soft);font-size:15px;text-align:right;white-space:nowrap}
+  .prod .gatilho{grid-column:1/3;font-size:13px;color:var(--parchment-dim);line-height:1.5}
+  .badge{display:inline-block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:2px 10px;margin-left:8px;vertical-align:2px}
+  .b-ar{background:rgba(156,191,139,.16);color:var(--ok);border:1px solid rgba(156,191,139,.4)}
+  .b-pronto{background:rgba(200,159,80,.16);color:var(--gold-soft);border:1px solid var(--line)}
+  .b-construir{background:rgba(242,232,213,.07);color:var(--parchment-dim);border:1px solid rgba(242,232,213,.2)}
+
+  .motor{display:grid;gap:14px}
+  .mblock{background:var(--eggplant-soft);border:1px solid var(--line);border-radius:16px;padding:20px 20px}
+  .mblock h3{font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:var(--gold-soft);margin-bottom:6px}
+  .mblock p{font-size:14.5px;color:var(--parchment-dim)}
+  .mblock p b{color:var(--parchment);font-weight:500}
+
+  .fases{display:grid;gap:12px}
+  .fase{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
+  .fase .n{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:18px;color:var(--gold-soft)}
+  .fase h3{font-family:'Fraunces',serif;font-size:16px;font-weight:600}
+  .fase p{font-size:14px;color:var(--parchment-dim)}
+
+  footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line);text-align:center;font-size:12.5px;color:var(--parchment-dim)}
+  footer a{color:var(--gold);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Dona Celeste · Brisa Astral</div>
+    <h1>O cérebro <em>da Celeste</em></h1>
+    <p class="sub">Roteiro no código, voz na vó. O mapa é de graça pra sempre: ele abre o caderno, e o caderno acende cada produto na hora certa.</p>
+    <div class="stamp">Página de estudo · 10/09/2026 · nada entra no ar sem o ok da Adriana</div>
+  </header>
+
+  <section>
+    <div class="sec-kicker">A regra de ouro</div>
+    <div class="golden">
+      <h3>O mapa astral é sempre de graça ✨</h3>
+      <p>É ele que abre o caderno: dia, hora, cidade, o céu inteiro dela. Esse dado é a chave de todos os produtos que vêm depois. Quem confia o nascimento confia a vida: a vó retribui com generosidade primeiro, e a oferta só aparece depois, no momento certo.</p>
+      <ul>
+        <li>O código NUNCA deixa a vó cobrar pelo mapa, nem insinuar</li>
+        <li>Oferta só depois do mapa entregue, e só no gatilho certo do caderno</li>
+        <li>Oferta recusada nunca repete: o freio é automático</li>
+        <li>Vender é consequência do cuidado, nunca condição</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">O retrato de hoje</div>
+    <h2>O que 11 dias de conversas mostraram</h2>
+    <p class="lead">668 conversas, 2.387 mensagens da vó, 976 leads. Medido no caderno real, não no achismo.</p>
+    <div class="stats">
+      <div class="stat"><b>79%</b><span>das mensagens a IA escreveu sozinha (só 21% nascem de molde do código)</span></div>
+      <div class="stat"><b>7,5%</b><span>das falas da IA trouxeram um fato de verdade do céu da pessoa</span></div>
+      <div class="stat"><b>241</b><span>mensagens passaram de 70 palavras</span></div>
+      <div class="stat"><b>17</b><span>bolhas seguidas: a maior rajada de uma resposta só</span></div>
+      <div class="stat"><b>19</b><span>ofertas de produto em 11 dias pra 976 leads</span></div>
+      <div class="stat"><b>897</b><span>leads paradas na entrada, esperando a próxima porta</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">Antes e depois</div>
+    <h2>Três momentos reais, na voz da vó</h2>
+    <p class="lead">O antes é o que foi pro ar de verdade. O depois é o mesmo momento com a receita nova: o código entrega os fatos, a IA veste a frase, o validador barra o resto.</p>
+
+    <div class="case">
+      <h3>1 · A dor no joelho</h3>
+      <p class="ctx">Lucimar, 19/01/1976, Brasília. Sol Capricórnio 29°, Lua Virgem 6°, Vênus Sagitário 22°. Ela respondeu o check-in falando do corpo.</p>
+      <div class="bubble lead-in"><span class="who">Lead</span>Dor no joelho. Esquerdo</div>
+      <div class="bubble antes"><span class="who">Vó · antes (real, foi pro ar)</span>"Que delícia, meu bem! 🌟 Vamos falar sobre o amor e a criatividade que Vênus em Sagitário traz pra você. Com Vênus nessa posição, você busca aventuras e novas experiências nos relacionamentos..." <span class="tag-fail">ela fala do joelho, a vó responde sobre paixão · 60+ palavras · fato deslocado do momento</span></div>
+      <div class="bubble depois"><span class="who">Vó · depois (receita nova)</span>"Ai, meu bem, joelho é conversa com o seu Sol em Capricórnio: ele rege os ossos e os joelhos, e o seu brilha no último grau, cansado de carregar o mundo. 🌿 E a sua Lua em Virgem sente cada detalhe do corpo. Como você tá cuidando dele hoje?"</div>
+      <div class="facts"><b>Receita do código:</b> situação <code>checkin_saude</code> · fatos <code>Sol Capricórnio 29°</code> + <code>Lua Virgem 6°</code> · objetivo acolher o corpo · 1 pergunta · chip <code>Saúde 🌿</code> · limite 45 palavras</div>
+      <div class="checks"><span>✓ fato conferido no cálculo</span><span>✓ 1 pergunta</span><span>✓ 43 palavras</span><span>✓ sem promessa de cura</span></div>
+    </div>
+
+    <div class="case">
+      <h3>2 · Voltar a estudar</h3>
+      <p class="ctx">Liliane, 16/01/1983, Niterói. Sol Capricórnio 26°, Lua Aquário 24°, Júpiter Sagitário 4°.</p>
+      <div class="bubble lead-in"><span class="who">Lead</span>Voltar a estudar</div>
+      <div class="bubble antes"><span class="who">Vó · antes (real, foi pro ar)</span>"Que lindo, meu bem! Voltar a estudar é uma excelente maneira de expandir seus horizontes e se conectar com novas ideias. 📚✨ A energia do Sol em Capricórnio te dá a disciplina necessária para isso... Você já tem em mente o que gostaria de estudar? Algum assunto que sempre te chamou a atenção?" <span class="tag-fail">serviria pra qualquer pessoa · 2 perguntas de vez · Júpiter, o dono do estudo, nem aparece</span></div>
+      <div class="bubble depois"><span class="who">Vó · depois (receita nova)</span>"Estudo é assunto de Júpiter, meu bem, e o seu mora em Sagitário, a casa dele: quando você aprende, você cresce de verdade. 📚✨ Que matéria puxa o seu coração?"</div>
+      <div class="facts"><b>Receita do código:</b> situação <code>sonho_declarado</code> · fato <code>Júpiter natal em Sagitário 4° (em casa)</code> · objetivo espelhar o sonho com o céu dela · 1 pergunta · limite 40 palavras</div>
+      <div class="checks"><span>✓ fato conferido no cálculo</span><span>✓ 1 pergunta</span><span>✓ 30 palavras</span><span>✓ fato que só o céu DELA explica</span></div>
+    </div>
+
+    <div class="case">
+      <h3>3 · Quando as coisas melhoram</h3>
+      <p class="ctx">Lead com Lua em Sagitário 27° e Ascendente em Áries 29° pergunta do futuro. É a pergunta que nasce o produto de trânsitos (pergaminho + áudio).</p>
+      <div class="bubble depois"><span class="who">Vó · depois (receita nova)</span>"A vó olhou o céu da frente, meu bem: Júpiter, o gigante bom, faz triângulo com a sua Lua em Sagitário em meados de dezembro, e volta em julho do ano que vem. Janela boa pra coração respirar. ✨ Quer que a vó te marque as datas?"</div>
+      <div class="facts"><b>Receita do código:</b> situação <code>pergunta_futuro</code> · fatos da efeméride <code>Júpiter trígono Lua: 10 a 17/12/2026, repete 12/07/2027</code> · <code>Júpiter trígono Asc: 22/07/2027</code> · clima, nunca promessa · chip <code>Quero as datas ✨</code> abre o produto</div>
+      <div class="checks"><span>✓ datas conferidas na efeméride</span><span>✓ clima e calendário, não garantia</span><span>✓ 1 pergunta</span><span>✓ gatilho do produto no chip</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">O cardápio da astróloga</div>
+    <h2>Dez produtos, um caderno só</h2>
+    <p class="lead">Cada produto acende num gatilho do caderno da lead. Nada é oferecido por achismo: o código sabe a hora, a vó sussurra a frase.</p>
+
+    <div class="menu-group">
+      <h3>entrada · de graça pra sempre</h3>
+      <div class="prod"><div class="nome">Mapa natal<span class="badge b-ar">no ar</span></div><div class="preco">de graça</div><div class="gatilho">Comentário "mapa" ou bio. Abre o caderno: dia, hora, cidade.</div></div>
+      <div class="prod"><div class="nome">Leitura em 4 degraus<span class="badge b-ar">no ar</span></div><div class="preco">de graça</div><div class="gatilho">Mapa entregue: tríade, moradores, casa acesa, o segredo do céu.</div></div>
+    </div>
+
+    <div class="menu-group">
+      <h3>degrau do meio · o que falta hoje</h3>
+      <div class="prod"><div class="nome">Leitura da área (o Amor dela, o Dinheiro dela)<span class="badge b-construir">pra construir</span></div><div class="preco">R$6 a R$9,90</div><div class="gatilho">Lead abre uma área na escada. Um tema só, por texto. A ponte entre a doação e o áudio.</div></div>
+      <div class="prod"><div class="nome">Sinastria básica: o mapa dos dois<span class="badge b-construir">pra construir</span></div><div class="preco">a definir</div><div class="gatilho">Lead fala do par. O dado já está coletado no caderninho do amor, parado sem produto.</div></div>
+    </div>
+
+    <div class="menu-group">
+      <h3>carro chefe</h3>
+      <div class="prod"><div class="nome">Áudio completo (mapa inteiro + relações + previsão)<span class="badge b-ar">no ar</span></div><div class="preco">R$14,90</div><div class="gatilho">Mapa entregue e escada feita. Entrega manual pela Adriana.</div></div>
+      <div class="prod"><div class="nome">Trânsitos: pergaminho + áudio ("quando melhora")<span class="badge b-pronto">pronto, esperando o pode lançar</span></div><div class="preco">R$14,90</div><div class="gatilho">Lead pergunta do futuro, ou fecha a leitura. Texto aprovado, motor pronto, 1 envio real feito.</div></div>
+    </div>
+
+    <div class="menu-group">
+      <h3>ciclos que voltam · renda que se repete</h3>
+      <div class="prod"><div class="nome">Revolução Solar: o seu ano<span class="badge b-construir">pra construir</span></div><div class="preco">a definir</div><div class="gatilho">Mês do aniversário: o caderno sabe a data de TODAS. 1 oferta por ano, sempre.</div></div>
+      <div class="prod"><div class="nome">Retorno de Saturno (o marco dos 29 anos)<span class="badge b-construir">pra construir</span></div><div class="preco">a definir</div><div class="gatilho">Idade 27 a 30 ou 58 a 60 no caderno. Virada de capítulo.</div></div>
+      <div class="prod"><div class="nome">Semana Mapeada (7 dias de companhia)<span class="badge b-pronto">no cofre</span></div><div class="preco">a definir</div><div class="gatilho">Lead pede acompanhamento ou demonstra alta confiança.</div></div>
+    </div>
+
+    <div class="menu-group">
+      <h3>serviço especial</h3>
+      <div class="prod"><div class="nome">Descobrir a minha hora (retificação guiada)<span class="badge b-pronto">desenho pronto, guardado</span></div><div class="preco">a definir</div><div class="gatilho">Lead disse que não sabe a hora. O público já está mapeado no caderno, esperando o preço e o formato da Adriana.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">Como o código segura tudo</div>
+    <h2>Três fechaduras e um cérebro</h2>
+    <div class="motor">
+      <div class="mblock">
+        <h3>1 · A receita (roteiro por situação)</h3>
+        <p>Cada momento da conversa tem receita cravada: <b>fatos do caderno</b> + <b>objetivo do turno</b> + <b>1 pergunta</b> + <b>chips do cardápio</b> + <b>limite de tamanho</b>. A IA recebe as vagas e só veste a frase. Nunca decide o rumo.</p>
+      </div>
+      <div class="mblock">
+        <h3>2 · O validador (na saída de tudo)</h3>
+        <p>Inventou signo que o cálculo não confirma? <b>Não sai.</b> Passou do limite? <b>Não sai.</b> Duas perguntas? <b>Não sai.</b> Faltou quebra de parágrafo, escapou proibição, chip fora de hora? <b>Não sai.</b> Reprovou, volta pra vó refazer.</p>
+      </div>
+      <div class="mblock">
+        <h3>3 · A matriz de oferta</h3>
+        <p>Cada produto com <b>gatilho do caderno</b>, <b>freio de frequência</b> e <b>recusa que não repete</b>. O dinheiro entra por decisão do código, nunca por sorte do papo.</p>
+      </div>
+      <div class="mblock">
+        <h3>O cérebro de qualquer cliente (futuro)</h3>
+        <p>O motor fica igual. Cada cliente só preenche 5 coisas: <b>quem é o agente</b> (voz e proibições) · <b>o que vende</b> (produtos e preços) · <b>quando oferece</b> (gatilhos) · <b>como começa</b> (os passos do primeiro atendimento) · <b>garantias</b> (validador, registro, testes). Cérebro novo é formulário, não obra.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-kicker">O caminho</div>
+    <h2>Quanto controlamos hoje, quanto falta</h2>
+    <div class="fases">
+      <div class="fase"><div class="n">·</div><div><h3>Hoje</h3><p>Quando mandar: 100% código · o que fazer depois: metade · o texto que a lead lê: só 21% sob molde</p></div></div>
+      <div class="fase"><div class="n">1</div><div><h3>Roteiro + validador no papo livre</h3><p>Texto sob contrato sobe de 21% pra ~90%. A obra grande. Fatos reais em toda conversa, vó concisa de verdade.</p></div></div>
+      <div class="fase"><div class="n">2</div><div><h3>Matriz de oferta</h3><p>Cada produto com gatilho, frequência e freio. Oferta deixa de ser sorte e vira decisão.</p></div></div>
+      <div class="fase"><div class="n">3</div><div><h3>Painel do cérebro</h3><p>Qualquer cliente monta o agente dela em 5 campos, sem programar. Mesmo motor, dados novos.</p></div></div>
+    </div>
+    <p class="lead" style="margin-top:22px">A frase criativa fica com a IA pra sempre: é a alma da vó. O que o código segura é o roteiro, os fatos, os limites e as ofertas.</p>
+  </section>
+
+  <footer>
+    Feito pra Adriana revisar com calma · nada entra no ar sem o ok dos textos<br>
+    <a href="arquitetura-cadencia.html">ver também: a arquitetura da cadência</a>
+  </footer>
+
+</div>
+</body>
+</html>
