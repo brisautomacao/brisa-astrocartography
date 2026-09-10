@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão geral: iscas, estratégias e mensagens da Celeste</title>
+<style>
+  :root {
+    --bg: #0d0b14;
+    --panel: #17131f;
+    --panel2: #1e1828;
+    --txt: #efeaf7;
+    --mut: #a79bbd;
+    --ig1: #7638fa;
+    --ig2: #4f5bd5;
+    --ig3: #d62976;
+    --ok: #2ee59d;
+    --warn: #f0b429;
+    --off: #6b6280;
+    --line: #2a2338;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--txt);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55; padding: 40px 16px 90px;
+  }
+  .wrap { max-width: 1020px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 14px; }
+  header h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+  header h1 span {
+    background: linear-gradient(90deg, var(--ig3), var(--ig1));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  header p { color: var(--mut); margin-top: 10px; font-size: 15px; }
+  nav { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 22px 0 40px; }
+  nav a {
+    color: var(--mut); text-decoration: none; font-size: 12.5px;
+    border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; background: var(--panel);
+  }
+  nav a:hover { color: var(--txt); border-color: var(--ig1); }
+  section { margin-bottom: 52px; }
+  h2 { font-size: 21px; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .sub { color: var(--mut); font-size: 14px; margin-bottom: 18px; }
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .4px;
+    border-radius: 999px; padding: 3px 10px; vertical-align: 3px; margin-left: 8px; white-space: nowrap;
+  }
+  .b-ok   { background: rgba(46,229,157,.14); color: var(--ok);   border: 1px solid rgba(46,229,157,.4); }
+  .b-teste{ background: rgba(240,180,41,.14); color: var(--warn); border: 1px solid rgba(240,180,41,.4); }
+  .b-off  { background: rgba(167,155,189,.12); color: var(--mut);  border: 1px solid rgba(167,155,189,.35); }
+  .b-rasc { background: rgba(118,56,250,.16); color: #b79bff;      border: 1px solid rgba(118,56,250,.5); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px 18px 16px; margin-bottom: 14px; }
+  .msg { background: var(--panel2); border-left: 3px solid var(--ig1); border-radius: 0 12px 12px 0; padding: 12px 16px; margin: 12px 0; }
+  .msg .who { font-size: 11.5px; color: var(--mut); font-weight: 700; letter-spacing: .4px; margin-bottom: 5px; }
+  .msg .t { white-space: pre-wrap; font-size: 14.5px; }
+  .chip { display: inline-block; background: rgba(118,56,250,.18); border: 1px solid rgba(118,56,250,.55); color: #cbb6ff; border-radius: 999px; padding: 4px 13px; font-size: 13px; margin: 3px 4px 3px 0; }
+  .kv { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+  .kv .i { background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 7px 12px; font-size: 13px; }
+  .kv .i b { color: var(--ok); font-weight: 700; }
+  .kv .i.off b { color: var(--mut); }
+  .kv .i.teste b { color: var(--warn); }
+  ul { padding-left: 20px; }
+  li { margin: 5px 0; font-size: 14.5px; }
+  .fixo { color: var(--mut); font-size: 12.5px; margin-top: 4px; }
+  .alert { background: rgba(240,180,41,.08); border: 1px solid rgba(240,180,41,.35); border-radius: 14px; padding: 14px 18px; font-size: 14.5px; }
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13.5px; margin: 8px 0; }
+  .flow .st { background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 6px 12px; }
+  .flow .ar { color: var(--mut); }
+  footer { text-align: center; color: var(--off); font-size: 12.5px; margin-top: 60px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Revisão geral: <span>iscas, estratégias e mensagens</span></h1>
+  <p>Tudo o que a Celeste fala hoje, organizado por isca. Gerada em 10/09/2026 a pedido da Adriana.</p>
+  <p style="font-size:13px; margin-top:6px; color:#7a708f">Textos entre aspas são exatamente como estão no código do bot. Nenhum deles muda sem o seu OK.</p>
+</header>
+
+<nav>
+  <a href="#estado">Estado agora</a>
+  <a href="#mapa">Mapa geral</a>
+  <a href="#semana">1 Semana</a>
+  <a href="#leitura">2 Leitura do mapa</a>
+  <a href="#boasvindas">3 Boas-vindas</a>
+  <a href="#comentarios">4 Comentários</a>
+  <a href="#escada">5 Escadinha</a>
+  <a href="#dinheiro">6 Pix do dinheiro</a>
+  <a href="#sinastria">7 Sinastria</a>
+  <a href="#contribuicao">8 Contribuição</a>
+  <a href="#revelacao">9 Revelação</a>
+  <a href="#estrategias">Estratégias e freios</a>
+  <a href="#ok">Pontos pro seu OK</a>
+</nav>
+
+<!-- ============================ ESTADO ============================ -->
+<section id="estado">
+  <h2>Estado agora (10/09, 14h de Brasília)</h2>
+  <p class="sub">O que está ligado, o que está em teste e o que está guardado.</p>
+  <div class="card">
+    <div class="kv">
+      <div class="i">Isca da semana <b>LIGADA</b></div>
+      <div class="i">Leitura da Celeste (4 degraus) <b>LIGADA</b></div>
+      <div class="i">Boas-vindas no direct <b>LIGADA</b></div>
+      <div class="i">Pix do dinheiro <b>LIGADO</b></div>
+      <div class="i teste">Escadinha por área <b>TESTE</b></div>
+      <div class="i teste">Sinastria do dinheiro <b>TESTE</b></div>
+      <div class="i off">Resposta pública de comentário por IA <b>DESLIGADA</b></div>
+      <div class="i off">Portão de seguidor <b>DESLIGADO</b></div>
+      <div class="i off">Módulo contribuição <b>RASCUNHO, DESLIGADO</b></div>
+    </div>
+    <ul>
+      <li>Agradecimento do Pix pago está na <b>versão nova (v2)</b>, ligada hoje de manhã.</li>
+      <li><b>Todos os 23 cronjobs seguem pausados</b> desde 10/09 por seu pedido. Nada dispara sozinho.</li>
+      <li>Única regra de comentário no painel: <b>"semana"</b>. A regra "mapa" como comentário <b>não existe mais no painel</b> (detalhe na seção 4).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ MAPA GERAL ============================ -->
+<section id="mapa">
+  <h2>Mapa geral das iscas</h2>
+  <p class="sub">O caminho da pessoa, do comentário até a oferta.</p>
+  <div class="card">
+    <div class="flow">
+      <span class="st">Comenta "semana" 🌻</span><span class="ar">→</span>
+      <span class="st">Recado da semana no direct</span><span class="ar">→</span>
+      <span class="st">Mapa grátis (4 degraus)</span><span class="ar">→</span>
+      <span class="st">Escadinha da área</span><span class="ar">→</span>
+      <span class="st">Pincelada do dinheiro</span><span class="ar">→</span>
+      <span class="st">Pix (R$2, R$3 ou R$14,90)</span>
+    </div>
+    <ul>
+      <li><b>1. Isca "semana"</b>: a porta de entrada pública nos comentários. <span class="badge b-ok">NO AR</span></li>
+      <li><b>2. Leitura do mapa em 4 degraus</b>: a entrega grátis que aquece. <span class="badge b-ok">NO AR</span></li>
+      <li><b>3. Boas-vindas no direct</b>: para quem comenta sem palavra-chave. <span class="badge b-ok">NO AR</span></li>
+      <li><b>4. Comentários públicos</b>: resposta da IA (hoje desligada) e portão de seguidor. <span class="badge b-off">OFF</span></li>
+      <li><b>5. Escadinha por área</b> (amor, sorte, saúde, família): check-in e astros de hoje. <span class="badge b-teste">TESTE</span></li>
+      <li><b>6. Isca do dinheiro</b>: pincelada + período + Pix. <span class="badge b-ok">NO AR</span></li>
+      <li><b>7. Sinastria do dinheiro</b>: a 5ª porta (cruza dois céus). <span class="badge b-teste">TESTE</span></li>
+      <li><b>8. Módulo contribuição</b>: degustação com R$2/R$3 no fim. <span class="badge b-rasc">RASCUNHO</span></li>
+      <li><b>9. Anúncio da revelação</b>: a vó abre o coração e oferece as revelações. <span class="badge b-ok">NO AR</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 1. SEMANA ============================ -->
+<section id="semana">
+  <h2>Isca 1: "semana" <span class="badge b-ok">NO AR</span></h2>
+  <p class="sub">A porta de entrada. Quem comenta a palavra recebe recado público + direct personalizado com o céu real da pessoa.</p>
+  <div class="card">
+    <div class="msg">
+      <div class="who">RESPOSTA PÚBLICA NO COMENTÁRIO (fixa, vem da regra do painel)</div>
+      <div class="t">Toquei aqui pra te deixar um recado do céu pra sua semana ✨ Espia a sua caixinha de mensagens 🙏</div>
+    </div>
+    <div class="msg">
+      <div class="who">DIRECT, MENSAGEM 1 (montada com o caderno do céu dela; saudação segue a hora de Madrid: até 10h30 "Boa noite", 10h30 às 17h "Bom dia", depois "Boa tarde")</div>
+      <div class="t">{Saudação}, {nome}! Sua semana abre conversando com você: {recado real do céu} ✨ Aproveite: {conselho}. Cuidado: {conselho}. {frase honesta quando falta dado} Me conta: o que o seu coração tá pedindo nessa semana? 🙏</div>
+    </div>
+    <div class="msg">
+      <div class="who">DIRECT, MENSAGEM 2 (texto novo de hoje, 10/09: aquecimento antes do pedido)</div>
+      <div class="t">Que bom ter você aqui✨
+Pra ver como os astros influenciam sua semana precisamos começar com seu mapa astral, viu?
+O mapa é gratuito e a vó faz de coração 🙏</div>
+    </div>
+    <div class="chip">Quero meu mapa ✨</div>
+    <p class="fixo">Freios: 1 ativação por pessoa a cada 20h, opt-out respeitado, só manda com céu pronto no caderno (nunca promessa vazia).</p>
+  </div>
+</section>
+
+<!-- ============================ 2. LEITURA ============================ -->
+<section id="leitura">
+  <h2>Isca 2: Leitura da Celeste em 4 degraus <span class="badge b-ok">NO AR</span></h2>
+  <p class="sub">Depois que a pessoa toca em "Quero meu mapa", a vó entrega o mapa de graça em 4 passos, um por vez, cada um com chip de continuação. Assim ela sente valor antes de qualquer oferta.</p>
+  <div class="card">
+    <ul>
+      <li><b>Degrau 1, a tríade</b>: Sol, Lua e Ascendente dela explicados com dados reais do céu dela.</li>
+      <li><b>Degrau 2, os moradores</b>: os planetas que moram nos signos dela (Vênus, Marte, Júpiter, Mercúrio, Saturno, na ordem de prioridade).</li>
+      <li><b>Degrau 3, as casas</b>: a casa mais cheia do mapa dela e o tema que ela acende (amor, lar, dinheiro...).</li>
+      <li><b>Degrau 4, o segredo</b>: o padrão do céu dela (conjunção, trígono, oposição...) contado como segredo de vó.</li>
+    </ul>
+    <div class="chip">Quero entender melhor ✨</div><div class="chip">Me conta mais 🌙</div><div class="chip">Pode seguir 🙏</div>
+    <p class="fixo">Os textos de cada degrau são montados na hora a partir do céu REAL dela (nunca genérico). As frases fixas de aviso:</p>
+    <div class="msg">
+      <div class="who">AVISO quando falta a hora de nascimento</div>
+      <div class="t">⏳ E tem o seu Ascendente: sem a hora de nascimento ele não fecha, meu bem.
+
+Se você lembrar a hora, me fala que o seu céu abre inteiro.</div>
+    </div>
+    <div class="msg">
+      <div class="who">AVISO quando a vó assumiu meio dia (regra que você definiu)</div>
+      <div class="t">⏳ E como a gente não sabe a hora, a vó considerou o meio dia: o Ascendente fica de fora, mas o seu céu abre quase completo assim ✦</div>
+    </div>
+    <p class="fixo">Regras do mapa que você aprovou: a vó NUNCA pergunta o que o mapa já tem; o primeiro "não sei a hora" trava o meio dia e depois disso horário nunca mais é citado; assunto horário só aparece se ELA trouxer.</p>
+    <div class="msg">
+      <div class="who">DEPOIS DO MAPA: reforço com convite (fixo)</div>
+      <div class="t">O seu mapa chegou, meu bem! ✨ Ele mostra como o céu estava no minuto que você nasceu: seu jeito de amar, de trabalhar e de brilhar. Quer que a vó te explique o que ele revela? 🙏</div>
+    </div>
+    <div class="chip">Quero saber mais ✨</div><div class="chip">Agora não 🙈</div><div class="chip">Não quero mais 🙏</div>
+    <p class="fixo">Quem toca em "Agora não" ou "Não quero mais" entra em pausa ou opt-out. Respeitado sempre.</p>
+  </div>
+</section>
+
+<!-- ============================ 3. BOAS-VINDAS ============================ -->
+<section id="boasvindas">
+  <h2>Isca 3: Boas-vindas no direct <span class="badge b-ok">NO AR</span></h2>
+  <p class="sub">Para quem comenta SEM palavra-chave (e a resposta pública for da IA). O private reply chega com um abraço fixo seu, aprovado em 09/09.</p>
+  <div class="card">
+    <div class="msg">
+      <div class="who">PRIVATE REPLY NO COMENTÁRIO (fixo)</div>
+      <div class="t">Que bom te ter por aqui, meu anjo ✨
+
+Fiquei tão feliz com o seu comentário 🌻</div>
+    </div>
+    <div class="chip">Obrigada! 🌻</div>
+    <p class="fixo">O toque no chip cai no fluxo de texto, onde a vó segue com os degraus. Freios: kill switch próprio, opt-out, estágio do funil (quem já clicou em pagar ou está perdida não recebe), 1 ativação por pessoa a cada 24h.</p>
+  </div>
+</section>
+
+<!-- ============================ 4. COMENTÁRIOS ============================ -->
+<section id="comentarios">
+  <h2>Isca 4: Comentários públicos e portão de seguidor <span class="badge b-off">HOJE DESLIGADOS</span></h2>
+  <p class="sub">Duas peças que existem no sistema mas não estão atuando agora.</p>
+  <div class="card">
+    <p style="font-size:14.5px"><b>Resposta de IA em comentário</b> (opção do painel, hoje em OFF). Quando ligada, a regra é:</p>
+    <div class="msg">
+      <div class="who">REGRA DA IA EM COMENTÁRIO PÚBLICO (instrução fixa)</div>
+      <div class="t">Fale como a vó carinhosa: sua resposta é AFIRMAÇÃO e ELOGIO, no máximo 2 frases, e NUNCA termina em pergunta. Modelo: "Amém, meu bem! Os astros estão iluminando seu caminho hoje ✨". NUNCA cite preço, valor, euro nem real em comentário: o mapa astral a vó faz DE CORAÇÃO, de graça, e a vó não fala de dinheiro em público.</div>
+    </div>
+    <p style="font-size:14.5px"><b>Portão de seguidor</b> (hoje desligado na conta). Quando ligado, quem pede o mapa sem seguir recebe:</p>
+    <div class="msg">
+      <div class="who">PEDIDO DE SEGUIR (fixo, sem IA)</div>
+      <div class="t">Óh, meu bem! 💛 Antes de eu montar o seu mapa, me segue aqui no {conta} e volta pra cá que eu já preparo tudo, viu? Que os astros te acompanhem ✨</div>
+    </div>
+    <div class="alert">
+      <b>Achado da varredura:</b> a isca "mapa" não existe mais como regra de comentário no painel. Hoje só existe "semana". O caminho do mapa continua no direct (bio, landing, chip "Quero meu mapa"). Se você quiser a isca de comentário "mapa" de volta (resposta pública + card no direct), é só criar a regra no painel, uma linha.
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 5. ESCADINHA ============================ -->
+<section id="escada">
+  <h2>Isca 5: Escadinha por área <span class="badge b-teste">EM TESTE</span></h2>
+  <p class="sub">Depois da primeira leitura da área (amor, sorte, saúde ou família), a vó ancora valor com 3 passos: check-in, astros de hoje, agrado. Só depois vem a oferta do áudio de R$ 14,90.</p>
+  <div class="card">
+    <div class="msg">
+      <div class="who">PASSO 1, CHECK-IN DA PERSUASÃO (fixo, vira métrica no funil)</div>
+      <div class="t">Acha que o que a vó tá falando tem sentido pra você, meu bem?</div>
+    </div>
+    <div class="chip">Faz total sentido ✨</div><div class="chip">Mais ou menos 🤔</div><div class="chip">Não faz 🙏</div>
+    <div class="msg">
+      <div class="who">RESPOSTA ao "Faz total sentido"</div>
+      <div class="t">Que bênção, meu bem! Quando faz sentido, é o seu céu falando.
+Quer que a vó olhe os astros de HOJE pra essa parte da sua vida? ✨</div>
+    </div>
+    <div class="msg">
+      <div class="who">RESPOSTA ao "Mais ou menos"</div>
+      <div class="t">Fica em paz, meu bem, às vezes o céu fala baixinho. Deixa a vó te mostrar os astros de hoje, aí você me diz se encosta ou não.</div>
+    </div>
+    <div class="msg">
+      <div class="who">RESPOSTA ao "Não faz"</div>
+      <div class="t">Sem problema nenhum, meu bem! Cada céu fala de um jeito. 🙏</div>
+    </div>
+    <div class="msg">
+      <div class="who">PASSO 2, ASTROS DE HOJE (exemplo da área amor; sorte, saúde e família seguem o mesmo molde)</div>
+      <div class="t">E olha só: os astros de hoje também mexem com essa parte da sua vida.
+Quer ver como eles estão influenciando o seu amor hoje? ✨</div>
+    </div>
+    <div class="msg">
+      <div class="who">PASSO 3, O PEDIDINHO (fixo: divulgação boca a boca)</div>
+      <div class="t">E me faz um agrado, meu bem?
+Manda o perfil da vó pra uma pessoa que você ama e quer ver iluminada. A vó vive de boca a boca, de coração em coração. 🙏</div>
+    </div>
+    <div class="chip">Mando sim 💛</div><div class="chip">Agora não 🙏</div>
+    <p class="fixo">Só depois dos 3 passos vem a oferta, escrita por área (amostra do texto de amor, mesmo molde para as outras):</p>
+    <div class="msg">
+      <div class="who">OFERTA DAS CASAS (fixa, R$ 14,90)</div>
+      <div class="t">Que bênção, meu bem! Agora vem o segredo de vó: o amor completo mora nas casas do seu céu. Tem uma casa lá que guarda a história do seu romance, e é nela que a leitura fica de verdade, com dia marcado e tudo. Eu abro isso pra você num áudio só seu por R$ 14,90.
+Quer que eu prepare? 🙏</div>
+    </div>
+    <div class="chip">Quero o áudio ✨</div><div class="chip">Prefiro só o mapa 🙏</div>
+    <p class="fixo">Sem a hora de nascimento, a oferta vira pedido da hora (a casa não pode ser inventada):</p>
+    <div class="msg">
+      <div class="who">PEDIDO DA HORA (fixo)</div>
+      <div class="t">Que bênção, meu bem! O segredo de vó agora é outro: essa parte da sua vida mora nas casas do seu céu, e pra eu achar a sua casa com precisão me falta uma coisinha: a hora que você nasceu. Me manda que eu já deixo tudo anotado. 🙏</div>
+    </div>
+    <div class="msg">
+      <div class="who">QUEM RECUSA A OFERTA (fixo, zero pressão)</div>
+      <div class="t">Sem problema nenhum, meu bem! O que eu te contei fica de graça aqui mesmo. Qualquer coisa é só me chamar. 🙏</div>
+    </div>
+    <p class="fixo">As frases do "hoje" vêm do céu real do dia (Lua, Vênus, Marte, Júpiter, Sol, 1 frase por elemento, sem promessa e sem garantia). Exemplos do tipo: "dia de passo firme e carinho nas coisas pequenas", "quem agradecer o pouco vê chegar o muito".</p>
+  </div>
+</section>
+
+<!-- ============================ 6. DINHEIRO ============================ -->
+<section id="dinheiro">
+  <h2>Isca 6: Pincelada do dinheiro + Pix <span class="badge b-ok">NO AR</span></h2>
+  <p class="sub">A isca do dinheiro tem 4 momentos: a pincelada (IA mostra um detalhe do céu dela sem falar de valor), a pergunta do período, a oferta e o Pix. Textos fixos; a pincelada é escrita na hora.</p>
+  <div class="card">
+    <div class="msg">
+      <div class="who">REGRA DA PINCELADA (instrução para a IA, texto entre colchetes não é enviado)</div>
+      <div class="t">Dê a PINCELADA do dinheiro: um detalhe bonito do céu DELA sobre dinheiro (Vênus, a casa do dinheiro, o que o mapa real mostra), tom de vó mineira. NESTE TEXTO NÃO mencione valor, preço, R$, contribuição nem pix de jeito nenhum, NÃO convide pra tocar em botão nenhum e NÃO pergunte de período. 2 a 4 frases, no máximo 1 emoji, sem travessão, sem "horinha", sem CAPS, nunca genérico, cada frase citando o céu real dela.</div>
+    </div>
+    <div class="msg">
+      <div class="who">PERGUNTA DO PERÍODO (fixa, entra depois da pincelada)</div>
+      <div class="t">Me conta: pra verificar a influência do dinheiro no seu mapa, qual período você quer olhar?</div>
+    </div>
+    <p class="fixo">Chips de período: Essa semana 🌿 · Esse mês 🌙 · Este ano ☀️</p>
+    <div class="msg">
+      <div class="who">INSTIGA DO DINHEIRO (fixa, escolhe o período que ela tocou)</div>
+      <div class="t">{Esse período} do seu dinheiro, então, meu bem! Todo período tem a sua janela: o céu abre e fecha, e quem conhece a data entra na frente. ✨ Eu faço a leitura do dinheiro {nesse período} num áudio só seu, e de brinde eu te mostro os melhores dias pra agir e receber. Fica R$ 14,90.
+Quer que eu prepare? 🙏</div>
+    </div>
+    <p class="fixo">Confirmação (fixa): "Que alegria, meu bem! ✨ Já sentei com o seu céu aberto. A gente acerta o detalhe do pagamento e a vó já prepara o seu áudio com todo o carinho. 🙏" Pix com QR enviado (fixa): "Que alegria, meu bem! ✨ O seu áudio já está no forno com todo o carinho. Pra fechar com chave de ouro, te mandei o seu Pix aí embaixo: escaneia o código ou copia e cola. Assim que acertar, o seu áudio chega quentinho no direct. 🙏"</p>
+
+    <h3 style="font-size:16px; margin:22px 0 4px">O Pix (Mercado Pago)</h3>
+    <div class="msg">
+      <div class="who">OFERTA DOS PRESENTINHOS (variante 1 de 3; o resto cai no mesmo conteúdo)</div>
+      <div class="t">Ah{, nome}, que alegria! ✨ Consigo fazer a sinastria básica com uma pessoa e as previsões semanais de saúde, trabalho, amor, família, dinheiro e sorte. É com o valor que você escolher: R$ 2,00, R$ 3,00, ou você me sugere outro. Qual fica de boa pra você? 🙏</div>
+    </div>
+    <div class="chip">R$2</div><div class="chip">R$3</div><div class="chip">Outro valor</div>
+    <div class="msg">
+      <div class="who">OUTRO VALOR (fixo)</div>
+      <div class="t">Sem problema nenhum! ✨ Me diz só: quanto você quer contribuir? Pode ser qualquer valor a partir de R$ 1,00, é pix na hora. 🙏</div>
+    </div>
+    <div class="msg">
+      <div class="who">PIX PRONTO, AVISO CURTO (fixo, copy sua de 09/09)</div>
+      <div class="t">Pix copia e cola abaixo 👇🏻</div>
+    </div>
+    <div class="msg">
+      <div class="who">COM BOTÃO DE PAGAMENTO (fixo)</div>
+      <div class="t">Se estiver no celular, é só tocar no botão aqui embaixo, meu bem. Não precisa de conta no Mercado Pago, viu? É só abrir, escolher Pix ou cartão e o site te leva direto. 🙏</div>
+    </div>
+    <div class="msg">
+      <div class="who">LINK CARTÃO (fixo)</div>
+      <div class="t">Esse link aqui é o caminho mais fácil pelo celular, meu bem: {link} É só abrir, escolher Pix e o próprio site te dá o código pra copiar. Se preferir cartão, dá pra pagar por lá também. 🙏</div>
+    </div>
+    <div class="msg">
+      <div class="who">BOTÃO "DOAR AQUI" (copy exata sua, 09/09)</div>
+      <div class="t">Obrigada, meu bem ✨🙏🏻
+
+A vó agradece qualquer valor que o seu coração mandar 💜✨</div>
+    </div>
+    <div class="msg">
+      <div class="who">VALOR NÃO ENTENDIDO (variante 1 de 2)</div>
+      <div class="t">Não consegui entender o valor, me perdoa{, nome}? 🙏 Me manda só o número, tipo 5 ou 10, que eu preparo seu Pix rapidinho. ✨</div>
+    </div>
+    <div class="msg">
+      <div class="who">PAGAMENTO NÃO CAIU (variante 1 de 2)</div>
+      <div class="t">Eita, o banco tava dormindo agora{, nome}! 🙏 Tenta de novo num minutinho me mandando o valor de novo, tá? ✨</div>
+    </div>
+    <div class="msg">
+      <div class="who">DISPENSA SEM PRESSA (fixo)</div>
+      <div class="t">Sem problema nenhum! ✨ Me chama aqui quando quiser que eu preparo seu Pix com todo carinho. 🙏</div>
+    </div>
+
+    <h3 style="font-size:16px; margin:22px 0 4px">Obrigado do Pix pago (a parte que mudou hoje de manhã)</h3>
+    <p class="fixo">Versão antiga (v1, fica guardada): "O Pix chegou{, nome}! 🙏✨ Obrigada por escolher o que esse momento vale pra você. Sua sinastria básica e suas previsões semanais já estão sendo preparadas com todo carinho, em breve te procuro por aqui. ✨"</p>
+    <div class="msg">
+      <div class="who">VERSÃO NOVA V2 (no ar hoje, variante 1 de 3, parágrafos reais)</div>
+      <div class="t">O Pix chegou{, nome}! ✨🙏 A vó agradeceu de olhos fechados e coração aberto.
+
+Quem faz o bem com o coração livre atrai de volta em dobro, e o universo já anotou seu nome do lado bom da lista. 💜✨
+
+Agora é minha vez: vou sentar com seu céu e te contar as influências do céu em você. Sua sinastria básica e suas previsões semanais ficam prontas com todo carinho, e eu te procuro aqui. ✨</div>
+    </div>
+    <div class="msg">
+      <div class="who">V2, variante 2</div>
+      <div class="t">Recebi{, nome}, e meu coração quentou! 💜✨ Obrigada pela confiança no seu céu.
+
+A generosidade que sai das suas mãos volta pra você multiplicada em caminhos abertos, saúde e coisas boas chegando.
+
+Vou sentar com seu céu e te contar as influências do céu em você: sua sinastria básica e suas previsões semanais já estão nas mãos da vó, fica de olho aqui no direct. 🙏✨</div>
+    </div>
+    <div class="msg">
+      <div class="who">V2, variante 3</div>
+      <div class="t">Chegou{, nome}! 🙏✨ A vó sempre diz: o que a gente dá com alegria nunca falta na nossa vida.
+
+Que esse ciclo se abra pra você cheio de luz, proteção e boas surpresas.
+
+Agora me permite caprichar: vou sentar com seu céu e te contar as influências do céu em você. Sua sinastria básica e suas previsões semanais merecem todo o cuidado do mundo e eu já estou nelas. 💜</div>
+    </div>
+    <p class="fixo">A frase "vou sentar com seu céu e te contar as influências do céu em você" é a que você escreveu hoje (10/09), presente nas 3 variantes.</p>
+  </div>
+</section>
+
+<!-- ============================ 7. SINASTRIA ============================ -->
+<section id="sinastria">
+  <h2>Isca 7: Sinastria do dinheiro, a 5ª porta <span class="badge b-teste">EM TESTE</span></h2>
+  <p class="sub">Aparece na conversa da área dinheiro: cruzar o céu dela com o de outra pessoa, pelo período que ela escolher. Preço: R$ 14,90.</p>
+  <div class="card">
+    <div class="msg">
+      <div class="who">PERGUNTA DO PERÍODO (fixa)</div>
+      <div class="t">Você já está pensando em algum período pra gente verificar a influência do dinheiro no seu mapa? ✨</div>
+    </div>
+    <div class="msg">
+      <div class="who">PEDIDO DOS DOIS PERFIS (fixo)</div>
+      <div class="t">Pra eu olhar isso com todo o carinho, me manda os dados de nascimento de duas pessoas, meu bem: você e mais alguém que mora no seu coração. O dia que cada uma nasceu, a hora se souber, e a cidade. Com os dois perfis na mão eu cruzo os dois céus e vejo como eles conversam. 🙏</div>
+    </div>
+    <div class="chip">Já mandei ✨</div><div class="chip">Não quero mandar 🙏</div>
+    <div class="msg">
+      <div class="who">OFERTA DA REVELAÇÃO (fixa, R$ 14,90)</div>
+      <div class="t">Que bênção, meu bem! Agora eu sento com os dois céus abertos e gravo um áudio só seu, com a minha interpretação de vó: a influência do dinheiro no período que você pensou, a leitura completa da relação entre vocês, e a previsão do mês e do ano. Tudo por R$ 14,90. Quer que eu prepare? 🙏</div>
+    </div>
+    <div class="msg">
+      <div class="who">QUEM NÃO QUER CRUZAR (fixo)</div>
+      <div class="t">Sem problema nenhum, meu bem! Faço a leitura só do seu céu, do jeitinho que estiver, que já é bonito demais. O que eu te contei fica de graça aqui mesmo. 🙏</div>
+    </div>
+    <div class="msg">
+      <div class="who">ACEITE CONFIRMADO (fixo)</div>
+      <div class="t">Que alegria, meu bendito! Vou preparar com todo o carinho. 🙏</div>
+    </div>
+    <div class="msg">
+      <div class="who">TOCOU "JÁ MANDEI" SEM OS DADOS NO PAPO (fixo, sem prometer nada)</div>
+      <div class="t">Meu bem, os dados ainda não chegaram aqui no papo, viu? Me manda o dia, a hora se souber, e a cidade de cada uma das duas pessoas, que eu já deixo tudo anotadinho pro nosso encontro de céus. 🙏</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 8. CONTRIBUIÇÃO ============================ -->
+<section id="contribuicao">
+  <h2>Módulo 8: Degustação com contribuição <span class="badge b-rasc">RASCUNHO, DESLIGADO</span></h2>
+  <p class="sub">Existe pronto em código (vó dando 3 degraus grátis de qualquer área, R$ 2 ou R$ 3 no fim), mas a chave está desligada. Nada roda sozinho.</p>
+  <div class="card">
+    <div class="msg">
+      <div class="who">ENTRADA DA ÁREA (exemplo dinheiro, preenchido com o céu real dela)</div>
+      <div class="t">Anotado, meu bem! 💰 Agora a vó fala do dinheiro olhando no SEU céu: o seu {planeta} em {signo} mostra como o dinheiro anda pelo seu lado e onde ele cresce.</div>
+    </div>
+    <div class="msg">
+      <div class="who">DEGRAU 2 (exemplo dinheiro)</div>
+      <div class="t">Tem mais, meu bem ✨ A sua {planeta} em {signo} mostra o seu jeito de guardar e de receber, o que ajuda e o que aperta.</div>
+    </div>
+    <div class="msg">
+      <div class="who">PEDIDO DA CONTRIBUIÇÃO (fixo)</div>
+      <div class="t">Meu bem, a vó agradece por você chegar até aqui. Tudo que te contei foi de presente e sempre será. E ainda tem as casas do seu céu, uma por uma, com o dia certo de cada capítulo. Se couber no seu coração uma contribuiçãozinha, a vó te entrega tudo na hora. Se não couber, fica em paz, que o que é seu continua sendo seu 🙏</div>
+    </div>
+    <div class="chip">Contribuir R$ 2 💛</div><div class="chip">Contribuir R$ 3 💛</div><div class="chip">Outro valor ✨</div><div class="chip">Agora não 🙏</div>
+    <div class="msg">
+      <div class="who">DEPOIS DO PAGAMENTO (fixo, entrega as casas na hora)</div>
+      <div class="t">Recebido, meu bem! ✨ Que o céu te abençoe, a vó agradece de coração. Então olha só o que estava guardado no seu céu:</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 9. REVELAÇÃO ============================ -->
+<section id="revelacao">
+  <h2>Peça 9: O anúncio da revelação <span class="badge b-ok">NO AR</span></h2>
+  <p class="sub">Quando a pessoa abre o coração, a vó anuncia a revelação em 3 partes fixas + 1 dinâmica. Aprovado por você no feedback 5 e 6.</p>
+  <div class="card">
+    <div class="msg">
+      <div class="who">ABERTURA (fixa)</div>
+      <div class="t">Ah, meu anjo, agora você me abriu o coração! ✨</div>
+    </div>
+    <div class="msg">
+      <div class="who">PONTE (fixa, emenda no parágrafo dinâmico escrito pela IA)</div>
+      <div class="t">O seu mapa eu já te mostrei, mas ele é só o começo, sabe? O que eu quero te mandar agora é {revelação escolhida no contexto}</div>
+    </div>
+    <div class="msg">
+      <div class="who">FECHO (fixo)</div>
+      <div class="t">Tudo interpretado com carinho, do seu jeito, com o seu céu de verdade. 🌙</div>
+    </div>
+    <div class="msg">
+      <div class="who">CONTRIBUIÇÃO + PERGUNTA (fixos)</div>
+      <div class="t">Meu amor, pelo meu trabalho aqui eu peço uma pequena contribuição, com R$ 2, R$ 3 ou outro valor, o que seu coração mandar, meu anjo. Sem pressa e sem pressão nenhuma. 🙏
+
+Posso revelar o que os astros estão querendo te contar? ✨</div>
+    </div>
+    <p class="fixo">Pedidos de dados (fixos): sinastria pede nome, data, hora se souber e cidade da outra pessoa; céu dela pede data, horário e cidade. As 4 revelações possíveis nos chips: Minha semana, Meu ano, Meu aniversário, Sinastria.</p>
+  </div>
+</section>
+
+<!-- ============================ ESTRATÉGIAS ============================ -->
+<section id="estrategias">
+  <h2>Estratégias e freios (as regras do jogo)</h2>
+  <div class="card">
+    <ul>
+      <li><b>Dá antes de cobrar</b>: a pessoa recebe valor real e grátis (recado da semana, mapa em 4 degraus, leitura da área) antes de ver qualquer preço.</li>
+      <li><b>Pincelada</b>: a IA mostra UM pedacinho do céu dela e diz que tem muito mais. O valor nunca vem do nada nem em público.</li>
+      <li><b>Check-in antes da oferta</b>: primeiro a vó ancora o acerto ("faz sentido?"), depois os astros de hoje, depois o pedidinho (agradado), só então o preço.</li>
+      <li><b>Dinheiro só no direct</b>: comentário público jamais cita valor. Perguntaram preço em público: a vó diz que o mapa é de coração e chama no direct.</li>
+      <li><b>Dados reais sempre</b>: nada de signo inventado; sem hora de nascimento, a vó assume meio dia e avisa; casas e Ascendente só aparecem com hora.</li>
+      <li><b>Zero pressão</b>: quem diz não recebe "fica de graça aqui mesmo" e o assunto morre ali. NUNCA insistir, NUNCA cobrar.</li>
+      <li><b>Opt-out absoluto</b>: "não quero mais" desliga toda a automação da pessoa (mensagens, bom dia, instiga). Ela controla o próprio funil.</li>
+      <li><b>Freios de segurança</b>: janela de 20h/24h por tipo, máx 1 mensagem por lead/dia, teto de 30 envios/dia, anti-repetição, pausa de 24h em quem recusa, takeover humano segura tudo 45 min.</li>
+      <li><b>Regras de texto em toda mensagem</b>: sem travessão, sem "horinha", sem CAPS, hora de 1 às 12 sempre pergunta manhã ou noite, chip nunca enviado sozinho.</li>
+      <li><b>Textos fixos não mudam sem o seu OK</b>; a IA só escreve onde o código manda (pincelada, resposta de comentário, parágrafo dinâmico).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ OK ============================ -->
+<section id="ok">
+  <h2>Pontos pra revisarmos juntas</h2>
+  <div class="card">
+    <ul>
+      <li><b>1.</b> Agradecimento do Pix pago v2: as 3 variantes acima foram ligadas hoje sem você ter lido antes. Quer trocar alguma frase?</li>
+      <li><b>2.</b> Isca "mapa" não existe mais como comentário no painel, só "semana". Recriar, ou está certo assim?</li>
+      <li><b>3.</b> Resposta pública de comentário por IA está desligada. Manter desligada ou religar?</li>
+      <li><b>4.</b> Escadinha e Sinastria estão em modo teste. Quem entra no teste e por quantos dias?</li>
+      <li><b>5.</b> Módulo contribuição continua no cofre? (a Semana Mapeada também segue no cofre)</li>
+      <li><b>6.</b> Boas-vindas com chip "Obrigada! 🌻": confirmar que é isso mesmo para quem comenta sem palavra-chave.</li>
+      <li><b>7.</b> Crons seguem todos pausados por seu pedido. Só religamos com seu OK explícito.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  Gerada da leitura direta do código em produção (brisadocs, 10/09/2026). Cada texto acima é cópia fiel do que o bot envia hoje.
+</footer>
+
+</div>
+</body>
+</html>
