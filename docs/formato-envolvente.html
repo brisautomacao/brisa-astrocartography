@@ -85,6 +85,13 @@
     font-size: 13.5px; margin-top: 16px;
   }
   .nota b { color: var(--txt); }
+  .chips-tit { color: var(--mut); font-size: 11.5px; margin-top: 12px; margin-bottom: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    border: 1.5px solid #4a4356; border-radius: 16px; padding: 4px 11px;
+    font-size: 12px; color: #ddd6ea; background: #191420;
+  }
+  .fone.novo .chip { border-color: #7a5fc9; background: #201a30; }
   footer {
     background: var(--panel); border: 1px solid #2a2338; border-radius: 16px;
     padding: 22px 24px; margin-top: 8px;
@@ -110,8 +117,8 @@
 <div class="mudancas">
   <div class="card">
     <div class="num">1</div>
-    <h3>Dado do céu em pé</h3>
-    <p>Hoje o mapa sai espremido numa frase corrida. No novo, Sol, Lua e Ascendente ficam cada um na sua linha, com o símbolo dele (☀️ 🌙 ⭐). Fica bonito e a lead entende de longe.</p>
+    <h3>O mapa em linhas</h3>
+    <p>Quando o mapa da lead fica pronto, o bot conta o que achou: Sol, Lua e Ascendente. Hoje isso sai grudado no meio da frase, e a lead não enxerga o que é o quê. No novo, cada um vem na sua linha, com seu símbolo (☀️ 🌙 ⭐), um embaixo do outro. É só jeitinho de arrumar na tela.</p>
   </div>
   <div class="card">
     <div class="num">2</div>
@@ -197,8 +204,16 @@ Com Marte em Virgem, você tem uma abordagem prática e analítica, o que pode t
 
 O que você tem em mente para melhorar essa situação? 💰✨</div>
       </div>
+      <div class="chips-tit">botões que saem junto (como são hoje)</div>
+      <div class="chips">
+        <span class="chip">Continuar 💰</span>
+        <span class="chip">Amor ❤️</span>
+        <span class="chip">Sorte 🍀</span>
+        <span class="chip">Família 🏡</span>
+        <span class="chip">Não quero mais 🙏</span>
+      </div>
     </div>
-    <div class="fone">
+    <div class="fone novo">
       <span class="tag depois">Novo</span>
       <div class="bubbles">
         <div class="bub v1">Entendi, meu amor 💜
@@ -208,6 +223,14 @@ Dinheiro pede método, e Marte em Virgem te dá isso de bandeja ✨
 Você consegue organizar as contas e enxergar onde dá pra cortar. Use essa energia pra planejar e agir.
 
 O que você tem em mente pra melhorar essa situação? 💰</div>
+      </div>
+      <div class="chips-tit">botões que saem junto (continuam iguais)</div>
+      <div class="chips">
+        <span class="chip">Continuar 💰</span>
+        <span class="chip">Amor ❤️</span>
+        <span class="chip">Sorte 🍀</span>
+        <span class="chip">Família 🏡</span>
+        <span class="chip">Não quero mais 🙏</span>
       </div>
     </div>
   </div>
