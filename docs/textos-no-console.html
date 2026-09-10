@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Textos da campanha no console</title>
+<style>
+  :root{
+    --roxo:#5b3a8e; --roxo-claro:#efe9f8; --tinta:#2b2338; --cinza:#6b6478;
+    --verde:#1d7a53; --verde-claro:#e7f5ee; --amber:#8a6d1f; --amber-claro:#faf3dd;
+    --borda:#e4def0; --fundo:#faf8fd;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:Georgia,'Times New Roman',serif; background:var(--fundo);
+       color:var(--tinta); line-height:1.65; padding:32px 16px 64px;}
+  .wrap{max-width:920px; margin:0 auto;}
+  header{margin-bottom:36px;}
+  .selo{display:inline-block; background:var(--roxo-claro); color:var(--roxo);
+        font-family:Verdana,Arial,sans-serif; font-size:12px; letter-spacing:1px;
+        padding:4px 12px; border-radius:999px; text-transform:uppercase;}
+  h1{font-size:34px; margin:14px 0 6px; color:var(--roxo);}
+  .sub{color:var(--cinza); font-size:16px;}
+  .card{background:#fff; border:1px solid var(--borda); border-radius:16px;
+        padding:26px 28px; margin-bottom:22px; box-shadow:0 2px 10px rgba(91,58,142,.06);}
+  .card h2{font-size:20px; color:var(--roxo); margin-bottom:12px;}
+  .card p{margin-bottom:10px;}
+  .ideia{font-size:22px; line-height:1.55;}
+  .cols{display:flex; gap:18px; flex-wrap:wrap;}
+  .col{flex:1 1 300px; border-radius:12px; padding:18px 20px;}
+  .col.hoje{background:var(--amber-claro); border:1px solid #eadfbb;}
+  .col.depois{background:var(--verde-claro); border:1px solid #c9e6d8;}
+  .col h3{font-size:15px; font-family:Verdana,Arial,sans-serif;
+          text-transform:uppercase; letter-spacing:.6px; margin-bottom:10px;}
+  .col.hoje h3{color:var(--amber);} .col.depois h3{color:var(--verde);}
+  .col ul{list-style:none;} .col li{margin-bottom:8px; padding-left:22px; position:relative; font-size:15px;}
+  .col.hoje li::before{content:"○"; position:absolute; left:0; color:var(--amber);}
+  .col.depois li::before{content:"✓"; position:absolute; left:0; color:var(--verde);}
+  .tela{display:flex; gap:22px; flex-wrap:wrap; align-items:flex-start; margin-top:6px;}
+  .console{flex:1 1 340px; background:#f6f3fb; border:1px solid var(--borda);
+           border-radius:14px; overflow:hidden;}
+  .console .barra{background:var(--roxo); color:#fff; font-family:Verdana,Arial,sans-serif;
+                  font-size:13px; padding:9px 14px;}
+  .console .corpo{padding:16px;}
+  .console label{display:block; font-family:Verdana,Arial,sans-serif; font-size:12px;
+                 color:var(--cinza); text-transform:uppercase; letter-spacing:.5px; margin:12px 0 5px;}
+  .console label:first-child{margin-top:0;}
+  .caixa{background:#fff; border:1px solid var(--borda); border-radius:10px;
+         padding:12px 14px; font-size:15px; white-space:pre-line;}
+  .chiprow{display:flex; gap:8px;}
+  .chipbox{flex:1; background:#fff; border:1px dashed #b9a8dd; border-radius:10px;
+           padding:8px 12px; font-size:14px;}
+  .salvar{display:inline-block; margin-top:14px; background:var(--roxo); color:#fff;
+          font-family:Verdana,Arial,sans-serif; font-size:14px; padding:9px 22px;
+          border-radius:10px;}
+  .cel{flex:0 1 260px; background:#1c1626; border-radius:26px; padding:14px 12px;}
+  .cel .topo{color:#9c92b5; font-family:Verdana,Arial,sans-serif; font-size:11px;
+             text-align:center; margin-bottom:10px;}
+  .bolha{background:#262033; color:#efeaf7; border-radius:14px 14px 14px 4px;
+         padding:12px 14px; font-size:14.5px; white-space:pre-line;}
+  .chipig{display:inline-block; margin-top:10px; background:#3b3350; color:#d9cff0;
+          border:1px solid #574a78; border-radius:999px; padding:6px 14px;
+          font-size:13px; font-family:Verdana,Arial,sans-serif;}
+  .legenda{font-family:Verdana,Arial,sans-serif; font-size:12px; color:var(--cinza);
+           margin-top:8px; text-align:center;}
+  .guarda li{margin-bottom:10px;}
+  .fases{list-style:none; counter-reset:f;}
+  .fases li{counter-increment:f; position:relative; padding:10px 0 10px 52px; border-top:1px dashed var(--borda);}
+  .fases li:first-child{border-top:none;}
+  .fases li::before{content:counter(f); position:absolute; left:0; top:10px;
+       width:34px; height:34px; border-radius:50%; background:var(--roxo-claro);
+       color:var(--roxo); font-family:Verdana,Arial,sans-serif; font-weight:bold;
+       display:flex; align-items:center; justify-content:center;}
+  .fases b{color:var(--roxo);}
+  .fases .agora{background:var(--verde-claro); border-radius:10px; padding-left:52px; margin:0 -12px;}
+  .fases .agora::before{background:var(--verde); color:#fff;}
+  .rodape{border-left:4px solid var(--roxo); background:#fff; border-radius:0 12px 12px 0;
+          padding:16px 20px; font-size:16px;}
+  .ok{color:var(--verde); font-weight:bold;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="selo">Desenho · 10/09</span>
+  <h1>Textos da campanha no console</h1>
+  <div class="sub">As regras da Dona Celeste deixam de morar no código e passam a morar no cadastro da Brisa Astral</div>
+</header>
+
+<div class="card">
+  <p class="ideia">A ideia em uma frase: <b>você mesma edita o texto da campanha no console, salva, e o bot já usa o seu texto na próxima mensagem.</b> Sem depender da equipe pra trocar uma palavra.</p>
+</div>
+
+<div class="card">
+  <h2>Como é hoje e como fica</h2>
+  <div class="cols">
+    <div class="col hoje">
+      <h3>Hoje, no código</h3>
+      <ul>
+        <li>O texto vive dentro do programa, como regra de fábrica</li>
+        <li>Pra mudar uma palavra, a equipe mexe no código, testa e publica</li>
+        <li>Vale igual pra todo mundo, sem dono</li>
+      </ul>
+    </div>
+    <div class="col depois">
+      <h3>Depois, no console</h3>
+      <ul>
+        <li>O texto mora no cadastro da Brisa Astral, com dono</li>
+        <li>Você edita numa caixa de texto e clica em salvar</li>
+        <li>Na hora do envio o bot lê o texto do seu cadastro</li>
+        <li>Apagou tudo? Volta o texto padrão de sempre. Deu problema? Sai o de sempre. Nada para</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>A tela nova no console</h2>
+  <p>Do lado esquerdo, o que você edita. Do lado direito, o preview mostrando <b>exatamente</b> como a mensagem chega no celular da lead, já formatada.</p>
+  <div class="tela">
+    <div class="console">
+      <div class="barra">Brisa Astral ✨ · Conta da Dona Celeste</div>
+      <div class="corpo">
+        <label>Texto de entrada (isca da semana)</label>
+        <div class="caixa">Que bom ter você aqui✨
+Pra ver como os astros influenciam sua semana precisamos começar com seu mapa astral, viu?
+O mapa é gratuito e a vó faz de coração 🙏</div>
+        <label>Chip da mensagem</label>
+        <div class="chiprow">
+          <div class="chipbox">Quero meu mapa ✨</div>
+        </div>
+        <span class="salvar">Salvar</span>
+      </div>
+    </div>
+    <div class="cel">
+      <div class="topo">preview · como a lead recebe</div>
+      <div class="bolha">Oi, Maria! Que bom ter você aqui✨
+Pra ver como os astros influenciam sua semana precisamos começar com seu mapa astral, viu?
+O mapa é gratuito e a vó faz de coração 🙏</div>
+      <span class="chipig">Quero meu mapa ✨</span>
+      <div class="legenda">O nome vem do caderno, o resto é o seu texto</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>O guarda-corpo continua de pé</h2>
+  <ul class="guarda col depois" style="border:none; padding:0; background:none;">
+    <li>O formatador continua passando em toda mensagem: conserta travessão, deixa a pergunta sozinha na linha, dá respiro nos parágrafos. Escreveu apertado? Ele arruma</li>
+    <li>O preview mostra o texto já passado pelo formatador: o que você vê é o que a lead recebe</li>
+    <li>Se o texto salvo estiver vazio ou der qualquer problema, sai o texto padrão de sempre. O envio nunca para</li>
+    <li>Chips não são mexidos pelo formatador, nem hoje nem depois</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>O caminho, em fases</h2>
+  <ul class="fases">
+    <li class="agora"><b>Fase 1, agora:</b> o texto de entrada da isca da semana e o chip dele. É o texto que você mesma reescreveu, então já nasce com dono</li>
+    <li><b>Fase 2:</b> as perguntas da semana e a resposta pública do comentário</li>
+    <li><b>Fase 3:</b> os textos da escada, do Pix e do recado do mapa, um grupo por vez. Cada padrão novo só entra com o seu ok palavra por palavra</li>
+  </ul>
+</div>
+
+<div class="rodape">
+  Regra que não muda: mensagem nova pra lead continua só com o <span class="ok">seu ok prévio</span>. O console facilita quem edita, mas não dispensa a aprovação.
+</div>
+
+</div>
+</body>
+</html>
