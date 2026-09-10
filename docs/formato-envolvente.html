@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deixando as mensagens da vó mais bonitas</title>
+<style>
+  :root {
+    --bg: #0d0b14;
+    --panel: #17131f;
+    --panel2: #1e1828;
+    --txt: #efeaf7;
+    --mut: #a79bbd;
+    --ig1: #7638fa;
+    --ig2: #4f5bd5;
+    --ig3: #d62976;
+    --ok: #2ee59d;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--txt);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    padding: 40px 16px 80px;
+  }
+  .wrap { max-width: 1020px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 36px; }
+  header h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+  header h1 span {
+    background: linear-gradient(90deg, var(--ig3), var(--ig1));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  header p { color: var(--mut); margin-top: 10px; font-size: 16px; }
+  .mudancas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 48px; }
+  .card {
+    background: var(--panel); border: 1px solid #2a2338; border-radius: 16px;
+    padding: 20px 18px;
+  }
+  .card .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--ig1), var(--ig3));
+    font-weight: 800; font-size: 15px; margin-bottom: 12px;
+  }
+  .card h3 { font-size: 16px; margin-bottom: 8px; }
+  .card p { color: var(--mut); font-size: 14px; }
+  .caso { margin-bottom: 46px; }
+  .caso > h2 { font-size: 21px; margin-bottom: 4px; }
+  .caso > .sub { color: var(--mut); font-size: 14px; margin-bottom: 16px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .fone {
+    background: #000; border-radius: 22px; padding: 18px 14px;
+    border: 1px solid #2a2338; min-height: 100%;
+  }
+  .fone .top {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 14px;
+    padding-bottom: 10px; border-bottom: 1px solid #221c2e;
+  }
+  .fone .top .avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--ig3), var(--ig1));
+  }
+  .fone .top b { font-size: 13px; }
+  .fone .top small { color: var(--mut); font-size: 11px; margin-left: auto; }
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.6px;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px;
+  }
+  .tag.antes { background: #2a2338; color: var(--mut); }
+  .tag.depois { background: linear-gradient(90deg, var(--ig3), var(--ig1)); color: #fff; }
+  .bubbles { display: flex; flex-direction: column; gap: 8px; }
+  .bub {
+    max-width: 92%; padding: 9px 13px; border-radius: 18px;
+    font-size: 13.5px; white-space: pre-line; align-self: flex-start;
+  }
+  .bub.v0 { background: #262626; color: #c9c3d4; }
+  .bub.v1 {
+    background: linear-gradient(135deg, var(--ig1), var(--ig2));
+    color: #fff; align-self: flex-end; border-bottom-right-radius: 6px;
+  }
+  .nota {
+    background: var(--panel2); border-left: 3px solid var(--ig1);
+    border-radius: 10px; padding: 12px 16px; color: var(--mut);
+    font-size: 13.5px; margin-top: 16px;
+  }
+  .nota b { color: var(--txt); }
+  footer {
+    background: var(--panel); border: 1px solid #2a2338; border-radius: 16px;
+    padding: 22px 24px; margin-top: 8px;
+  }
+  footer h2 { font-size: 17px; margin-bottom: 12px; }
+  footer ul { list-style: none; }
+  footer li { color: var(--mut); font-size: 14.5px; padding: 5px 0; }
+  footer li::before { content: "✓ "; color: var(--ok); font-weight: 700; }
+  @media (max-width: 760px) {
+    .mudancas { grid-template-columns: 1fr; }
+    .cols { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Mensagens da vó <span>mais bonitas de ler</span></h1>
+  <p>Mesma voz, mesmo carinho, mesmas regras. Só a jeitinho de aparecer na tela que muda.</p>
+</header>
+
+<div class="mudancas">
+  <div class="card">
+    <div class="num">1</div>
+    <h3>Dado do céu em pé</h3>
+    <p>Hoje o mapa sai espremido numa frase corrida. No novo, Sol, Lua e Ascendente ficam cada um na sua linha, com o símbolo dele (☀️ 🌙 ⭐). Fica bonito e a lead entende de longe.</p>
+  </div>
+  <div class="card">
+    <div class="num">2</div>
+    <h3>Parágrafos com respiro</h3>
+    <p>No máximo 1 ou 2 frases por parágrafo. A mensagem vira conversa de direct, não texto de livro. Hoje saem blocos de 3 frases que pesam na tela.</p>
+  </div>
+  <div class="card">
+    <div class="num">3</div>
+    <h3>Emoji junto do assunto</h3>
+    <p>1 emoji por parágrafo, do lado da palavra-chave (❤️ no amor, 💰 no dinheiro), em vez de acumular tudo no fim. Teto de 4 por mensagem pra não virar carnaval.</p>
+  </div>
+</div>
+
+<div class="caso">
+  <h2>Quando o mapa fica pronto</h2>
+  <div class="sub">Recado real de hoje da lead Ana, do jeito que saiu e do jeito novo.</div>
+  <div class="cols">
+    <div class="fone">
+      <span class="tag antes">Hoje</span>
+      <div class="bubbles">
+        <div class="bub v0">Perfeito, Ana! Anotei certinho no meu caderno: dia 19/04/1970 e às 20:30, em Recife ✨ A vó desenhou o seu mapa: Sol em Áries 29°, Lua em Libra 9°, Ascendente em Sagitário 19°. O pergaminho do seu mapa já está chegando aí na conversa 🙏</div>
+      </div>
+    </div>
+    <div class="fone">
+      <span class="tag depois">Novo</span>
+      <div class="bubbles">
+        <div class="bub v1">Perfeito, Ana! Anotei certinho no meu caderno ✨
+
+Dia 19/04/1970, às 20:30, em Recife.
+
+A vó desenhou o seu mapa:
+☀️ Sol em Áries 29°
+🌙 Lua em Libra 9°
+⭐ Ascendente em Sagitário 19°
+
+O pergaminho já está chegando aí na conversa 🙏</div>
+      </div>
+    </div>
+  </div>
+  <div class="nota"><b>Como:</b> o recado do mapa é molde fixo do bot. A gente edita o molde uma vez e todos os mapas novos já saem assim.</div>
+</div>
+
+<div class="caso">
+  <h2>Leitura do amor</h2>
+  <div class="sub">Leitura real de hoje, de Vênus em Sagitário.</div>
+  <div class="cols">
+    <div class="fone">
+      <span class="tag antes">Hoje</span>
+      <div class="bubbles">
+        <div class="bub v0">Que delícia, meu bem! 🌟 Vamos falar sobre o amor e a criatividade que Vênus em Sagitário traz pra você.
+
+Com Vênus nessa posição, você busca aventuras e novas experiências nos relacionamentos. A paixão é intensa e você gosta de se sentir livre e estimulada. Isso faz com que você atraia pessoas que compartilham do seu espírito livre e otimista.
+
+Como estão suas relações e o coração, meu amor? 💖</div>
+      </div>
+    </div>
+    <div class="fone">
+      <span class="tag depois">Novo</span>
+      <div class="bubbles">
+        <div class="bub v1">Que delícia, meu bem! 🌟
+
+Vênus em Sagitário é pura aventura ❤️
+
+Você vive o amor com intensidade e liberdade, curte experiência nova e atrai gente com esse mesmo espírito livre.
+
+Como estão suas relações e o coração, meu amor? 💖</div>
+      </div>
+    </div>
+  </div>
+  <div class="nota"><b>Como:</b> a vó passa a escrever assim (instrução de escrita nova, com parágrafo curto e emoji no lugar certo). O texto é dela, do mesmo jeito de sempre, só mais bonito na tela.</div>
+</div>
+
+<div class="caso">
+  <h2>Papo de dinheiro</h2>
+  <div class="sub">Resposta real de hoje sobre finanças.</div>
+  <div class="cols">
+    <div class="fone">
+      <span class="tag antes">Hoje</span>
+      <div class="bubbles">
+        <div class="bub v0">Entendi, meu amor. Às vezes, as finanças podem ser desafiadoras, mas é bom saber que você está atento a isso.
+
+Com Marte em Virgem, você tem uma abordagem prática e analítica, o que pode te ajudar a organizar melhor suas finanças e encontrar soluções. Aproveite essa energia para planejar e agir em direção aos seus objetivos.
+
+O que você tem em mente para melhorar essa situação? 💰✨</div>
+      </div>
+    </div>
+    <div class="fone">
+      <span class="tag depois">Novo</span>
+      <div class="bubbles">
+        <div class="bub v1">Entendi, meu amor 💜
+
+Dinheiro pede método, e Marte em Virgem te dá isso de bandeja ✨
+
+Você consegue organizar as contas e enxergar onde dá pra cortar. Use essa energia pra planejar e agir.
+
+O que você tem em mente pra melhorar essa situação? 💰</div>
+      </div>
+    </div>
+  </div>
+  <div class="nota"><b>Segurança:</b> se a vó escrever um bloco comprido mesmo assim, o formatador quebra o parágrafo no ponto certo, sem trocar palavra nenhuma.</div>
+</div>
+
+<footer>
+  <h2>O que não muda nada</h2>
+  <ul>
+    <li>Pergunta continua sozinha na própria linha (regra que já está no ar)</li>
+    <li>Texto aprovado por você, palavra por palavra, não é reescrito</li>
+    <li>Nada de travessão, e hora sempre dita por extenso, como sempre</li>
+    <li>Botões, horários e cadência ficam intocados</li>
+    <li>Emoji em excesso continua proibido: no máximo 4 por mensagem</li>
+  </ul>
+</footer>
+
+</div>
+</body>
+</html>
