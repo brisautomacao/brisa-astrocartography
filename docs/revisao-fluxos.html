@@ -74,7 +74,7 @@
 <header>
   <h1>Catálogo de fluxos, mensagens e chips <span class="grad">da Celeste</span></h1>
   <p>Tudo que o bot fala hoje, mensagem por mensagem, chip por chip, na ordem dos fluxos</p>
-  <p style="font-size:12.5px; margin-top:6px">Extraindo direto do código no ar em 10/09/2026 · 17h40 Barcelona</p>
+  <p style="font-size:12.5px; margin-top:6px">Extraindo direto do código no ar em 11/09/2026 · Barcelona</p>
   <div class="legend">
     <span class="badge b-ok">✅ no ar</span>
     <span class="badge b-teste">🧪 em teste</span>
@@ -90,12 +90,13 @@
   <a href="#mapa">D O mapa</a>
   <a href="#degustacao">E Degustação</a>
   <a href="#escadinha">F Escadinha</a>
-  <a href="#pix">G Pix</a>
-  <a href="#sinastria">H Sinastria</a>
-  <a href="#revelacao">I Revelação</a>
-  <a href="#instiga">J Instiga</a>
-  <a href="#saidas">K Saídas</a>
-  <a href="#pendentes">L Pra decidir</a>
+  <a href="#aquecimento">G Aquecimento</a>
+  <a href="#pix">H Pix</a>
+  <a href="#sinastria">I Sinastria</a>
+  <a href="#revelacao">J Revelação</a>
+  <a href="#instiga">K Instiga</a>
+  <a href="#saidas">L Saídas</a>
+  <a href="#pendentes">M Pra decidir</a>
 </div></nav>
 <div class="wrap">
 
@@ -112,6 +113,8 @@
   <div class="ela">🤖 a saudação depende da hora em Madrid: "Bom dia" até 10h30, "Boa tarde" até 17h, "Boa noite" depois</div>
   <div class="msg">{Saudação}, {nome}! Sua semana abre conversando com você: {curioso} ✨ Aproveite: {aproveite}. Cuidado: {cuidado}. [se o mapa for incompleto: A vó só enxerga o começo sem o seu horário, sabia?] Me conta: o que o seu coração tá pedindo nessa semana? 🙏</div>
   <p class="src">semana_isca._texto_semana · as 4 linhas vêm do caderno ceus_dia do dia 🤖 (cada dia um texto novo)</p>
+  <div class="chips"><span class="chip">Amor ❤️</span><span class="chip">Trabalho 💼</span><span class="chip">Saúde 🌿</span></div>
+  <p class="src">semana_isca.CHIPS_DEGRAU · a DM da semana sai com as 3 portinhas: toque abre o fluxo E (degustação)</p>
   <div class="note">Se o caderno não tem entrada de HOJE, a vó <b>não manda</b> a semana. Freio de honestidade: sem recado real, sem mensagem. Pergunta muda com o mapa: completo = "o que o seu coração tá pedindo nessa semana?", incompleto = "o que você quer pra essa semana?".</div>
 
   <h3>3) Ela responde qualquer coisa: entra o texto novo de aquecimento (seu, de 10/09)</h3>
@@ -131,7 +134,10 @@ O mapa é gratuito e a vó faz de coração 🙏</div>
 
 Fiquei tão feliz com o seu comentário 🌻</div>
   <div class="chips"><span class="chip">Obrigada! 🌻</span></div>
-  <p class="src">instagram_webhook.TEXTO_BOAS_VINDAS · toque no chip: a vó só agradece de volta, sem oferta</p>
+  <p class="src">instagram_webhook.TEXTO_BOAS_VINDAS</p>
+  <div class="ramo"><div class="ramo-t">TOCOU "Obrigada! 🌻" (sua regra de 11/09)</div>
+    <div class="msg">Obrigada você, meu bem! 🌻</div>
+    <p class="src">TEXTO_BOAS_VINDAS_AGRADECE · sem oferta nenhuma · logo em seguida vem a 1ª pergunta do caderno (dia → cidade → hora): o mapa começa ali mesmo. Quem JÁ tem mapa cai no fluxo de sempre (card, menus, portas).</p></div>
   <div class="note"><b>Freios:</b> uma vez por pessoa por 24h · não manda pra quem já está em ganho, clicou_pagar ou perdido no funil · opt-out respeitado pra sempre.</div>
 </section>
 
@@ -170,10 +176,22 @@ Pode me contar?</div>
   <p class="src">ceu_chat._chips_checkin · o chip do horário só aparece pra quem não deu hora</p>
   <div class="note"><b>Estas são as respostas de SIM e NÃO do mapa:</b> "Me sinto bem ✨" segue os degraus · "Mais ou menos" a vó acolhe e oferece outra área · "Mando o horário ⏰" ela envia a hora e o mapa ganha precisão · "Não quero mais 🙏" opt-out geral (para tudo, respeita pra sempre).</div>
 
-  <h3>3) Fim do mapa: convite de área (isca de degraus)</h3>
-  <div class="chips"><span class="chip">Amor ❤️</span><span class="chip">Trabalho 💼</span><span class="chip">Saúde 🌿</span></div>
-  <p class="src">semana_isca.CHIPS_DEGRAU · toque abre o fluxo E (degustação)</p>
+  <h3>3) Fim do mapa: a entrega em 3 tempos (seu desenho de 10/09)</h3>
+  <div class="msg">1) aviso curto: a vó desenhou o seu mapa 🤖
+2) o CARD do mapa (a rodinha do céu dela)
+3) a tríade explicada 🤖 com o menu embaixo</div>
+  <div class="chips"><span class="chip">Ver mais ✨</span><span class="chip">Amor ❤️</span><span class="chip">Dinheiro 💰</span><span class="chip">Sorte 🍀</span><span class="chip">Saúde 🌿</span><span class="chip">Família 🏡</span></div>
+  <p class="src">ceu_chat._entrega_sequencia · "Ver mais ✨" abre a mesa: Ver planetas 🪐 / Ver casas 🏠 + as 5 áreas</p>
   <div class="note"><b>Reforço no dia seguinte (se ela não tocou em nada):</b> "Passou um mapinha na sua frente ontem, e eu queria saber o que você achou dele 🌙" com chips <span class="chip">Quero saber mais ✨</span><span class="chip">Agora não 🙈</span><span class="chip">Não quero mais 🙏</span> · uma vez por lead, e o "Agora não" silencia o reforço (a instiga normal continua).</div>
+
+  <h3>4) Ela já com mapa manda mensagem: o passo do fim (motor)</h3>
+  <div class="msg">Meu bem, o seu céu já está anotadinho no caderno da vó ✨
+
+Você tem alguma dúvida?
+Me escreva ou selecione uma categoria para ver o que os astros te dizem sobre elas</div>
+  <div class="chips"><span class="chip">Amor ❤️</span><span class="chip">Dinheiro 💰</span><span class="chip">Sorte 🍀</span><span class="chip">Saúde 🌿</span><span class="chip">Família 🏡</span></div>
+  <p class="src">ceu_chat.TEXTO_PASSO_FIM + menu_areas · cravado no código, a IA não improvisa essa pergunta · no máximo 1x a cada 12h (nunca bombardear)</p>
+  <div class="note">Pergunta DE VERDADE pra vó ("o que significa casa 7?") não passa por aqui: quem responde é a IA. E quem ainda não tem mapa: qualquer mensagem solta abre o caderno na pergunta do dia, cravada, uma por vez.</div>
 </section>
 
 <!-- E -->
@@ -220,8 +238,8 @@ Qualquer coisa é só me chamar. ✨</div>
 
 <!-- F -->
 <section id="escadinha">
-  <h2><span class="num">F</span>Escadinha por área <span class="badge b-teste">🧪 em teste</span></h2>
-  <p class="sub">Flag <span class="flag">ESCADA_ATIVO=teste</span> · app/escada.py · textos aprovados NÃO mudam sem seu ok · é aqui que mora o check-in de sim e não</p>
+  <h2><span class="num">F</span>Escadinha por área <span class="badge b-ok">✅ no ar (todas as leads, desde 11/09)</span></h2>
+  <p class="sub">Flag <span class="flag">ESCADA_ATIVO=on</span> · app/escada.py · textos aprovados NÃO mudam sem seu ok · é aqui que mora o check-in de sim e não</p>
 
   <h3>1) Depois da 1ª leitura da área: o check-in <span class="badge b-ok">✅ o "sim ou não" que você perguntou</span></h3>
   <div class="msg">Acha que o que a vó tá falando tem sentido pra você, meu bem?</div>
@@ -261,7 +279,8 @@ Manda o perfil da vó pra uma pessoa que você ama e quer ver iluminada. A vó v
 Quer que eu prepare? 🙏</div>
   <div class="chips"><span class="chip">Quero ✨</span><span class="chip">Agora não 🙏</span></div>
   <p class="src">_TEXTO_CASAS (mesma forma pra sorte, saúde e família) · sem hora de nascimento pede a hora antes, com jeitinho</p>
-  <div class="ramo"><div class="ramo-t">QUERO → PIX do áudio (fluxo G)</div>
+  <div class="note"><b>Desde 11/09 a oferta do áudio passa no portão do aquecimento (seção G):</b> e o R$ 14,90 virou disparo MANUAL — lead pronta em tudo entra na lista de espera (audio_pronta) e a oferta só sai com autorização da equipe no console.</div>
+  <div class="ramo"><div class="ramo-t">QUERO → o portão decide (seção G)</div>
     <div class="msg">Que alegria, meu bem! ✨ O seu áudio já está no forno com todo o carinho. Pra fechar com chave de ouro, te mandei o seu Pix aí embaixo: escaneia o código ou copia e cola. Assim que acertar, o seu áudio chega quentinho no direct. 🙏</div></div>
 
   <h3>5) Escadinha do DINHEIRO (tem período antes)</h3>
@@ -285,8 +304,44 @@ Com a sua contribuição a vó pode sentar com mais tempo, para entender o que o
 </section>
 
 <!-- G -->
+<section id="aquecimento">
+  <h2><span class="num">G</span>O portão do aquecimento (dinheiro só com a casa quente) <span class="badge b-ok">✅ no ar (11/09)</span></h2>
+  <p class="sub">app/aquecimento.py · UMA porta na frente de TODO pedido de dinheiro: contribuição (E), áudio de R$ 14,90 (F e I), pincelada do Pix · fail-open: erro nenhum deixa a vó muda</p>
+
+  <h3>As 5 condições pra abrir a porta</h3>
+  <ul>
+    <li><b>12 horas</b> desde a primeira DM que ELA mandou <span class="flag">AQ_HORAS=12</span></li>
+    <li><b>Mais de 10 mensagens trocadas</b> na conversa <span class="flag">AQ_MSGS=10</span></li>
+    <li><b>1º degrau da leitura já entregue</b> (ela já recebeu leitura de verdade)</li>
+    <li><b>Sem tema sensível</b> na ficha (abandono, tristeza, luto, doença...): quem está frágil recebe acolhimento, NUNCA oferta. Uma palavra solta no que ela escreveu marca a ficha pra SEMPRE <span class="flag">AQ_SENSIVEL_EXTRA</span> amplia a lista</li>
+    <li><b>Só pro áudio de R$ 14,90:</b> mais de 4 perguntas abertas DELA no papo ("o que meu mapa diz...?") <span class="flag">AQ_AUDIO_PQS=4</span></li>
+  </ul>
+
+  <h3>Portão fechado + toque em dinheiro = o pedidinho do agrado</h3>
+  <div class="msg">E me faz um agrado, meu bem?
+Manda o perfil da vó pra uma pessoa que você ama e quer ver iluminada. A vó vive de boca a boca, de coração em coração. 🙏</div>
+  <div class="chips"><span class="chip">Mando sim 💛</span><span class="chip">Agora não 🙏</span></div>
+  <div class="ramo"><div class="ramo-t">TOCOU "Mando sim 💛"</div>
+    <div class="msg">Obrigada, meu bem! ✨</div></div>
+  <div class="ramo"><div class="ramo-t">TOCOU "Agora não 🙏"</div>
+    <div class="msg">Sem problema nenhum, meu bem! 🙏</div></div>
+  <div class="note"><b>Frequência:</b> 1 pedidinho a cada 7 dias por lead <span class="flag">AQ_PEDIDINHO_DIAS=7</span>. Tocou de novo no dinheiro dentro do intervalo: só o fecho quente, SEM pedir de novo e SEM chips (a barra velha de oferta morre): "Por hoje a vó já te contei bastante, meu bem 🙏 Volta quando quiser, que aqui tem mais."</div>
+
+  <h3>O R$ 14,90 é disparo MANUAL (sua regra de 11/09)</h3>
+  <div class="note">Lead que passa por TODAS as condições do áudio: marcada <b>audio_pronta</b> + evento no funil, e entra na <b>lista de espera do console</b>. O bot NÃO oferece sozinho — manda o pedidinho ou o fecho quente como se a porta estivesse fechada. A oferta SÓ sai quando a equipe autoriza (a autorização queima na 1ª oferta que ela tocar) ou com <span class="flag">AQ_AUDIO_AUTO=1</span> (modo todo-automático, pra teste).</div>
+
+  <h3>Chaves e seguranças</h3>
+  <ul>
+    <li><b>Funil:</b> toda consulta de momento de dinheiro vira evento <span class="flag">portao_dinheiro</span> com o motivo (horas, mensagens, leitura, sensivel, perguntas, manual...) pra você medir onde o dinheiro tá parando</li>
+    <li><b>Testes:</b> <span class="flag">AQ_LIVRE_SENDERS</span> = contas que passam direto, sem portão</li>
+    <li><b>Kill switch:</b> <span class="flag">AQ_PORTAO=0</span> desliga tudo e volta pro fluxo de sempre</li>
+    <li><b>Falha do módulo = porta aberta</b> (a vó nunca fica muda por causa dele)</li>
+  </ul>
+</section>
+
+<!-- H -->
 <section id="pix">
-  <h2><span class="num">G</span>Pix: cardápio, pagamento e obrigada <span class="badge b-ok">✅ no ar</span></h2>
+  <h2><span class="num">H</span>Pix: cardápio, pagamento e obrigada <span class="badge b-ok">✅ no ar</span></h2>
   <p class="sub">Flags <span class="flag">PIX_ATIVO=on</span> <span class="flag">PIX_PAGO_TEXTO_V2=on</span> · app/mp_pix_textos.py · variante escolhida pelo ID da lead (estável pra ela, variado no conjunto)</p>
 
   <h3>1) Cardápio (anexado na resposta da Celeste quando o momento chega)</h3>
@@ -338,9 +393,9 @@ Agora me permite caprichar: vou sentar com seu céu e te contar as influências 
   <div class="msg">Sem problema nenhum! ✨ Me chama aqui quando quiser que eu preparo seu Pix com todo carinho. 🙏</div>
 </section>
 
-<!-- H -->
+<!-- I -->
 <section id="sinastria">
-  <h2><span class="num">H</span>Sinastria do dinheiro <span class="badge b-teste">🧪 em teste</span></h2>
+  <h2><span class="num">I</span>Sinastria do dinheiro <span class="badge b-teste">🧪 em teste</span></h2>
   <p class="sub">Flag <span class="flag">SINASTRIA_OFERTA=teste</span> · app/sinastria.py · entra no caminho do dinheiro, depois do período escolhido</p>
   <div class="msg">Você já está pensando em algum período pra gente verificar a influência do dinheiro no seu mapa? ✨</div>
   <p class="src">abre o tema (a IA responde antes; esta frase cola depois)</p>
@@ -356,9 +411,9 @@ Agora me permite caprichar: vou sentar com seu céu e te contar as influências 
     <div class="msg">Sem problema nenhum, meu bem! Faço a leitura só do seu céu, do jeitinho que estiver, que já é bonito demais. O que eu te contei fica de graça aqui mesmo. 🙏</div></div>
 </section>
 
-<!-- I -->
+<!-- J -->
 <section id="revelacao">
-  <h2><span class="num">I</span>Anúncio da revelação (ponte pro valor) <span class="badge b-ok">✅ no ar</span></h2>
+  <h2><span class="num">J</span>Anúncio da revelação (ponte pro valor) <span class="badge b-ok">✅ no ar</span></h2>
   <p class="sub">app/revelacao.py · dispara quando há conteúdo no card dela; o valor aparece DEPOIS do toque em "Olhar mais profundo"</p>
 
   <h3>1) O anúncio (bloco fixo aprovado por você, com 1 parágrafo 🤖 no meio)</h3>
@@ -387,9 +442,9 @@ Pode me contar?</div>
   <div class="note"><b>Regra do momento instigante (sua, 07/09):</b> no pincelamento do chip "Olhar mais profundo" a IA dá SÓ a pincelada de um detalhe bonito do céu dela, e NUNCA menciona valor, preço, R$ ou pix nesse texto. Quem avisa da contribuição é o anúncio.</div>
 </section>
 
-<!-- J -->
+<!-- K -->
 <section id="instiga">
-  <h2><span class="num">J</span>Instiga de retomada <span class="badge b-off">⏸️ crons pausados, nada dispara</span></h2>
+  <h2><span class="num">K</span>Instiga de retomada <span class="badge b-off">⏸️ crons pausados, nada dispara</span></h2>
   <p class="sub">Os textos que a vó usaria pra puxar conversa depois do mapa (cron "isquinha" parado em 10/09, religa só com seu ok)</p>
   <div class="msg">[variante A] {primeiro_nome}, estava olhando o seu mapa aqui e encontrei uma coisa que me deu arrepio ✨ Posso te contar o que foi?</div>
   <div class="msg">[variante B] Meu bem, essa semana o céu anda mexido: tem algo acontecendo bem em cima do seu Sol ✨ Quer que eu te conte o que é?</div>
@@ -399,35 +454,37 @@ Pode me contar?</div>
   <p class="src">instagram_webhook.INSTIGA_VARIANTE A/B/C, SEM_TRIADE, FALLBACK · tudo com opt-out respeitado</p>
 </section>
 
-<!-- K -->
+<!-- L -->
 <section id="saidas">
-  <h2><span class="num">K</span>Saídas e opt-out (os Nãos de todo o sistema)</h2>
+  <h2><span class="num">L</span>Saídas e opt-out (os Nãos de todo o sistema)</h2>
   <p class="sub">Todo "não" é respeitado na hora, sem refilar e sem cobrar de novo</p>
   <ul>
     <li><b>"Não quero mais 🙏"</b> (chips do mapa, reforço e áreas): opt-out GERAL. A vó para de puxar assunto com ela pra sempre; se a lead escrever, o papo normal segue.</li>
     <li><b>"Agora não 🙏"</b> (pedido de contribuição, agrado, casas, período): silencia SÓ aquele módulo, com agradecimento gentil. Nada de insistência.</li>
     <li><b>"Já deu pra hoje 🙏"</b> (chips da degustação): agradece e para de falar, igual ao "Agora não".</li>
     <li><b>"Agora não 🙈"</b> (reforço do mapa): silencia só o reforço; a instiga normal continua valendo.</li>
+    <li><b>"Agora não 🙏" do pedidinho</b> (portão fechado, seção G): "Sem problema nenhum, meu bem! 🙏" e o pedido só volta depois de 7 dias; toque repetido no dinheiro = só o fecho quente, sem pedir de novo.</li>
     <li><b>"Não faz 🙏"</b> (chips da leitura): releitura pelo outro lado do céu UMA vez; na 2ª recusa, menu de áreas. Sem ping-pong.</li>
     <li><b>Palavra escrita</b> ("chata", "para", "não quero"): responde uma vez com classe, registra "reclamou" e silencia as automáticas.</li>
   </ul>
 </section>
 
-<!-- L -->
+<!-- M -->
 <section id="pendentes">
-  <h2><span class="num">L</span>Pontos pra você decidir</h2>
+  <h2><span class="num">M</span>Pontos pra você decidir</h2>
   <ul>
     <li><b>1. Corrigir o bug do log de hoje?</b> Depois do "Agora não", o toque em chip antigo cai na IA livre e ela improvisa pergunta sem conteúdo (mostrado na seção E). Tenho a correção pronta.</li>
     <li><b>2. Reescrever os degraus da degustação?</b> Cada mensagem ensinaria 1 curiosidade REAL do céu dela (planeta, signo, grau, o que significa), no máximo 1 pergunta por mensagem, e o "meu bem" sem repetição.</li>
-    <li><b>3. Duas portas de contribuição no mesmo caminho:</b> a degustação pede R$ 2 / R$ 3 (seção E) e a escadinha pede por "curiosidade" (seção F). Na mesma conversa a lead pode ouvir os dois pedidos. Manter os dois, ou deixar só um por jornada?</li>
+    <li><b>3. Duas portas de contribuição no mesmo caminho:</b> a degustação pede R$ 2 / R$ 3 (seção E) e a escadinha pede por "curiosidade" (seção F). Na mesma conversa a lead pode ouvir os dois pedidos (os dois agora passam pelo portão do aquecimento, seção G). Manter os dois, ou deixar só um por jornada?</li>
     <li><b>4. Regra de comentário "mapa":</b> hoje só "semana" responde comentário com presente. Quem comenta "mapa" cai nas boas-vindas. Recriar a regra "mapa" ou deixar assim?</li>
     <li><b>5. Crons:</b> os 23 seguem pausados desde as 11h03 de hoje (seu pedido). Nada automático dispara: nem bom dia, nem instiga, nem relatórios. Religio só com seu ok.</li>
     <li><b>6. Semana Mapeada</b> continua no cofre, com a proposta de trânsitos aprovada por você em 09/09 guardada. É só dizer quando abrir.</li>
-    <li><b>7. Escadinha e Sinastria seguem em modo TESTE</b> (só entra quem você definir). Confirmar se os textos da seção F e H vão pra todas as leads ou continuam no teste.</li>
+    <li><b>7. Sinastria segue em modo TESTE</b> (só entra quem você definir). A escadinha (F) já está no ar pra todas as leads desde 11/09. Confirmar se os textos da seção I vão pro ar também.</li>
+    <li><b>8. Lista de espera dos áudios:</b> as leads prontas pro R$ 14,90 ficam marcadas <b>audio_pronta</b> e a oferta só sai com o seu autorizar no console (seção G). Quer que a lista apareça num relatório diário?</li>
   </ul>
 </section>
 
-<p class="foot">Catálogo vivo: extrai das flags do pod brisadocs e dos textos no ar em 10/09/2026. Nada aqui foi alterado no bot; é só revisão. Página irmã: <a href="revisao-iscas.html" style="color:var(--gold)">estado das iscas e estratégias</a></p>
+<p class="foot">Catálogo vivo: extrai das flags do pod brisadocs e dos textos no ar em 11/09/2026. Nada aqui foi alterado no bot; é só revisão. Página irmã: <a href="revisao-iscas.html" style="color:var(--gold)">estado das iscas e estratégias</a></p>
 <div class="voltar"><a href="revisao-iscas.html">← voltar pro estado geral das iscas</a></div>
 </div>
 </body>
