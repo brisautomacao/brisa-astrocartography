@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo de fluxos: todas as mensagens e chips da Celeste</title>
+<style>
+  :root {
+    --bg: #0d0a18; --panel: #171226; --card: #1e1832; --ink: #f0ebfa;
+    --muted: #a89cc8; --line: #2c2444;
+    --gold: #e8c66a; --rose: #f5a7c7; --ok: #7ed6a5; --warn: #f0b429;
+    --off: #8a83a5; --rasc: #b79af0; --blue: #7cc4f0;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Inter', 'Segoe UI', sans-serif;
+         line-height: 1.65; padding-bottom: 80px; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+  header { text-align: center; padding: 56px 20px 30px;
+    background: radial-gradient(ellipse at top, #241a3d 0%, var(--bg) 70%); }
+  header h1 { font-family: Georgia, serif; font-size: 31px; font-weight: 600; }
+  header h1 .grad { background: linear-gradient(90deg,#f9ce34,#ee2a7b,#6228d7);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+  header p { color: var(--muted); margin-top: 12px; font-size: 15px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 20px 0 8px; }
+  .badge { font-size: 11.5px; font-weight: 600; letter-spacing: .4px; padding: 4px 11px;
+    border-radius: 20px; }
+  .b-ok   { background: #1d3a2b; color: var(--ok); }
+  .b-teste{ background: #3d3216; color: var(--warn); }
+  .b-off  { background: #2a2538; color: var(--off); }
+  .b-dyn  { background: #16323d; color: var(--blue); }
+  .b-painel { background: #2c1d3d; color: var(--rasc); }
+  .topnav { position: sticky; top: 0; z-index: 5; background: rgba(13,10,24,.94);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); padding: 10px 0; }
+  .topnav .wrap { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .topnav a { color: var(--muted); text-decoration: none; font-size: 12px; font-weight: 600;
+    padding: 4px 10px; border-radius: 14px; border: 1px solid var(--line); }
+  .topnav a:hover { color: var(--gold); border-color: var(--gold); }
+  section { margin-top: 46px; }
+  h2 { font-family: Georgia, serif; font-size: 21px; margin-bottom: 4px; }
+  h2 .num { color: var(--gold); margin-right: 8px; }
+  h3 { font-size: 14.5px; color: var(--rose); margin: 22px 0 8px; }
+  .sub { color: var(--muted); font-size: 13.5px; margin-bottom: 16px; }
+  .flag { display: inline-block; font-family: monospace; font-size: 11.5px; color: var(--gold);
+    background: #241d10; border: 1px solid #4a3c18; padding: 1px 8px; border-radius: 6px; }
+  .msg { background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    border-bottom-left-radius: 4px; padding: 12px 16px; font-size: 14.5px;
+    white-space: pre-line; margin: 8px 0 8px 0; max-width: 92%; }
+  .ela { margin-left: auto; margin-right: 0; background: #241a3d; border-color: #3d2e6b;
+    border-radius: 14px; border-bottom-right-radius: 4px; border-bottom-left-radius: 14px;
+    text-align: right; font-size: 13.5px; padding: 8px 14px; max-width: 70%; color: #d9ccf5; }
+  .src { font-size: 11px; color: var(--off); font-family: monospace; margin: 0 0 14px 4px; }
+  .chips { margin: 2px 0 6px 4px; }
+  .chip { display: inline-block; font-size: 12px; padding: 4px 12px; margin: 2px 4px 2px 0;
+    border: 1px solid var(--muted); border-radius: 16px; color: var(--ink); background: #221b36; }
+  .ramo { margin: 4px 0 12px 22px; padding: 10px 14px; border-left: 3px solid var(--line); }
+  .ramo-t { font-size: 12.5px; font-weight: 700; color: var(--gold); margin-bottom: 6px; }
+  .note { background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 13px 16px; font-size: 13.5px; color: var(--muted); margin: 14px 0; }
+  .note b { color: var(--ink); }
+  .alert { background: #26160f; border: 1px solid #6b3a1d; border-radius: 12px;
+    padding: 14px 16px; font-size: 14px; margin: 16px 0; }
+  .alert b { color: #ff9d5c; }
+  .fix { background: #10241a; border: 1px solid #1f4d33; border-radius: 12px;
+    padding: 14px 16px; font-size: 14px; margin: 16px 0; }
+  .fix b { color: var(--ok); }
+  ul { margin: 6px 0 14px 20px; font-size: 14px; }
+  li { margin-bottom: 6px; }
+  .foot { margin-top: 56px; text-align: center; color: var(--off); font-size: 12px; }
+  .voltar { text-align: center; margin-top: 18px; }
+  .voltar a { color: var(--gold); font-size: 13.5px; text-decoration: none; font-weight: 600; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Catálogo de fluxos, mensagens e chips <span class="grad">da Celeste</span></h1>
+  <p>Tudo que o bot fala hoje, mensagem por mensagem, chip por chip, na ordem dos fluxos</p>
+  <p style="font-size:12.5px; margin-top:6px">Extraindo direto do código no ar em 10/09/2026 · 17h40 Barcelona</p>
+  <div class="legend">
+    <span class="badge b-ok">✅ no ar</span>
+    <span class="badge b-teste">🧪 em teste</span>
+    <span class="badge b-off">⛔ desligado no painel</span>
+    <span class="badge b-dyn">🤖 texto que a IA escreve na hora</span>
+    <span class="badge b-painel">💜 editável no painel</span>
+  </div>
+</header>
+<nav class="topnav"><div class="wrap">
+  <a href="#semana">A Semana</a>
+  <a href="#boasvindas">B Boas-vindas</a>
+  <a href="#comentarios">C Comentários</a>
+  <a href="#mapa">D O mapa</a>
+  <a href="#degustacao">E Degustação</a>
+  <a href="#escadinha">F Escadinha</a>
+  <a href="#pix">G Pix</a>
+  <a href="#sinastria">H Sinastria</a>
+  <a href="#revelacao">I Revelação</a>
+  <a href="#instiga">J Instiga</a>
+  <a href="#saidas">K Saídas</a>
+  <a href="#pendentes">L Pra decidir</a>
+</div></nav>
+<div class="wrap">
+
+<!-- A -->
+<section id="semana">
+  <h2><span class="num">A</span>Porta de entrada: isca "semana" <span class="badge b-ok">✅ no ar</span></h2>
+  <p class="sub">Flag <span class="flag">SEMANA_ISCA=1</span> · regra de comentário ativa no painel</p>
+
+  <h3>1) Ela comenta "semana" em qualquer post</h3>
+  <div class="msg">Toquei aqui pra te deixar um recado do céu pra sua semana ✨ Espia a sua caixinha de mensagens 🙏</div>
+  <p class="src">resposta pública do comentário · editável no painel 💜</p>
+
+  <h3>2) DM com o recado da semana (lê o caderno do dia)</h3>
+  <div class="ela">🤖 a saudação depende da hora em Madrid: "Bom dia" até 10h30, "Boa tarde" até 17h, "Boa noite" depois</div>
+  <div class="msg">{Saudação}, {nome}! Sua semana abre conversando com você: {curioso} ✨ Aproveite: {aproveite}. Cuidado: {cuidado}. [se o mapa for incompleto: A vó só enxerga o começo sem o seu horário, sabia?] Me conta: o que o seu coração tá pedindo nessa semana? 🙏</div>
+  <p class="src">semana_isca._texto_semana · as 4 linhas vêm do caderno ceus_dia do dia 🤖 (cada dia um texto novo)</p>
+  <div class="note">Se o caderno não tem entrada de HOJE, a vó <b>não manda</b> a semana. Freio de honestidade: sem recado real, sem mensagem. Pergunta muda com o mapa: completo = "o que o seu coração tá pedindo nessa semana?", incompleto = "o que você quer pra essa semana?".</div>
+
+  <h3>3) Ela responde qualquer coisa: entra o texto novo de aquecimento (seu, de 10/09)</h3>
+  <div class="msg">Que bom ter você aqui✨
+Pra ver como os astros influenciam sua semana precisamos começar com seu mapa astral, viu?
+O mapa é gratuito e a vó faz de coração 🙏</div>
+  <div class="chips"><span class="chip">Quero meu mapa ✨</span></div>
+  <p class="src">tenant_store.SEMANA_PADRAO · editável no painel 💜</p>
+  <div class="note">Tocou "Quero meu mapa ✨" (ou já tinha tocado antes): cai no fluxo <b>D, o mapa</b>.</div>
+</section>
+
+<!-- B -->
+<section id="boasvindas">
+  <h2><span class="num">B</span>Boas-vindas no direct <span class="badge b-ok">✅ no ar</span></h2>
+  <p class="sub">Flag <span class="flag">IG_BOAS_VINDAS=1</span> (padrão ligado) · manda em COMENTÁRIO SEM PALAVRA-CHAVE, não em like</p>
+  <div class="msg">Que bom te ter por aqui, meu anjo ✨
+
+Fiquei tão feliz com o seu comentário 🌻</div>
+  <div class="chips"><span class="chip">Obrigada! 🌻</span></div>
+  <p class="src">instagram_webhook.TEXTO_BOAS_VINDAS · toque no chip: a vó só agradece de volta, sem oferta</p>
+  <div class="note"><b>Freios:</b> uma vez por pessoa por 24h · não manda pra quem já está em ganho, clicou_pagar ou perdido no funil · opt-out respeitado pra sempre.</div>
+</section>
+
+<!-- C -->
+<section id="comentarios">
+  <h2><span class="num">C</span>Comentários públicos e portão de seguidor <span class="badge b-off">⛔ IA de resposta desligada no painel</span></h2>
+  <p class="sub">comments_ai = false hoje · exige_seguir = desligado · quando ligarem, valem estas regras fixas</p>
+  <div class="note"><b>Regra da resposta pública (HINT_COMENTARIO, colada no prompt da IA):</b> resposta é AFIRMAÇÃO e ELOGIO, no máximo 2 frases, e NUNCA termina em pergunta. Modelo: "Amém, meu bem! Os astros estão iluminando seu caminho hoje ✨". NUNCA cite preço, valor, euro nem real em comentário: o mapa a vó faz DE CORAÇÃO, e dinheiro não se fala em público. Se perguntarem quanto custa: diz que é de coração e convida pro direct.</div>
+  <div class="note"><b>Fallback (quando a IA falha, texto fixo):</b> "Olá! 👋 Recebemos sua mensagem e já vamos te responder." (e a lead entra na fila do direct)</div>
+  <h3>Portão de seguidor (desligado hoje; texto pronto)</h3>
+  <div class="msg">Óh, meu bem! 💛 Antes de eu montar o seu mapa, me segue aqui no {conta} e volta pra cá que eu já preparo tudo, viu? Que os astros te acompanhem ✨</div>
+  <p class="src">instagram_webhook.PEDIDO_SEGUIR · só dispara se a conta dela não seguir @brisaastral</p>
+</section>
+
+<!-- D -->
+<section id="mapa">
+  <h2><span class="num">D</span>O mapa: coleta + 4 degraus <span class="badge b-ok">✅ no ar</span></h2>
+  <p class="sub">Flags <span class="flag">IG_LEITURA=1</span> <span class="flag">ISCA_DEGRAUS=1</span> · os textos dos degraus são 🤖 gerados do céu REAL dela (nunca inventado)</p>
+
+  <h3>1) Coleta dos dados</h3>
+  <div class="msg">Meu anjo, pra eu olhar o seu céu de verdade eu preciso dos seus dados de nascimento. ✨
+
+Me diz a data, o horário (se você souber) e a cidade onde você nasceu? 🙏
+
+Pode me contar?</div>
+  <p class="src">revelacao.PEDIDO_CEU · mesma fonte editável no painel 💜</p>
+  <div class="chips"><span class="chip">cidade com mais de uma opção: chips com cada {cidade} ({uf})</span></div>
+  <div class="note"><b>Regra do meio-dia (sua, 09/09):</b> na 1ª "não sei a hora" a vó trava o meio-dia e NUNCA mais cita horário na conversa. A hora dela só volta se ELA trouxer. Sem hora: usa as 12h no cálculo, deixa o Ascendente de fora e não cobra nada. Frase honesta fixa: <b>"A vó só enxerga o começo sem o seu horário, sabia?"</b></div>
+
+  <h3>2) Os 4 degraus da leitura (cada um termina com a mesma perguntinha)</h3>
+  <div class="msg">🤖 Degrau 1: a tríade (Sol, Lua e Ascendente dela, com signo e grau)
+🤖 Degrau 2: onde moram os planetas (a casa mais cheia do céu dela)
+🤖 Degrau 3: as casas que se destacam
+🤖 Degrau 4: o segredo do mapa (fecha com carinho)</div>
+  <div class="chips"><span class="chip">Me sinto bem ✨</span><span class="chip">Mais ou menos</span><span class="chip">Mando o horário ⏰</span><span class="chip">Não quero mais 🙏</span></div>
+  <p class="src">ceu_chat._chips_checkin · o chip do horário só aparece pra quem não deu hora</p>
+  <div class="note"><b>Estas são as respostas de SIM e NÃO do mapa:</b> "Me sinto bem ✨" segue os degraus · "Mais ou menos" a vó acolhe e oferece outra área · "Mando o horário ⏰" ela envia a hora e o mapa ganha precisão · "Não quero mais 🙏" opt-out geral (para tudo, respeita pra sempre).</div>
+
+  <h3>3) Fim do mapa: convite de área (isca de degraus)</h3>
+  <div class="chips"><span class="chip">Amor ❤️</span><span class="chip">Trabalho 💼</span><span class="chip">Saúde 🌿</span></div>
+  <p class="src">semana_isca.CHIPS_DEGRAU · toque abre o fluxo E (degustação)</p>
+  <div class="note"><b>Reforço no dia seguinte (se ela não tocou em nada):</b> "Passou um mapinha na sua frente ontem, e eu queria saber o que você achou dele 🌙" com chips <span class="chip">Quero saber mais ✨</span><span class="chip">Agora não 🙈</span><span class="chip">Não quero mais 🙏</span> · uma vez por lead, e o "Agora não" silencia o reforço (a instiga normal continua).</div>
+</section>
+
+<!-- E -->
+<section id="degustacao">
+  <h2><span class="num">E</span>Degustação por área (o fluxo do seu log) <span class="badge b-ok">✅ no ar</span></h2>
+  <p class="sub">Flag <span class="flag">INTERESSE_ATIVO=on</span> · app/interesse.py · 2 degraus grátis com planeta de verdade, pedido no 3º momento</p>
+
+  <h3>1) Ela toca numa área (ex.: Amor ❤️)</h3>
+  <div class="msg">Anotado, meu bem! ❤️ Agora a vó fala do amor olhando no SEU céu: o seu {Vênus} em {signo} mostra como o seu coração ama e o que ele pede pra ficar bem.
+Quer que a vó siga abrindo esse caderno? 🙏</div>
+  <div class="chips"><span class="chip">Continuar ❤️</span><span class="chip">Dinheiro 💰</span><span class="chip">Sorte 🍀</span><span class="chip">Saúde 🌿</span><span class="chip">Família 🏡</span><span class="chip">Já deu pra hoje 🙏</span></div>
+  <p class="src">TEXTO_ENTRADA · planetas por área: amor = Vênus, dinheiro = Júpiter, sorte = Júpiter, saúde = Sol, família = Lua</p>
+
+  <h3>2) Continuar: degrau 2 grátis (2º planeta cravado)</h3>
+  <div class="msg">Tem mais, meu bem ✨ A sua {Lua} em {signo} segura as suas emoções e mostra de onde vem a sua força do amor.
+Quer que a vó siga? 🙏</div>
+  <p class="src">TEXTO_DEGRAU2 · se faltar o 2º dado real, a vó PULA o degrau (nunca inventa) e vai direto pro pedido</p>
+
+  <h3>3) 3º momento: o PEDIDO (mensagem, nunca cadeado)</h3>
+  <div class="msg">Meu bem, a vó agradece por você chegar até aqui 💜
+Se o que a vó contou fez sentido pro seu coração, sabe como funciona: a vó vive de contribuições.
+A vó pode sentar com mais tempo com o seu céu e olhar as casas dessa parte da sua vida, e as influências de tudo que está chegando.
+Você pode contribuir com R$ 2, R$ 3 ou o valor que o seu coração mandar, de verdade 🙏
+Faz sentido pra você?</div>
+  <div class="chips"><span class="chip">Contribuir R$ 2 💛</span><span class="chip">Contribuir R$ 3 💛</span><span class="chip">Outro valor ✨</span><span class="chip">Agora não 🙏</span></div>
+  <p class="src">TEXTO_PEDIDO · se ela escolher outro valor, a vó pergunta digitando: "Sem problema nenhum, meu bem! ✨ Pode mandar o valor que o seu coração quiser doar 💜" 🙏</p>
+
+  <h3>Ramos do pedido</h3>
+  <div class="ramo"><div class="ramo-t">TOCOU "Contribuir R$ 2 / R$ 3 / valor digitado"</div>
+    Gera o Pix (mesma máquina do dinheiro) e a vó FICA EM SILÊNCIO até o pagamento cair. Nada de cobrança, nada de "já pay?".</div>
+  <div class="ramo"><div class="ramo-t">PIX CAIU</div>
+    <div class="msg">Recebi aqui, meu bem! 🙏✨ Deus abençoe muito o seu coração.
+Pelo que eu consegui olhar no seu mapa, sobre {tema}: {resumo do conteúdo pago}</div>
+    <p class="src">TEXTO_PAGO + o conteúdo real (as casas do céu dela, 🤖 montado na hora)</p></div>
+  <div class="ramo"><div class="ramo-t">TOCOU "Agora não 🙏" OU "Já deu pra hoje 🙏"</div>
+    <div class="msg">Que assim seja, meu bem! 🙏 A vó agradece do fundo do coração por você ter chegado até aqui.
+O que a vó contou já é seu, de graça, e fica guardadinho aqui no nosso papo.
+Qualquer coisa é só me chamar. ✨</div>
+    <p class="src">TEXTO_AGRADECE · o módulo SILENCIA de vez (status recusou)</p></div>
+
+  <div class="alert"><b>⚠️ O bug que o seu log de hoje mostrou:</b> depois do "Agora não", os chips antigos da tela continuam tocáveis. Quando ela toca (ex.: "Dinheiro 💰"), o módulo de degustação está em silêncio, e o toque cai na <b>IA livre</b>, que improvisa mensagens sem conteúdo: "Vamos falar de dinheiro, meu bem! Como você está se sentindo com essa leitura?". É daí que vieram as perguntas vazias do seu teste.</div>
+  <div class="fix"><b>✅ Correção proposta:</b> quando o módulo está em recusa e ela toca chip de área, a vó responde uma frase fixa e gentil (ex.: "Fica guardadinho pra quando você quiser, meu bem 🙏") em vez de deixar a IA improvisar. E o "meu bem" sai da repetição.</div>
+</section>
+
+<!-- F -->
+<section id="escadinha">
+  <h2><span class="num">F</span>Escadinha por área <span class="badge b-teste">🧪 em teste</span></h2>
+  <p class="sub">Flag <span class="flag">ESCADA_ATIVO=teste</span> · app/escada.py · textos aprovados NÃO mudam sem seu ok · é aqui que mora o check-in de sim e não</p>
+
+  <h3>1) Depois da 1ª leitura da área: o check-in <span class="badge b-ok">✅ o "sim ou não" que você perguntou</span></h3>
+  <div class="msg">Acha que o que a vó tá falando tem sentido pra você, meu bem?</div>
+  <div class="chips"><span class="chip">Sim, faz sentido ✨</span><span class="chip">Mais ou menos</span><span class="chip">Não</span></div>
+  <p class="src">TEXTO_CHECKIN + chips_checkin · cada toque vira métrica no funil (escada_checkin)</p>
+  <div class="ramo"><div class="ramo-t">SIM → TEXTO_CHECKIN_SIM</div>
+    <div class="msg">Que bênção, meu bem! Quando faz sentido, é o seu céu falando.
+Quer que a vó olhe os astros de HOJE pra essa parte da sua vida? ✨</div>
+    <div class="chips"><span class="chip">Quero ver ✨</span><span class="chip">Agora não 🙏</span></div></div>
+  <div class="ramo"><div class="ramo-t">MAIS OU MENOS → TEXTO_CHECKIN_MAIS_MENOS</div>
+    <div class="msg">Me conta, como você está se sentindo?
+Se quiser, seleciona uma das áreas abaixo
+que eu vejo o que os astros querem dizer pra você...</div>
+    <p class="src">chips do menu de áreas (Amor ❤️ / Sorte 🍀 / Saúde 🌿 / Família 🏡 / Dinheiro 💰)</p></div>
+  <div class="ramo"><div class="ramo-t">NÃO, 1ª vez: RELEITURA pelo outro lado do céu (sua regra de 10/09)</div>
+    <div class="msg">Tá bom, meu bem, cada céu fala de um jeito. Deixa a vó olhar pelo outro lado do seu céu. 🙏</div>
+    <div class="msg">🤖 releitura por OUTRO ângulo real (a Lua das emoções, ou o Sol no lar), UMA vez por área</div>
+    <div class="msg">E agora, meu bem?
+Essa leitura aqui reflete mais você?</div>
+    <div class="chips"><span class="chip">Sim, faz sentido ✨</span><span class="chip">Mais ou menos</span><span class="chip">Não</span></div></div>
+  <div class="ramo"><div class="ramo-t">NÃO de novo (2ª recusa): sem ping-pong</div>
+    <div class="msg">Sem problema nenhum, meu bem! Cada céu fala de um jeito. 🙏</div>
+    <p class="src">TEXTO_CHECKIN_NAO + volta pro menu de áreas</p></div>
+
+  <h3>2) "Quero ver ✨": os astros de HOJE (céu real do dia, 1 frase por planeta)</h3>
+  <div class="msg">Meu bem, olhei o céu de agora pra {o seu amor}: a Lua em {signo} deixa o dia {frase do elemento}. Vênus em {signo}: {frase}. Marte em {signo}: {frase}. Júpiter em {signo}: {frase}. O Sol em {signo}: {frase}.</div>
+  <p class="src">🤖 📌 frases do caderno do dia; exemplos do banco: "dia de passo firme e carinho nas coisas pequenas", "quem agradecer o pouco vê chegar o muito", "descanso também é cuidado, não é preguiça"</p>
+
+  <h3>3) O pedidinho do agrado</h3>
+  <div class="msg">E me faz um agrado, meu bem?
+Manda o perfil da vó pra uma pessoa que você ama e quer ver iluminada. A vó vive de boca a boca, de coração em coração. 🙏</div>
+  <div class="chips"><span class="chip">Já mandei ✨</span><span class="chip">Não quero mandar 🙏</span></div>
+  <p class="src">"Já mandei" responde só: "Obrigada, meu bem! ✨" e segue o fluxo · "Não quero mandar" acolhe sem insistir</p>
+
+  <h3>4) Casas + oferta do áudio R$ 14,90 (amor, sorte, saúde, família)</h3>
+  <div class="msg">Que bênção, meu bem! Agora vem o segredo de vó: o amor completo mora nas casas do seu céu. Tem uma casa lá que guarda a história do seu romance, e é nela que a leitura fica de verdade, com dia marcado e tudo. Eu abro isso pra você num áudio só seu por R$ 14,90.
+Quer que eu prepare? 🙏</div>
+  <div class="chips"><span class="chip">Quero ✨</span><span class="chip">Agora não 🙏</span></div>
+  <p class="src">_TEXTO_CASAS (mesma forma pra sorte, saúde e família) · sem hora de nascimento pede a hora antes, com jeitinho</p>
+  <div class="ramo"><div class="ramo-t">QUERO → PIX do áudio (fluxo G)</div>
+    <div class="msg">Que alegria, meu bem! ✨ O seu áudio já está no forno com todo o carinho. Pra fechar com chave de ouro, te mandei o seu Pix aí embaixo: escaneia o código ou copia e cola. Assim que acertar, o seu áudio chega quentinho no direct. 🙏</div></div>
+
+  <h3>5) Escadinha do DINHEIRO (tem período antes)</h3>
+  <div class="msg">🤖 pincelada do dinheiro: um detalhe bonito do céu DELA (Vênus, a casa do dinheiro), SEM citar valor nenhum</div>
+  <div class="msg">Me conta: pra verificar a influência do dinheiro no seu mapa, qual período você quer olhar?</div>
+  <div class="chips"><span class="chip">Essa semana ✨</span><span class="chip">Este mês ✨</span><span class="chip">Este ano ✨</span></div>
+  <div class="msg">Esse período do seu dinheiro, então, meu bem! Todo período tem a sua janela: o céu abre e fecha, e quem conhece a data entra na frente. ✨ Eu faço a leitura do dinheiro desse período num áudio só seu, te mando o pergaminho do seu céu com certificado e de brinde eu te mostro os melhores dias pra agir e receber. Fica R$ 14,90.
+Quer que eu prepare? 🙏</div>
+  <div class="chips"><span class="chip">Quero ✨</span><span class="chip">Agora não 🙏</span></div>
+
+  <h3>6) Curiosidade: a contribuição depois de N "Continuar" na mesma área (1x por área)</h3>
+  <div class="msg">Mas antes de continuar...
+Você sabe que a vó não cobra pra conversar, né?
+Inclusive eu abri esse canal especialmente pra isso...
+
+Por isso se o que eu te conto aqui toca o seu coração e tiver te inspirando, contribui com alguma coisa?
+Podem ser R$ 2, R$ 3 ou o valor que o seu coração mandar, de verdade.
+Com a sua contribuição a vó pode sentar com mais tempo, para entender o que o céu quer que você saiba ✨</div>
+  <div class="chips"><span class="chip">R$ 2 ✨</span><span class="chip">R$ 3 ✨</span><span class="chip">Outro valor ✨</span><span class="chip">Agora não 🙏</span></div>
+  <p class="src">_TEXTO_CURIOSIDADE · recusa: "Sem problema nenhum, meu bem! Tudo que a vó já te contou fica de graça aqui mesmo, é seu. Qualquer coisa é só me chamar. 🙏"</p>
+</section>
+
+<!-- G -->
+<section id="pix">
+  <h2><span class="num">G</span>Pix: cardápio, pagamento e obrigada <span class="badge b-ok">✅ no ar</span></h2>
+  <p class="sub">Flags <span class="flag">PIX_ATIVO=on</span> <span class="flag">PIX_PAGO_TEXTO_V2=on</span> · app/mp_pix_textos.py · variante escolhida pelo ID da lead (estável pra ela, variado no conjunto)</p>
+
+  <h3>1) Cardápio (anexado na resposta da Celeste quando o momento chega)</h3>
+  <div class="chips"><span class="chip">Básica R$2/R$3</span><span class="chip">Áudio R$14,90</span><span class="chip">Outro valor</span></div>
+  <div class="chips"><span class="chip">R$2</span><span class="chip">R$3</span><span class="chip">Outro valor</span></div>
+
+  <h3>2) Oferta da Básica (3 variantes)</h3>
+  <div class="msg">Ah{, nome}, que alegria! ✨ Consigo fazer a sinastria básica com uma pessoa e as previsões semanais de saúde, amor, família, dinheiro e sorte. É com o valor que você escolher: R$ 2, R$ 3, ou você me sugere outro. Qual fica de boa pra você? 🙏</div>
+  <div class="msg">Que bom te querendo mais estrelas{, nome}! ✨ A sinastria básica com uma pessoa e as previsões semanais saem com o valor que você decidir: R$ 2, R$ 3, ou me sugere um valor do seu jeito. Sem pressão nenhuma, tá? 🙏</div>
+  <div class="msg">Você merece olhar pro seu céu{, nome}, sabia? ✨ Sinastria básica com uma pessoa e previsões semanais de amor, saúde, família, dinheiro e sorte, com o valor que você quiser: R$ 2, R$ 3, ou o que você quiser sugerir. Qual você escolhe? 🙏</div>
+
+  <h3>3) Outro valor / não entendi</h3>
+  <div class="msg">Sem problema nenhum! ✨ Me diz só: quanto você quer contribuir? Pode ser qualquer valor a partir de R$ 1, é pix na hora. 🙏</div>
+  <div class="msg">Não consegui entender o valor, me perdoa{, nome}? 🙏 Me manda só o número, tipo 5 ou 10, que eu preparo seu Pix rapidinho. ✨</div>
+  <div class="msg">Eita, não deu pra ler o valor{, nome}! 🙏 Escreve só o número (5, 10 ou o que você quiser) e eu já mando o código do Pix. ✨</div>
+
+  <h3>4) Pix gerado (3 peças: aviso, link/cartão, botão)</h3>
+  <div class="msg">Pix copia e cola abaixo 👇🏻
+[código copia e cola]</div>
+  <div class="msg">Esse link aqui é o caminho mais fácil pelo celular, meu bem: {link} É só abrir, escolher Pix e o próprio site te dá o código pra copiar. Se preferir cartão, dá pra pagar por lá também. 🙏</div>
+  <div class="msg">Se estiver no celular, é só tocar no botão aqui embaixo, meu bem. Não precisa de conta no Mercado Pago, viu? É só abrir, escolher Pix ou cartão e o site te leva direto. 🙏</div>
+  <div class="chips"><span class="chip">Doar aqui</span> (botão de pagamento)</div>
+
+  <h3>5) BOTÃO Doar aqui (copy exata sua, 09/09)</h3>
+  <div class="msg">Obrigada, meu bem ✨🙏🏻
+
+A vó agradece qualquer valor que o seu coração mandar 💜✨</div>
+
+  <h3>6) PAGOU: texto v2 ligado hoje (10/09), 3 variantes · a ÁUDIO usa o texto antigo</h3>
+  <div class="msg">O Pix chegou{, nome}! ✨🙏 A vó agradeceu de olhos fechados e coração aberto.
+
+Quem faz o bem com o coração livre atrai de volta em dobro, e o universo já anotou seu nome do lado bom da lista. 💜
+
+Agora é minha vez: vou sentar com seu céu e te contar as influências do céu em você. Sua sinastria básica e suas previsões semanais ficam prontas com todo carinho, e eu te procuro aqui. ✨</div>
+  <div class="msg">Recebi{, nome}, e meu coração quentou! 💜✨ Obrigada pela confiança no seu céu.
+
+A generosidade que sai das suas mãos volta pra você multiplicada em caminhos abertos, saúde e coisas boas chegando.
+
+Vou sentar com seu céu e te contar as influências do céu em você: sua sinastria básica e suas previsões semanais já estão nas mãos da vó, fica de olho aqui no direct. 🙏✨</div>
+  <div class="msg">Chegou{, nome}! 🙏✨ A vó sempre diz: o que a gente dá com alegria nunca falta na nossa vida.
+
+Que esse ciclo se abra pra você cheio de luz, proteção e boas surpresas.
+
+Agora me permite caprichar: vou sentar com seu céu e te contar as influências do céu em você. Sua sinastria básica e suas previsões semanais merecem todo o cuidado do mundo e eu já estou nelas. 💜</div>
+  <p class="src">v1 (reserva, se o v2 for desligado): "O Pix chegou e meu coração quentou... em breve te procuro por aqui. ✨" e mais 2 variantes</p>
+
+  <h3>7) Falha do banco / ela desistiu na hora do Pix</h3>
+  <div class="msg">Eita, o banco tava dormindo agora{, nome}! 🙏 Tenta de novo num minutinho me mandando o valor de novo, tá? ✨</div>
+  <div class="msg">Sem problema nenhum! ✨ Me chama aqui quando quiser que eu preparo seu Pix com todo carinho. 🙏</div>
+</section>
+
+<!-- H -->
+<section id="sinastria">
+  <h2><span class="num">H</span>Sinastria do dinheiro <span class="badge b-teste">🧪 em teste</span></h2>
+  <p class="sub">Flag <span class="flag">SINASTRIA_OFERTA=teste</span> · app/sinastria.py · entra no caminho do dinheiro, depois do período escolhido</p>
+  <div class="msg">Você já está pensando em algum período pra gente verificar a influência do dinheiro no seu mapa? ✨</div>
+  <p class="src">abre o tema (a IA responde antes; esta frase cola depois)</p>
+  <div class="msg">Pra eu olhar isso com todo o carinho, me manda os dados de nascimento de duas pessoas, meu bem: você e mais alguém que mora no seu coração. O dia que cada uma nasceu, a hora se souber, e a cidade. Com os dois perfis na mão eu cruzo os dois céus e vejo como eles conversam. 🙏</div>
+  <div class="chips"><span class="chip">Já mandei ✨</span><span class="chip">Não quero mandar 🙏</span></div>
+  <div class="ramo"><div class="ramo-t">MANDOU OS DOIS NASCIMENTOS → oferta do áudio</div>
+    <div class="msg">Que bênção, meu bem! Agora eu sento com os dois céus abertos e gravo um áudio só seu, com a minha interpretação de vó: a influência do dinheiro no período que você pensou, a leitura completa da relação entre vocês, e a previsão do mês e do ano. Tudo por R$ 14,90. Quer que eu prepare? 🙏</div></div>
+  <div class="ramo"><div class="ramo-t">TOCOU "Já mandei" SEM OS DADOS NO PAPO (fixo, sem prometer nada)</div>
+    <div class="msg">Meu bem, os dados ainda não chegaram aqui no papo, viu? Me manda o dia, a hora se souber, e a cidade de cada uma das duas pessoas, que eu já deixo tudo anotadinho pro nosso encontro de céus. 🙏</div></div>
+  <div class="ramo"><div class="ramo-t">DISSE SIM À OFERTA → confirmação (a vó espera os dados em silêncio)</div>
+    <div class="msg">Que alegria, meu bendito! Vou preparar com todo o carinho. 🙏</div></div>
+  <div class="ramo"><div class="ramo-t">TOCOU "Não quero mandar 🙏"</div>
+    <div class="msg">Sem problema nenhum, meu bem! Faço a leitura só do seu céu, do jeitinho que estiver, que já é bonito demais. O que eu te contei fica de graça aqui mesmo. 🙏</div></div>
+</section>
+
+<!-- I -->
+<section id="revelacao">
+  <h2><span class="num">I</span>Anúncio da revelação (ponte pro valor) <span class="badge b-ok">✅ no ar</span></h2>
+  <p class="sub">app/revelacao.py · dispara quando há conteúdo no card dela; o valor aparece DEPOIS do toque em "Olhar mais profundo"</p>
+
+  <h3>1) O anúncio (bloco fixo aprovado por você, com 1 parágrafo 🤖 no meio)</h3>
+  <div class="msg">Ah, meu anjo, agora você me abriu o coração! ✨
+
+O seu mapa eu já te mostrei, mas ele é só o começo, sabe? O que eu quero te mandar agora é {o que o céu dela pede agora}
+
+Tudo interpretado com carinho, do seu jeito, com o seu céu de verdade. 🌙
+
+Meu amor, pelo meu trabalho aqui eu peço uma pequena contribuição, com R$ 2, R$ 3 ou outro valor, o que seu coração mandar, meu anjo. Sem pressa e sem pressão nenhuma. 🙏
+
+Posso revelar o que os astros estão querendo te contar? ✨</div>
+  <div class="chips"><span class="chip">Olhar mais profundo</span> → abre o menu</div>
+
+  <h3>2) O menu das 4</h3>
+  <div class="chips"><span class="chip">Minha semana</span><span class="chip">Meu ano</span><span class="chip">Meu aniversário</span><span class="chip">Sinastria</span></div>
+  <p class="src">TIPOS_DE_REVELACAO · sem contexto na conversa, a ordem padrão sugerida é: Minha semana, Meu ano, Sinastria</p>
+
+  <h3>3) Pedidos de dados (quando faltar o do outro céu)</h3>
+  <div class="msg">Meu anjo, pra eu olhar o céu dos dois juntinho eu preciso conhecer a outra pessoa também. ✨
+
+Me conta o nome dela e a data de nascimento? Se você souber o horário e a cidade, melhor ainda, mas sem horário eu já dou meu jeito carinhoso. 🙏
+
+Pode me contar?</div>
+  <p class="src">PEDIDO_SINASTRIA · tudo 💜 editável no painel por conta; o que você salvar vence o padrão</p>
+  <div class="note"><b>Regra do momento instigante (sua, 07/09):</b> no pincelamento do chip "Olhar mais profundo" a IA dá SÓ a pincelada de um detalhe bonito do céu dela, e NUNCA menciona valor, preço, R$ ou pix nesse texto. Quem avisa da contribuição é o anúncio.</div>
+</section>
+
+<!-- J -->
+<section id="instiga">
+  <h2><span class="num">J</span>Instiga de retomada <span class="badge b-off">⏸️ crons pausados, nada dispara</span></h2>
+  <p class="sub">Os textos que a vó usaria pra puxar conversa depois do mapa (cron "isquinha" parado em 10/09, religa só com seu ok)</p>
+  <div class="msg">[variante A] {primeiro_nome}, estava olhando o seu mapa aqui e encontrei uma coisa que me deu arrepio ✨ Posso te contar o que foi?</div>
+  <div class="msg">[variante B] Meu bem, essa semana o céu anda mexido: tem algo acontecendo bem em cima do seu Sol ✨ Quer que eu te conte o que é?</div>
+  <div class="msg">[variante C] {primeiro_nome}, encontrei um recado escondido no seu mapa que vai fazer diferença nos seus próximos dias ✨ Posso te contar?</div>
+  <div class="msg">[sem tríade] Meu bem, essa semana o céu andou mexido e separou um recado especial pra você ✨ Quer que eu te conte o que é?</div>
+  <div class="msg">[resposta após o sim, com tríade] Prontinho, meu bem! Olhei seu mapa com carinho: seu Sol em {sol} e sua Lua em {lua} contam uma história bonita, e o céu desta semana mexe justamente aí ✨ Depois me conta o que sentiu, estou aqui.</div>
+  <p class="src">instagram_webhook.INSTIGA_VARIANTE A/B/C, SEM_TRIADE, FALLBACK · tudo com opt-out respeitado</p>
+</section>
+
+<!-- K -->
+<section id="saidas">
+  <h2><span class="num">K</span>Saídas e opt-out (os Nãos de todo o sistema)</h2>
+  <p class="sub">Todo "não" é respeitado na hora, sem refilar e sem cobrar de novo</p>
+  <ul>
+    <li><b>"Não quero mais 🙏"</b> (chips do mapa, reforço e áreas): opt-out GERAL. A vó para de puxar assunto com ela pra sempre; se a lead escrever, o papo normal segue.</li>
+    <li><b>"Agora não 🙏"</b> (pedido de contribuição, agrado, casas, período): silencia SÓ aquele módulo, com agradecimento gentil. Nada de insistência.</li>
+    <li><b>"Já deu pra hoje 🙏"</b> (chips da degustação): agradece e para de falar, igual ao "Agora não".</li>
+    <li><b>"Agora não 🙈"</b> (reforço do mapa): silencia só o reforço; a instiga normal continua valendo.</li>
+    <li><b>"Não faz 🙏"</b> (chips da leitura): releitura pelo outro lado do céu UMA vez; na 2ª recusa, menu de áreas. Sem ping-pong.</li>
+    <li><b>Palavra escrita</b> ("chata", "para", "não quero"): responde uma vez com classe, registra "reclamou" e silencia as automáticas.</li>
+  </ul>
+</section>
+
+<!-- L -->
+<section id="pendentes">
+  <h2><span class="num">L</span>Pontos pra você decidir</h2>
+  <ul>
+    <li><b>1. Corrigir o bug do log de hoje?</b> Depois do "Agora não", o toque em chip antigo cai na IA livre e ela improvisa pergunta sem conteúdo (mostrado na seção E). Tenho a correção pronta.</li>
+    <li><b>2. Reescrever os degraus da degustação?</b> Cada mensagem ensinaria 1 curiosidade REAL do céu dela (planeta, signo, grau, o que significa), no máximo 1 pergunta por mensagem, e o "meu bem" sem repetição.</li>
+    <li><b>3. Duas portas de contribuição no mesmo caminho:</b> a degustação pede R$ 2 / R$ 3 (seção E) e a escadinha pede por "curiosidade" (seção F). Na mesma conversa a lead pode ouvir os dois pedidos. Manter os dois, ou deixar só um por jornada?</li>
+    <li><b>4. Regra de comentário "mapa":</b> hoje só "semana" responde comentário com presente. Quem comenta "mapa" cai nas boas-vindas. Recriar a regra "mapa" ou deixar assim?</li>
+    <li><b>5. Crons:</b> os 23 seguem pausados desde as 11h03 de hoje (seu pedido). Nada automático dispara: nem bom dia, nem instiga, nem relatórios. Religio só com seu ok.</li>
+    <li><b>6. Semana Mapeada</b> continua no cofre, com a proposta de trânsitos aprovada por você em 09/09 guardada. É só dizer quando abrir.</li>
+    <li><b>7. Escadinha e Sinastria seguem em modo TESTE</b> (só entra quem você definir). Confirmar se os textos da seção F e H vão pra todas as leads ou continuam no teste.</li>
+  </ul>
+</section>
+
+<p class="foot">Catálogo vivo: extrai das flags do pod brisadocs e dos textos no ar em 10/09/2026. Nada aqui foi alterado no bot; é só revisão. Página irmã: <a href="revisao-iscas.html" style="color:var(--gold)">estado das iscas e estratégias</a></p>
+<div class="voltar"><a href="revisao-iscas.html">← voltar pro estado geral das iscas</a></div>
+</div>
+</body>
+</html>
