@@ -25,8 +25,14 @@
   .depois h3{color:var(--verde)}
   .turno{margin-bottom:14px}
   .ela{color:var(--dim);font-style:italic;font-size:.92em;margin-bottom:4px}
+  .vobox{position:relative}
   .vo{background:var(--card2);border-radius:10px;padding:10px 12px;white-space:pre-line;font-size:.95em}
   .vo em{color:var(--dim);font-size:.85em}
+  .vo.editando{outline:2px dashed var(--ouro)}
+  .vo.ajustado{border-left:4px solid var(--verde)}
+  .edt{position:absolute;top:6px;right:6px;background:#3a2a66;color:var(--dim);border:1px solid #5b4899;border-radius:12px;font-size:.72em;padding:2px 10px;cursor:pointer;font-family:inherit}
+  .edt:hover{color:var(--txt)}
+  .edt.ok{background:#1d3a2a;color:var(--verde);border-color:var(--verde)}
   .ruim{color:var(--verm);font-size:.85em;margin-top:6px}
   .bom{color:var(--verde);font-size:.85em;margin-top:6px}
   .fato{background:var(--card);border-radius:10px;padding:12px 16px;margin-bottom:10px;border-left:4px solid var(--ouro)}
@@ -34,6 +40,19 @@
   .fato small{display:block;color:var(--dim);margin-top:4px;font-size:.9em}
   .nota{background:#2a1f4d;border:1px solid #4a3a75;border-radius:10px;padding:14px 16px;color:var(--dim);font-size:.95em;margin-top:20px}
   .chip{display:inline-block;background:#3a2a66;border:1px solid #5b4899;border-radius:16px;padding:2px 12px;font-size:.85em;margin:2px}
+  /* feedback */
+  #fb{background:var(--card);border:2px solid var(--roxo);border-radius:14px;padding:18px;margin-top:40px}
+  #fb h2{margin:0 0 10px;border:none;color:var(--roxo)}
+  .fb-item{background:var(--card2);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:.92em}
+  .fb-item b{color:var(--ouro);font-size:.85em}
+  .fb-item .novo{white-space:pre-line;margin-top:6px;border-left:3px solid var(--verde);padding-left:10px}
+  .fb-item .de{color:var(--dim);font-size:.85em;white-space:pre-line;margin-top:4px}
+  .btn{background:var(--roxo);color:#1a1030;border:none;border-radius:10px;padding:10px 18px;font-size:1em;font-weight:bold;cursor:pointer;font-family:inherit;margin:8px 6px 0 0}
+  .btn.sec{background:#3a2a66;color:var(--txt)}
+  .btn.mini{padding:3px 10px;font-size:.75em;border-radius:8px}
+  .fb-vazio{color:var(--dim);font-size:.92em}
+  .dica{color:var(--dim);font-size:.88em;margin-top:10px}
+  #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--verde);color:#1a1030;padding:10px 22px;border-radius:20px;font-weight:bold;display:none;z-index:9}
 </style>
 </head>
 <body>
@@ -44,10 +63,10 @@
 
 <h2>O que muda, em 5 linhas</h2>
 <ul class="mudancas">
-  <li><b>1. Caderno de verdade.</b> Cada área tem 5 a 6 fatos do mapa dela, prontos e vestidos. Hoje só tem 2, e a conversa repete.</li>
+  <li><b>1. Caderno de verdade.</b> Cada lead ganha um caderno montado do próprio mapa: planetas, casas, como a pessoa é, forças e atenções. Hoje só tem 2 frases genéricas por área, e a conversa repete.</li>
   <li><b>2. Memória.</b> A vó anota o que já contou. Continuar nunca repete fato, sempre traz gaveta nova.</li>
   <li><b>3. Fim que abre.</b> Na última gaveta, em vez de "o caderno da vó não fecha", a vó faz uma pergunta que puxa ela a contar.</li>
-  <li><b>4. Boca a boca 1 vez.</b> O pedidinho de compartilhar sai 1 vez por lead, no descanso natural do papo. Não mais de uma.</li>
+  <li><b>4. Boca a boca 1 vez.</b> O pedidinho de compartilhar sai 1 vez por lead, no descanso natural do papo.</li>
   <li><b>5. Obrigada que continua.</b> Depois do agrado, a vó agradece E volta ao que estava contando. Nunca abandona a lead no menu.</li>
 </ul>
 
@@ -58,10 +77,10 @@
 <h3>ANTES: hoje, de verdade</h3>
 
 <div class="turno"><div class="ela">Ela toca: Amor ❤️</div>
-<div class="vo">Anotado, meu bem! ❤️
+<div class="vobox"><div class="vo" data-id="a1" data-label="ANTES: entrada do Amor">Anotado, meu bem! ❤️
 O seu Vênus em Gêmeos 6° traz um jeito leve e curioso de amar...
 
-Quer que a vó siga abrindo esse caderno? 🙏</div></div>
+Quer que a vó siga abrindo esse caderno? 🙏</div></div></div>
 
 <div class="turno"><div class="ela">Ela toca: Continuar ❤️</div>
 <div class="vo">A sua Lua em Libra 8° sente pela paz... briga feia te gasta...</div>
@@ -89,58 +108,58 @@ Quer que a vó siga abrindo esse caderno? 🙏</div></div>
 <h3>DEPOIS: simulado, motor novo</h3>
 
 <div class="turno"><div class="ela">Ela toca: Amor ❤️</div>
-<div class="vo">Anotado, meu bem! ❤️
+<div class="vobox"><div class="vo" data-id="d1" data-label="DEPOIS: entrada do Amor">Anotado, meu bem! ❤️
 
 O seu Vênus em Gêmeos 6° ama conversando: palavra, risada e assunto que não acaba é o seu jeito de ficar perto de quem você gosta.
 
-Quer que a vó siga abrindo esse caderno? 🙏</div></div>
+Quer que a vó siga abrindo esse caderno? 🙏</div></div></div>
 
 <div class="turno"><div class="ela">Ela toca: Continuar ❤️</div>
-<div class="vo">Tem mais, meu bem ✨
+<div class="vobox"><div class="vo" data-id="d2" data-label="DEPOIS: Continuar 1">Tem mais, meu bem ✨
 
 A sua Lua em Libra 8° sente pela paz: briga feia te gasta, conversa boa te repõe. É por isso que você suaviza até as pedras do caminho.
 
-Quer que a vó siga? 🙏</div></div>
+Quer que a vó siga? 🙏</div></div></div>
 
 <div class="turno"><div class="ela">Ela toca: Continuar ❤️</div>
-<div class="vo">Tem mais, meu bem ✨
+<div class="vobox"><div class="vo" data-id="d3" data-label="DEPOIS: Continuar 2">Tem mais, meu bem ✨
 
 O seu Sol em Touro 25° ama devagar: corpo, calma e carinho que não desiste na primeira pedra. Quem te ama de verdade é quem sabe esperar o seu tempo.
 
-Quer que a vó siga? 🙏</div></div>
+Quer que a vó siga? 🙏</div></div></div>
 
 <div class="turno"><div class="ela">Ela toca: Continuar ❤️</div>
-<div class="vo">Tem mais, meu bem ✨
+<div class="vobox"><div class="vo" data-id="d4" data-label="DEPOIS: Continuar 3">Tem mais, meu bem ✨
 
 E olha que bonito: o seu Vênus e a sua Lua conversam no céu, Gêmeos com Libra. Quem ama conversando encontra um amor que tem paz. Os seus dois jeitos de amar se ajudam.
 
-Quer que a vó siga? 🙏</div></div>
+Quer que a vó siga? 🙏</div></div></div>
 
 <div class="turno"><div class="ela">Ela toca: Continuar ❤️ (última gaveta)</div>
-<div class="vo">Tem mais, meu bem ✨
+<div class="vobox"><div class="vo" data-id="d5" data-label="DEPOIS: última gaveta">Tem mais, meu bem ✨
 
 O seu Júpiter em Gêmeos 13° fica perto da sua subida, o ascendente: riso e palavra abrem porta pra você. E o seu coração cresce quando conta o que sente.
 
 Me conta: no amor, você é mais de esperar ou de dar o primeiro passo? ❤️
 
 Toca aí se quiser voltar aqui depois 👇🏻
-<span class="chip">Amor ❤️</span><span class="chip">Dinheiro 💰</span><span class="chip">Sorte 🍀</span><span class="chip">Saúde 🌿</span><span class="chip">Família 🏡</span><span class="chip">Já deu pra hoje ✨</span></div>
+<span class="chip">Amor ❤️</span><span class="chip">Dinheiro 💰</span><span class="chip">Sorte 🍀</span><span class="chip">Saúde 🌿</span><span class="chip">Família 🏡</span><span class="chip">Já deu pra hoje ✨</span></div></div>
 <div class="bom">✔ 5ª gaveta nova, e o fim é pergunta que puxa ela a contar</div></div>
 
 <div class="turno"><div class="ela">Ela digita: Já mandei ✨</div>
-<div class="vo">Obrigada, meu bem! 🙏 Que o seu gesto volte em dobro.
+<div class="vobox"><div class="vo" data-id="d6" data-label="DEPOIS: obrigada que continua">Obrigada, meu bem! 🙏 Que o seu gesto volte em dobro.
 
 E a vó ainda tem gaveta no seu caderno do amor: o seu Vênus em Gêmeos diz que você se abre quando confia.
 
 Me conta: com quem você mais gosta de conversar sem pressa nenhuma? ❤️
 
-<span class="chip">Amor ❤️</span><span class="chip">Dinheiro 💰</span><span class="chip">Sorte 🍀</span><span class="chip">Saúde 🌿</span><span class="chip">Família 🏡</span></div>
+<span class="chip">Amor ❤️</span><span class="chip">Dinheiro 💰</span><span class="chip">Sorte 🍀</span><span class="chip">Saúde 🌿</span><span class="chip">Família 🏡</span></div></div>
 <div class="bom">✔ agradece E volta ao papo, com fato e pergunta</div></div>
 </div>
 </div>
 
 <h2>O caderno de fatos dela (Amor)</h2>
-<p style="color:var(--dim);margin-bottom:12px">Tudo tirado do mapa real de didioudidi. Cada fato já saiu das 2 repetidas de hoje. As outras áreas ganham o mesmo tratamento, com os fatos DELA (sem emprestar planeta de uma área pra outra; um fato já contado pode voltar, mas nunca fingindo que é novo).</p>
+<p style="color:var(--dim);margin-bottom:12px">Tudo tirado do mapa real de didioudidi. Cada fato já saiu das 2 repetidas de hoje. As outras áreas ganham o mesmo tratamento, com os fatos DELA (sem emprestar planeta de uma pra outra; um fato já contado pode voltar, mas nunca fingindo que é novo).</p>
 
 <div class="fato"><b>Vênus em Gêmeos 6°</b> · ama conversando: palavra e assunto que não acaba é o jeito de ficar perto. Forte sempre, e mais ainda nos dias de boa prosa.
 <small>Já foi a entrada. Quando volta, é vestido de outro jeito: "o Vênus que ama conversando também é quem escolhe suas companhias".</small></div>
@@ -157,14 +176,93 @@ Me conta: com quem você mais gosta de conversar sem pressa nenhuma? ❤️
 <div class="fato"><b>Júpiter em Gêmeos 13°, perto do ascendente</b> · riso e palavra abrem porta; o coração cresce quando conta o que sente.
 <small>Gaveta nova. Fecha o caderno com pergunta aberta, nunca com "o caderno não fecha".</small></div>
 
-<h2>Obrigada que continua (pra todas as áreas)</h2>
-<p style="color:var(--dim)">Depois de "Já mandei", "Mando sim" ou do chip de agradecer: a vó agradece em 1 linha, lembra onde o papo parou (com um fato), e pergunta algo que puxa ela a contar. O menu de áreas continua na tela, mas a vó não abandona a conversa.</p>
+<h2>O caderno completo (proposta, do jeito que você pediu)</h2>
+<p style="color:var(--dim);margin-bottom:12px">Cada lead ganha um caderno montado do mapa DELA, com muito mais carne. Estrutura por blocos, cada bloco em 1 a 3 linhas na voz da vó:</p>
+
+<div class="fato"><b>Cada planeta</b> · em que signo, em que casa, como a pessoa é por causa daquilo, as FORÇAS (virtudes) e as ATENÇÕES (o lado que precisa de cuidado). Exemplo: Vênus em Gêmeos: ama conversando (força); se aborrece, muda de assunto e guarda a mágoa pra depois (atenção).
+<small>Sol, Lua, ascendente, Mercúrio, Vênus, Marte, Júpiter, Saturno e companhia.</small></div>
+
+<div class="fato"><b>Cada casa</b> · a área da vida que aquela casa guarda, e quem mora nela. Exemplo: casa do trabalho com Sol ali: a pessoa nasceu pra aparecer no que faz (força); cuidado com querer carregar tudo sozinha (atenção).
+<small>As 12 casas do mapa dela.</small></div>
+
+<div class="fato"><b>As pontes</b> · planetas que conversam entre si (e planetas que brigam). Cada ponte vira 1 bloco: o que facilita, o que repete padrão.
+<small>Aspectos reais, com distância honesta.</small></div>
+
+<div class="fato"><b>O dia</b> · trânsitos de hoje cruzados com o mapa dela. Esse bloco é diário, calculado à meia noite em lote (já existe hoje, o caderno do dia).
+<small>Fora do caderno fixo: nasce e morre todo dia.</small></div>
+
+<p style="color:var(--dim)">Tudo guardado no banco, por lead. O chat serve gaveta por gaveta sem repetir. E você pode LER e EDITAR cada bloco no painel: corrigiu a voz uma vez, vale pra todas as leads.</p>
+
+<div id="fb">
+<h2>✏️ Meus ajustes</h2>
+<p class="fb-vazio" id="fb-vazio">Nenhum ajuste ainda. Toque em "✏️ editar" em qualquer fala da vó (ou do antes) e escreva do seu jeito. O ajuste fica guardado aqui.</p>
+<div id="fb-lista"></div>
+<button class="btn" id="fb-copiar" style="display:none">📋 Copiar ajustes</button>
+<button class="btn sec" id="fb-limpar" style="display:none">🗑 Limpar tudo</button>
+<p class="dica">Ao terminar, toque em copiar e cole aqui no chat. O ajuste vira tarefa e a página é atualizada com ele anotado aqui embaixo, com status (feito ou pendente).</p>
+<div id="fb-anotados"></div>
+</div>
 
 <div class="nota">🌱 <b>Notas:</b><br>
-1. Trânsitos do dia entram como fatos extras quando a lead tem cidade no caderno (o motor já monta isso por cidade).<br>
+1. Trânsitos do dia entram como fatos extras quando a lead tem cidade no caderno.<br>
 2. O mesmo gabarito vale pras outras 4 áreas, cada uma com os fatos do mapa da própria lead.<br>
 3. Nada disso sai sem o seu ok aqui. Você aponta palavra, a vó refaz.</div>
 
 </div>
+<div id="toast">Ajuste guardado ✔</div>
+<script>
+(function(){
+  var KEY='fb_amor_didi_v1';
+  var ANOTADOS=[{"de":"(vazio)","novo":"Ajustes aprovados por você aparecem anotados aqui."}];
+  function carga(){try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return[]}}
+  function salva(a){localStorage.setItem(KEY,JSON.stringify(a))}
+  function toast(){var t=document.getElementById('toast');t.style.display='block';setTimeout(function(){t.style.display='none'},1400)}
+  function render(){
+    var a=carga(),L=document.getElementById('fb-lista');
+    document.getElementById('fb-vazio').style.display=a.length?'none':'block';
+    document.getElementById('fb-copiar').style.display=a.length?'inline-block':'none';
+    document.getElementById('fb-limpar').style.display=a.length?'inline-block':'none';
+    L.innerHTML='';
+    a.forEach(function(it,i){
+      var d=document.createElement('div');d.className='fb-item';
+      d.innerHTML='<b>'+it.label+'</b><div class="novo"></div>'+(it.de?'<div class="de"></div>':'')+'<button class="btn sec mini" style="margin-top:8px">🗑 tirar</button>';
+      d.querySelector('.novo').textContent=it.novo;
+      if(it.de)d.querySelector('.de').textContent='de onde veio: '+it.de;
+      d.querySelector('button').onclick=function(){a.splice(i,1);salva(a);render();document.querySelectorAll('.vo[data-id]').forEach(function(b){if(b.dataset.id===it.id){b.classList.remove('ajustado');var bt=b.parentNode.querySelector('.edt');if(bt){bt.classList.remove('ok');bt.textContent='✏️ editar'}}})};
+      L.appendChild(d);
+    });
+  }
+  document.querySelectorAll('.vo[data-id]').forEach(function(b){
+    b.dataset.orig=b.innerText;
+    var box=b.parentNode,btn=document.createElement('button');
+    btn.className='edt';btn.textContent='✏️ editar';
+    btn.onclick=function(){
+      if(b.isContentEditable){
+        b.contentEditable='false';b.classList.remove('editando');btn.textContent='✏️ editar';btn.classList.remove('ok');
+        var novo=b.innerText.trim(),orig=b.dataset.orig.trim();
+        if(novo===orig)return;
+        var a=carga().filter(function(x){return x.id!==b.dataset.id});
+        a.push({id:b.dataset.id,label:b.dataset.label,de:orig,novo:novo,ts:new Date().toISOString()});
+        salva(a);b.classList.add('ajustado');btn.classList.add('ok');btn.textContent='✔ ajustado';render();toast();
+      }else{
+        b.contentEditable='true';b.classList.add('editando');btn.textContent='💾 salvar';b.focus();
+        try{document.execCommand('selectAll',false,null);document.getSelection().collapseToEnd()}catch(e){}
+      }
+    };
+    box.appendChild(btn);
+  });
+  document.getElementById('fb-copiar').onclick=function(){
+    var a=carga(),txt='AJUSTES DA PÁGINA (caderno do amor)\n\n';
+    a.forEach(function(it){txt+='['+it.label+']\nDE:\n'+it.de+'\n\nPRA:\n'+it.novo+'\n\n---\n\n'});
+    (navigator.clipboard&&navigator.clipboard.writeText(txt)||Promise.reject()).then(function(){toast()},function(){
+      var t=document.createElement('textarea');t.value=txt;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);toast();
+    });
+  };
+  document.getElementById('fb-limpar').onclick=function(){if(confirm('Tirar todos os ajustes guardados?')){salva([]);render()}};
+  var an=document.getElementById('fb-anotados');
+  ANOTADOS.forEach(function(it){var d=document.createElement('div');d.className='fb-item';d.innerHTML='<b>📌 anotado</b><div class="novo"></div>';d.querySelector('.novo').textContent=it.novo;an.appendChild(d)});
+  render();
+})();
+</script>
 </body>
 </html>
