@@ -808,7 +808,7 @@ function renderAspects(){
 
 /* ===== portão de WhatsApp: libera o resto do céu ===== */
 /* telemetria anonima do funil (ADR-0007): so o passo, sem dado pessoal */
-const TRACK_API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-events';
+const TRACK_API='https://brisar.46-225-43-58.sslip.io/api/mapa-events';
 const PREVIEW=location.hash==='#preview';
 const VISIT='v'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
 /* link rastreado por pessoa (ADR-0002): quem chegou pelo /r/<token> do direct
@@ -830,7 +830,7 @@ track('enter');
 // pessoa for embora sem deixar o WhatsApp. Antes disso ela sumia inteira.
 // Nao manda contato nenhum, e o mesmo id de visita da telemetria costura os
 // dois se ela voltar e deixar o numero.
-const CHARTS_API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-charts';
+const CHARTS_API='https://brisar.46-225-43-58.sslip.io/api/mapa-charts';
 let chartSent=false;
 // Tríade (Sol/Lua/Ascendente) que o painel mostra no card do kanban: mesma
 // conta que a página renderiza, pra Adriana ver de quem se trata num olhar.
@@ -854,7 +854,7 @@ function sendChart(){
   }catch(e){}
 }
 
-const LEADS_API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-leads';
+const LEADS_API='https://brisar.46-225-43-58.sslip.io/api/mapa-leads';
 const WA_FIX={'55':'51 98765 4321','34':'612 345 678','351':'912 345 678','1':'415 555 2671','54':'9 11 5555 5555'};
 const waP=fd('waPais'),waN=fd('waNum'),waD=fd('waDdi');
 waP.addEventListener('change',()=>{waD.textContent='+'+waP.value;waN.placeholder=WA_FIX[waP.value]||'número completo';fd('waErr').style.display='none';waN.focus()});

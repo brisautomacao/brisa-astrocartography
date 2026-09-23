@@ -301,7 +301,7 @@ footer{text-align:center;padding:48px 0 0;color:var(--brass);font-family:Fraunce
    Enquanto estiverem vazios, os botões avisam que está quase pronto.
 ===================================================================== */
 /* telemetria anonima do funil (ADR-0007): so o passo, sem dado pessoal */
-const TRACK_API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-events';
+const TRACK_API='https://brisar.46-225-43-58.sslip.io/api/mapa-events';
 const PREVIEW=location.hash==='#preview';
 const VISIT='v'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
 /* link rastreado por pessoa (ADR-0002): quem chegou pelo /r/<token> do direct
@@ -323,7 +323,7 @@ track('enter');
 // pessoa for embora sem deixar o WhatsApp. Antes disso ela sumia inteira.
 // Nao manda contato nenhum, e o mesmo id de visita da telemetria costura os
 // dois se ela voltar e deixar o numero.
-const CHARTS_API='https://brisadocs.46-225-43-58.sslip.io/api/mapa-charts';
+const CHARTS_API='https://brisar.46-225-43-58.sslip.io/api/mapa-charts';
 let chartSent=false;
 function sendChart(){
   if(PREVIEW||chartSent||!userData)return;
