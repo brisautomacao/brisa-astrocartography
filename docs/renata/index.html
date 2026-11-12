@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renata Bordados: Vinted hoje vs canal próprio</title>
+<style>
+  :root{
+    --bg:#0F1023; --well:#0B0C1A; --panel:#1B1D3A; --sunken:#141633; --raised:#232649;
+    --border:#2B2E57; --border-strong:#3D4170; --text:#EEE; --muted:#A9B4C7;
+    --grad:linear-gradient(45deg,#D470A2,#B86BB5,#5B9BD5);
+    --ok:#7FD48A; --warn:#E0B05C; --danger:#F88C8C;
+    --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:auto}
+  body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:430px;margin:0 auto;padding:24px 18px 48px}
+  .kicker{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  h1{font-size:26px;font-weight:700;line-height:1.25;margin-bottom:10px}
+  h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:24px}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;margin-bottom:16px}
+  .card h2{font-size:16px;font-weight:600;margin-bottom:4px}
+  .card .hint{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .stat{background:var(--sunken);border:1px solid var(--border);border-radius:var(--r-md);padding:12px 10px;text-align:center}
+  .stat b{display:block;font-size:20px;font-weight:700}
+  .stat small{font-size:11px;color:var(--muted);line-height:1.3;display:block;margin-top:2px}
+  .stat.acc b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5}
+  .note b{color:var(--text);font-weight:600}
+  /* gráfico */
+  .chart{display:flex;align-items:flex-end;gap:5px;height:130px;margin-top:14px;padding:0 2px}
+  .bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;align-items:center}
+  .bar i{display:block;width:100%;border-radius:4px 4px 2px 2px;background:#4A4E86}
+  .bar.hot i{background:var(--grad)}
+  .bar .v{font-size:10px;color:var(--muted);margin-bottom:3px}
+  .bar .l{font-size:9.5px;color:var(--muted);margin-top:5px;white-space:nowrap}
+  .chart-cap{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;padding:0 2px}
+  /* escapes */
+  .esc{background:var(--sunken);border:1px solid var(--border);border-left:3px solid var(--warn);border-radius:var(--r-md);padding:12px 14px;margin-bottom:10px}
+  .esc b{display:block;font-size:14px;margin-bottom:3px}
+  .esc p{font-size:12.5px;color:var(--muted);line-height:1.5}
+  /* simulador */
+  .sim{background:var(--raised);border:1px solid var(--border-strong);border-radius:var(--r-lg);padding:18px}
+  .toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;background:var(--sunken);border:1px solid var(--border);border-radius:var(--r-md);margin-bottom:10px;cursor:pointer;user-select:none}
+  .toggle:active{border-color:var(--border-strong)}
+  .toggle .t1{font-size:13.5px;font-weight:600}
+  .toggle .t2{font-size:11.5px;color:var(--muted)}
+  .sw{flex:0 0 44px;height:24px;border-radius:999px;background:var(--panel);border:1px solid var(--border-strong);position:relative;transition:background .2s}
+  .sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--muted);transition:all .2s}
+  .toggle.on .sw{background:rgba(212,112,162,.35)}
+  .toggle.on .sw::after{left:22px;background:var(--text)}
+  .res{margin-top:14px;background:var(--well);border:1px solid var(--border);border-radius:var(--r-md);padding:16px;text-align:center}
+  .res .big{font-size:34px;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .res .sub1{font-size:12px;color:var(--muted);margin-top:2px}
+  .res .delta{display:inline-block;margin-top:10px;font-size:12.5px;font-weight:600;padding:4px 12px;border-radius:999px}
+  .res .delta.up{background:rgba(127,212,138,.15);color:var(--ok)}
+  .res .delta.zero{background:var(--sunken);color:var(--muted)}
+  .res .ano{font-size:12px;color:var(--muted);margin-top:8px}
+  /* chat mock */
+  .chat{background:var(--well);border:1px solid var(--border);border-radius:var(--r-md);padding:14px}
+  .msg{max-width:82%;background:var(--raised);border:1px solid var(--border);border-radius:14px;padding:10px 12px;font-size:12.5px;line-height:1.45}
+  .msg.bot{margin-right:auto}
+  .prod{display:flex;gap:10px;margin-top:8px;background:var(--sunken);border:1px solid var(--border);border-radius:10px;padding:9px;align-items:center}
+  .thumb{width:44px;height:44px;border-radius:8px;background:var(--grad);opacity:.85;flex:0 0 44px;display:flex;align-items:center;justify-content:center}
+  .thumb svg{width:22px;height:22px;stroke:#fff}
+  .prod .pi b{font-size:12.5px;display:block}
+  .prod .pi small{font-size:11.5px;color:var(--muted)}
+  .prod .pi .p{font-size:13px;font-weight:700;color:var(--text)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .chip{background:var(--panel);border:1px solid var(--border-strong);border-radius:999px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:border-color .15s}
+  .chip:active{border-color:var(--ok)}
+  .flash{margin-top:10px;font-size:12px;color:var(--ok);min-height:18px;font-weight:600}
+  /* passos */
+  .step{display:flex;gap:12px;margin-bottom:12px}
+  .step .n{flex:0 0 26px;height:26px;border-radius:50%;background:var(--grad);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .step .t b{font-size:13.5px;display:block}
+  .step .t p{font-size:12px;color:var(--muted)}
+  /* veredito */
+  .ver{background:var(--raised);border:1px solid var(--border-strong);border-radius:var(--r-lg);padding:18px}
+  .ver .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:rgba(127,212,138,.14);color:var(--ok);padding:4px 12px;border-radius:999px;margin-bottom:10px}
+  .ver p{font-size:13.5px;line-height:1.6}
+  .ver p+p{margin-top:10px}
+  .ver p b{color:var(--text)}
+  .ver .mut{color:var(--muted);font-size:12px}
+  .foot{font-size:11px;color:var(--muted);line-height:1.6;margin-top:20px;padding-top:14px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Análise de canal · Renata Bordados · Sitges ES</div>
+  <h1>Vinted hoje: <span>o que dá</span> e o que escapa</h1>
+  <p class="sub">Leitura do perfil público @renatabordados na Vinted (12/11/2026): 111 anúncios, 109 vendas registradas e o histórico completo de avaliações.</p>
+
+  <div class="card">
+    <h2>A loja hoje</h2>
+    <p class="hint">Tudo bordado à mão: meias, panos de cozinha, toalhas e peças sob medida. Perfil de vendedora profissional, 5,0 estrelas.</p>
+    <div class="stats">
+      <div class="stat"><b>111</b><small>peças no ar</small></div>
+      <div class="stat"><b>€14</b><small>preço médio</small></div>
+      <div class="stat"><b>109</b><small>vendas em 10 meses</small></div>
+      <div class="stat"><b>5,0</b><small>estrelas (109 avaliações)</small></div>
+      <div class="stat"><b>275</b><small>seguidores na Vinted</small></div>
+      <div class="stat acc"><b>€150</b><small>receita estimada/mês</small></div>
+    </div>
+    <p class="note">Vendas contadas pelas avaliações (com comentário ou automática). Ticket médio presumido do catálogo: €12 a €15. Faixa de receita: <b>€130 a €170/mês</b>.</p>
+  </div>
+
+  <div class="card">
+    <h2>Vendas por mês: o gráfico que incomoda</h2>
+    <p class="hint">O pico (47 vendas em 2 meses) não se sustenta. Sem canal próprio, a demanda é refém do alcance que a Vinted decide dar.</p>
+    <div class="chart">
+      <div class="bar"><span class="v">2</span><i style="height:8%"></i><span class="l">10m</span></div>
+      <div class="bar"><span class="v">3</span><i style="height:13%"></i><span class="l">9m</span></div>
+      <div class="bar"><span class="v">11</span><i style="height:46%"></i><span class="l">8m</span></div>
+      <div class="bar"><span class="v">13</span><i style="height:54%"></i><span class="l">7m</span></div>
+      <div class="bar"><span class="v">4</span><i style="height:17%"></i><span class="l">6m</span></div>
+      <div class="bar"><span class="v">0</span><i style="height:2%"></i><span class="l">5m</span></div>
+      <div class="bar hot"><span class="v">23</span><i style="height:96%"></i><span class="l">4m</span></div>
+      <div class="bar hot"><span class="v">24</span><i style="height:100%"></i><span class="l">3m</span></div>
+      <div class="bar"><span class="v">12</span><i style="height:50%"></i><span class="l">2m</span></div>
+      <div class="bar"><span class="v">10</span><i style="height:42%"></i><span class="l">1m</span></div>
+      <div class="bar"><span class="v">7</span><i style="height:29%"></i><span class="l">agora</span></div>
+    </div>
+    <div class="chart-cap"><span>há 10 meses</span><span>hoje</span></div>
+  </div>
+
+  <div class="card">
+    <h2>O que escapa com a loja presa na Vinted</h2>
+    <p class="hint">A Vinted cobra 0% de comissão de venda: o dinheiro da venda é dela. O custo está no que a plataforma não deixa construir.</p>
+    <div class="esc"><b>Os compradores não são dela</b><p>109 compras e zero forma de recontato. Quem amou o bordado e disse "voltarei a comprar" só volta se o algoritmo sortear. A lista de interessados, o arquivo de clientes e a recompra programada ficam com a Vinted.</p></div>
+    <div class="esc"><b>Preço comprimido pela taxa do comprador</b><p>A comissão é 0%, mas o comprador paga taxa de proteção por cima: na própria loja, uma peça de €9,40 sai por €10,57 (+12%). Para o preço final não espantar, ela precifica por baixo. Vendendo direto, o preço que ela escreve é o preço que o cliente paga.</p></div>
+    <div class="esc"><b>Tempo manual sem escala</b><p>Perguntas, fotos extras, fechar pacote, combinar envio: tudo em conversa manual. O mesmo esforço responde 10 clientes ou 1.000 apenas com a infra certa.</p></div>
+    <div class="esc"><b>Encargo sob medida sem sistema</b><p>O pedido personalizado é o produto mais valioso (€30 a €40) e hoje vive numa DM solta: sem registro, sem follow-up, sem fila de interessados quando a fila da máquina encher.</p></div>
+  </div>
+
+  <div class="card">
+    <h2>Simulador: canal próprio no Instagram</h2>
+    <p class="hint">Mesmo catálogo, mesmo preço-base. Ligue os vetores e veja a receita mensal estimada. A base de vendas nova vem de audiência própria no Instagram, sem desviar cliente da Vinted.</p>
+    <div class="sim">
+      <div class="toggle" onclick="tg(this,'a')">
+        <div><div class="t1">Preço cheio no canal direto</div><div class="t2">sem taxa visível ao comprador, +10% no ticket</div></div>
+        <div class="sw"></div>
+      </div>
+      <div class="toggle" onclick="tg(this,'b')">
+        <div><div class="t1">Recompra da base</div><div class="t2">novidades anunciadas a quem já comprou: +3 vendas/mês</div></div>
+        <div class="sw"></div>
+      </div>
+      <div class="toggle" onclick="tg(this,'c')">
+        <div><div class="t1">Encargos promovidos pelo bot</div><div class="t2">pedidos sob medida capturados no DM: +1,5/mês a €35</div></div>
+        <div class="sw"></div>
+      </div>
+      <div class="res">
+        <div class="big" id="rMes">€150</div>
+        <div class="sub1">receita mensal estimada</div>
+        <div class="delta zero" id="rDelta">igual ao Vinted sozinho</div>
+        <div class="ano" id="rDet"></div>
+        <div class="ano" id="rAno">€1.800/ano · Vinted sozinho</div>
+      </div>
+    </div>
+    <p class="note">Estimativa conservadora: preço médio €14, volume atual mantido. Não conta economia de horas (o bot responde sozinho o DM) nem o crescimento da audiência ao longo dos meses.</p>
+  </div>
+
+  <div class="card">
+    <h2>Como fica o direct com a brisa</h2>
+    <p class="hint">Simulação fictícia do que a cliente vê no Instagram. Toque nos botões.</p>
+    <div class="chat">
+      <div class="msg bot">
+        Oi, Marina! Que bom que gostou do reel. Essa semana o destaque da oficina:
+        <div class="prod">
+          <div class="thumb"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round"><path d="M6 3v9a6 6 0 0 0 12 0V3"/><path d="M6 8h12"/><path d="M6 13h12"/></svg></div>
+          <div class="pi"><b>Meias bordadas arco-íris</b><small>bordado à mão · tam. 39-42 · pronta entrega</small><span class="p">€9,00</span></div>
+        </div>
+        Posso separar pra você ou mostrar mais peças da oficina?
+      </div>
+      <div class="chips">
+        <div class="chip" onclick="fl('Quero as meias: separada no nome da Marina')">Quero as meias</div>
+        <div class="chip" onclick="fl('Mostrando mais 6 peças da oficina')">Ver mais bordados</div>
+        <div class="chip" onclick="fl('Encargo sob medida: a Renata recebe o pedido na fila')">Pedido personalizado</div>
+      </div>
+      <div class="flash" id="fl"></div>
+    </div>
+    <p class="note">A Renata aprova cada resposta automática num grupo simples no Telegram antes do envio. Ela continua costurando; o direct trabalha sozinho.</p>
+  </div>
+
+  <div class="card">
+    <h2>Plano de começo</h2>
+    <p class="hint">Uma tarde de setup. A Vinted continua: passa a ser vitrine, não a casa.</p>
+    <div class="step"><div class="n">1</div><div class="t"><b>Conta dela no ar</b><p>Instagram profissional da Renata conectado ao painel brisa (login dela, token dela).</p></div></div>
+    <div class="step"><div class="n">2</div><div class="t"><b>Catálogo importado</b><p>As 111 peças da Vinted viram fichas no direct, com foto, preço e link de pagamento.</p></div></div>
+    <div class="step"><div class="n">3</div><div class="t"><b>Isca nos reels</b><p>Comente BORDADO no reel e o bot entrega o catálogo no DM. Cada comentário vira lead na fila.</p></div></div>
+  </div>
+
+  <div class="ver">
+    <div class="tag">Veredito</div>
+    <p><b>Hoje: ~€150/mês, esfriando, tempo todo manual e zero posse de cliente.</b> Vinted não cobra comissão, mas cobra o futuro: sem base própria, cada mês começa do zero.</p>
+    <p>Com canal próprio, o mesmo trabalho rende <b>€230 a €265/mês</b> (simulador acima) e cresce com a audiência: cada seguidor novo fica na lista dela para sempre.</p>
+    <p class="mut">Fase de teste: custo zero para a Renata. A Vinted segue como segundo canal de discovery, agora com a brisa por trás do relacionamento.</p>
+  </div>
+
+  <div class="foot">
+    Fonte: perfil público @renatabordados (vinted.es) e catálogo completo, coletados em 12/11/2026. Vendas estimadas pelas 109 avaliações públicas; receita = vendas × ticket médio do catálogo (€12-15). Projeções do simulador são estimativas conservadoras, não promessa de resultado. Simulação do DM usa dados fictícios (cliente Marina, peça exemplar).
+  </div>
+</div>
+<script>
+var V={a:false,b:false,c:false};
+function tg(el,k){
+  V[k]=!V[k]; el.classList.toggle('on',V[k]); up();
+}
+function up(){
+  var base=150, add=0, lab=[];
+  if(V.a){add+=15; lab.push('preço cheio +€15');}
+  if(V.b){add+=42; lab.push('recompra +€42');}
+  if(V.c){add+=52; lab.push('encargos +€52');}
+  var tot=base+add;
+  document.getElementById('rMes').textContent='€'+tot;
+  var d=document.getElementById('rDelta'), pct=Math.round(add/base*100);
+  var det=document.getElementById('rDet');
+  if(add===0){d.textContent='igual ao Vinted sozinho';d.className='delta zero';det.textContent='';}
+  else{d.textContent='+'+pct+'% vs Vinted sozinho';d.className='delta up';det.textContent='preço +€15 · recompra +€42 · encargos +€52';det.style.fontSize='11px';}
+  document.getElementById('rAno').textContent='€'+(tot*12).toLocaleString('pt-BR')+'/ano'+(add?' · Vinted sozinho: €1.800/ano':'');
+}
+function fl(txt){
+  var f=document.getElementById('fl'); f.style.opacity=0; f.textContent=txt;
+  setTimeout(function(){f.style.transition='opacity .3s'; f.style.opacity=1;},40);
+}
+</script>
+</body>
+</html>
